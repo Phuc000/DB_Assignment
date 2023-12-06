@@ -1,0 +1,33 @@
+[
+    {
+      "name": "Clothes",
+      "image": "/Images/categories/clothes-crop.jpg",
+      "link": "./clothes.html"
+    },
+    {
+      "name": "Shoes",
+      "image": "/Images/categories/shoes-crop.jpg",
+      "link": "./shoes.html"
+    },
+    {
+      "name": "Home Appliances",
+      "image": "/Images/categories/appliances-crop.jpg",
+      "link": "./clothes.html"
+    },
+    {
+      "name": "Food",
+      "image": "/Images/categories/food-crop.jpg",
+      "link": "./clothes.html"
+    },
+    {
+      "name": "Drinks",
+      "image": "/Images/categories/drinks-crop.jpg",
+      "link": "./clothes.html"
+    },
+    {
+      "name": "Technology",
+      "image": "/Images/categories/tech-crop.jpg",
+      "link": "./clothes.html"
+    }
+  ]
+  
