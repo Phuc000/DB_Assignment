@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {Header, Footer} from "../../Components";
 import "./Category.css";
 
@@ -24,6 +24,11 @@ const Category = () => {
         </header>
         <div className="products__container container">
           {products.map((product) => (
+            <Link
+            to={`/buy-product/${product.id}`}
+            key={product.id}
+            className="product-link"
+          >
             <article className="product-card" key={product.name}>
               <div className="product-card__image-container">
                 <img src={product.image} alt={product.name} />
@@ -40,6 +45,7 @@ const Category = () => {
                 </div>
               </div>
             </article>
+            </Link>
           ))}
         </div>
       </div>

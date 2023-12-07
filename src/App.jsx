@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home, Login, Cart, Category } from "./Pages";
+import { Home, Login, Cart, Category, BuyProduct } from "./Pages";
 import "./App.css";
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
             <Route path="/Login" element={<Login />} />
             <Route path="/Category/:categoryName" element={<Category />} />
             <Route path="/Cart" element={<Cart />} />
+            <Route path="/buy-product/:productId" element={<BuyProduct />} />
           </Routes>
         </div>
       </div>

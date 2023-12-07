@@ -54,6 +54,10 @@
 
 /*#####################################*/
 /*Categories product*/
+.product-link {
+    text-decoration: none;
+    color: black;
+}
 
 .products__container {
     display: flex;
