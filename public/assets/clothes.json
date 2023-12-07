@@ -1,0 +1,39 @@
+[
+    {
+      "name": "Black Sweatshirt",
+      "image": "/Images/items/clothes/buzo_puma.png",
+      "price": 35.00,
+      "discount": null
+    },
+    {
+      "name": "Pink Sweatshirt",
+      "image": "/Images/items/clothes/buzo_rosa_gap.png",
+      "price": 28.00,
+      "discount": null
+    },
+    {
+      "name": "Lumberjack Shirt",
+      "image": "/Images/items/clothes/camisa_bananaRepublic.png",
+      "price": 69.99,
+      "discount": 20
+    },
+    {
+      "name": "Striped T-Shirt",
+      "image": "/Images/items/clothes/camisa_lacoste.png",
+      "price": 19.99,
+      "discount": 25
+    },
+    {
+      "name": "Polo T-Shirt",
+      "image": "/Images/items/clothes/camisa_polo.png",
+      "price": 7.00,
+      "discount": null
+    },
+    {
+      "name": "Pink Winter Coat",
+      "image": "/Images/items/clothes/winter_coat.png",
+      "price": 68.00,
+      "discount": 67
+    }
+  ]
+  

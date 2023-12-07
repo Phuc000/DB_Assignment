@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {Header, Footer} from "../../Components";
+import { Link } from 'react-router-dom';
+import {Header, Footer } from "../../Components";
 import "./Home.css";
 const Home = () => {
   const [currentAd, setCurrentAd] = useState(1);
@@ -71,13 +72,13 @@ const Home = () => {
           <div className="circlesContainer">
             {categories.map((category) => (
               <div className="circle" key={category.name}>
-                <a href={category.link}>
+                <Link to={`/Category/${category.name}`}>
                   <img src={category.image} className="imgRounded" alt={category.name} />
-                </a>
+                </Link>
                 <div className="circleBody">
-                  <a href={category.link} className="a__catContainer">
+                  <Link to={`/Category/${category.name}`} className="a__catContainer">
                     <h3 className="descripCateg">{category.name}</h3>
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}

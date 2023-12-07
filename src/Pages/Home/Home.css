@@ -205,7 +205,7 @@ html {
 
   /*Hero section*/
   .hero {
-      background: url('../img/bg_mobile.jpg');
+      background: url('/Images/bg_mobile.jpg');
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;

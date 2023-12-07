@@ -14,15 +14,17 @@ const Header = () => {
     return (
         <div className="header">
             <nav>
-            <a href="./index.html"><img src="/Images/logo.png" alt="logo-shophouse" class="nav__logo" /></a>
-            <div class="header-with-search__search-section">
+                <Link to="/" className={getNavItemClass("/")}>
+                  <img src="/Images/logo.png" alt="logo-shophouse" class="nav__logo" />
+                </Link>
+              <div class="header-with-search__search-section">
                 <div class="search_body">
                     <div class="search-container">
                       <input type="text" class="search-input" id="searchInput" placeholder="Search..."/>
                       <button class="search-button" onclick={search}>Search</button>
                     </div>
                   </div>
-            </div>
+              </div>
             <ul class="nav__navigation">
                 <Link to="/" className={getNavItemClass("/")}>
                   <p class="a__navbar btn btn--primary">HOME</p>
@@ -37,7 +39,7 @@ const Header = () => {
                 </Link>
             </ul>
             <i class="fas fa-bars wrap-menu" aria-label="Abrir menú"></i>
-        </nav>
+          </nav>
         </div>
     )
 }
