@@ -1,0 +1,77 @@
+/* Cart.css */
+
+.cart {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cart-content {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+  }
+  
+  .cart-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .empty-cart-message {
+    font-size: 16px;
+    color: #888;
+  }
+  
+  .cart-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+  }
+  
+  .cart-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between; /* Space items evenly along the row */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .item-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .item-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .item-quantity, .item-price {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .remove-item-button {
+    /* Your styles for the remove button */
+    background-color: #ff6347; /* Adjust the color as needed */
+    color: #fff;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s; /* Smooth transition effect */
+
+    &:hover {
+        background-color: #d9534f; /* Change the color on hover */
+      }
+  }
+  
+  /* Add more styles for cart summary or other components as needed */
+  
+  

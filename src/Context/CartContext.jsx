@@ -10,6 +10,11 @@ const cartReducer = (state, action) => {
         ...state,
         cart: [...state.cart, action.payload],
       };
+      case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        cart: state.cart.filter((_, index) => index !== action.payload),
+      };
     // Add more cases for other actions as needed
     default:
       return state;

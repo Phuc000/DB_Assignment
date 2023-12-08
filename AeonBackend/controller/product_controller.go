@@ -29,7 +29,7 @@ func getProductInformationAtStoreByID(db *gorm.DB) func(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		var product entity.Product
+		var product entity.At
 		if err := db.Table("at").Where("ProductID = ?", id).First(&product).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
