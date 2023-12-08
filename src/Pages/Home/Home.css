@@ -466,19 +466,110 @@ html {
     
     }
 
+/* promo product list */
+
+.promo-products {
+  margin-top: 20px;
+}
+
+.promo-products-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-left: 5vw;
+}
+
+.promo-products-container {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling if products overflow */
+  gap: 20px; /* Adjust the gap between products as needed */
+  margin-left: 5vw;
+  margin-right: 5vw;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.promo-products-container::-webkit-scrollbar {
+  width: 5px; /* Set the width of the scrollbar */
+}
+
+.promo-products-container::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Set the color of the thumb */
+}
+
+.promo-product {
+  flex: 0 0 auto;
+  width: 18vw; 
+  min-width: 220px; 
+  background: rgb(241, 241, 241);
+  border: 1px solid rgb(223, 223, 223);
+  border-radius: 16px;
+  overflow: hidden;
+
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.promo-product:hover {
+  box-shadow: 4px 16px 36px rgb(204, 204, 204);
+  transform: translate(1%, -1%);
+}
+
+.promo-product-link {
+  text-decoration: none;
+  color: #333;
+}
+
+.promo-product-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.promo-product-name {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.promo-product-description {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.promo-product-price {
+  font-size: 16px;
+  margin-top: 8px;
+  color: #e44d26; /* Set a color for the price */
+}
+
+/* promo product list */
+
 /* store list */
     .store--cat {
       padding-top: 5vh;
       font-size: var(--fz_lg);
       text-transform: uppercase;
-      margin-left: 10px;
+      margin-left: 5vw;
     }
 
     .stores-container {
       display: flex;
       overflow-x: auto; /* Enable horizontal scrolling if needed */
       margin: 10px;
-    }
+      margin-left: 5vw;
+      margin-right: 5vw;
+      scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.stores-container::-webkit-scrollbar {
+  width: 5px; /* Set the width of the scrollbar */
+}
+
+.stores-container::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Set the color of the thumb */
+}
     
     .store-card {
       margin-right: 20px; /* Adjust spacing between store cards */
@@ -487,7 +578,20 @@ html {
       border-radius: 5px;
       color: #2e2e2e;
       margin-bottom: 10px;
-    }
+      width: 18vw; 
+    min-width: 220px; 
+    background: rgb(241, 241, 241);
+    border: 1px solid rgb(223, 223, 223);
+    border-radius: 16px;
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+}
+
+.store-card:hover {
+    box-shadow: 4px 16px 36px rgb(204, 204, 204);
+    transform: translate(1%, -1%);
+}
     
     /* Optional: Adjust styles as needed for better appearance */
     .store-card h3 {
