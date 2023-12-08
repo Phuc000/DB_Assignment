@@ -17,6 +17,38 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInAccount, setLoggedInAccount] = useState("");
 
+  //Create a cookie for userID
+  const setCookie = (name, value, days) => {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + days);
+    const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+    document.cookie = cookieValue;
+  };
+
+  //Get the userID
+  function getCookie(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+  
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+  
+      return null;
+    }
+  
+    const userID = getCookie("userID");
+    //Show value in console log
+    if (userID) {
+      console.log("Value of myCookie:", userID);
+    } else {
+      console.log("myCookie not found");
+    }
+  
   const submitForm = async () => {
     try {
       const endpoint = showLogin ? "loginEndpoint" : "signupEndpoint";
@@ -59,6 +91,11 @@ const Login = () => {
     setShowSignup(false);
   };
 
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setCookie("userID", newPassword, 1);
+  };
   return (
     <div className="login">
       <Header />
@@ -89,7 +126,9 @@ const Login = () => {
                 name="Password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                //test using input of password for cookie valu
+                onchange={handlePasswordchage}
+                //onChange={(e) => setPassword(e.target.value)}
               />
               {/* ... */}
               <button className="form-button" type="button" onClick={submitForm} >
