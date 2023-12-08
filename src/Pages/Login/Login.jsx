@@ -17,7 +17,38 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInAccount, setLoggedInAccount] = useState("");
 
-  const submitForm = async () => {
+ 
+  const setCookie = (name, value, days) => {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + days);
+    const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+    document.cookie = cookieValue;
+  };
+
+  function getCookie(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+  
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+  
+    return null;
+  }
+
+  const userID = getCookie("userID");
+
+  if (userID) {
+    console.log("Value of myCookie:", userID);
+  } else {
+    console.log("myCookie not found");
+  }
+
+  const submitsignupForm = async () => {
     try {
       const endpoint = showLogin ? "loginEndpoint" : "signupEndpoint";
 
@@ -26,18 +57,36 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ account, password }),
+        body: JSON.stringify({ FName, phone }),
       });
 
+        // Perform database update with the new customer information
+        await updateDatabase(FName,LName,address,phone/* other customer details */);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const submitloginForm = async () => {
+    try {
+      const endpoint = showLogin ? "loginEndpoint" : "signupEndpoint";
+
+      const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ FName, phone }),
+      });
+      response.ok=true;
       if (response.ok) {
-        const responseData = await response.json();
-        if (showLogin) {
-          setIsLoggedIn(true);
-          setLoggedInAccount(responseData.account); // Assuming your API returns the account name
-        } else {
-          // Additional logic for signup success
+        setShowLogin(false);
+        setShowSignup(false);
+        setFName("Customer fname");// Get customer from database
+        setLName("Customer lname");
+        setphone("Customer phone");
+        setAddress("Customer address");
         }
-      } else {
+       else {
         console.error("Failed to submit form");
       }
     } catch (error) {
@@ -48,15 +97,10 @@ const Login = () => {
   const toggleSignup = () => {
     setShowSignup(!showSignup);
     setShowLogin(false);
-    setAccount("");
-    setPassword("");
-    setfullName("");
+    setFName("");
+    setLName("");
+    setphone("");
     setAddress("")
-  };
-
-  const toggleLogin = () => {
-    setShowLogin(!showLogin);
-    setShowSignup(false);
   };
 
   return (
@@ -89,7 +133,9 @@ const Login = () => {
                 name="Password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                //test using input of password for cookie valu
+                onchange={handlePasswordchage}
+                //onChange={(e) => setPassword(e.target.value)}
               />
               {/* ... */}
               <button className="form-button" type="button" onClick={submitForm} >
@@ -116,16 +162,16 @@ const Login = () => {
               <label className="form-label" >
                 Address:
               </label>
-              <input className="form-input" type="text" id="address" name="address" required value={address} onChange={(e) => setAddress(e,target,value)} />
+              <input className="form-input" type="text" id="address" name="address" required value={address} onChange={(e) => setAddress(e,target.value)} />
               
               <label className="form-label" >
                 Account:
               </label>
-              <input className="form-input" type="text" id="Account" name="Account" required value={account} onChange={(e) => setAccount(e,target,value)} />
+              <input className="form-input" type="text" id="Account" name="Account" required value={account} onChange={(e) => setAccount(e.target.value)} />
               <label className="form-label" >
                 Password:
               </label>
-              <input className="form-input" type="text" id="Password" name="Password" required value={password} onChange={(e) => setPassword(e,target,value)} />
+              <input className="form-input" type="text" id="Password" name="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
               
                 {/* ... */}
                 <button className="form-button" type="submit">
