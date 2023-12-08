@@ -49,13 +49,13 @@ const Home = () => {
       <Header/>
       <div className="content-section">
 
-        <section class="hero">
-            <div class="hero__content">
-                <img src="/Images/logo.png" alt="Shop house logo" class="hero__logo" />
-                <p class="hero__text">
+        <section className="hero">
+            <div className="hero__content">
+                <img src="/Images/logo.png" alt="Shop house logo" className="hero__logo" />
+                <p className="hero__text">
                     Over 30 years of experience giving our customers the products at the best price.
                 </p>
-                <a href="#catContainer"><button class="btn btn--black btn--hero">Take a look of our categories</button></a>
+                <a href="#catContainer"><button className="btn btn--black btn--hero">Take a look of our categories</button></a>
             </div>
         </section>
         <br/>
@@ -87,16 +87,19 @@ const Home = () => {
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
         {/* Display stores horizontally */}
-        <div className="stores-container">
-          {stores.map((store) => (
-            <Link to={`/store/${store.StoreID}`} key={store.StoreID} className="store-link">
-              <div className="store-card">
-                <h3>{store.Name}</h3>
-                <p>{store.Location}</p>
-                <p>Contact: {store.ContactInfo}</p>
-              </div>
-            </Link>
-          ))}
+        <div className='stores'>
+          <h2 className="store--cat">OUR STORES</h2>
+          <div className="stores-container">
+            {stores.map((store) => (
+              <Link to={`/store/${store.StoreID}`} key={store.StoreID} className="store-link">
+                <div className="store-card">
+                  <h3>{store.Name}</h3>
+                  <p>{store.Location}</p>
+                  <p>Contact: {store.ContactInfo}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="catContainer container" id="catContainer">

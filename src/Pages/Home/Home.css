@@ -467,6 +467,13 @@ html {
     }
 
 /* store list */
+    .store--cat {
+      padding-top: 5vh;
+      font-size: var(--fz_lg);
+      text-transform: uppercase;
+      margin-left: 10px;
+    }
+
     .stores-container {
       display: flex;
       overflow-x: auto; /* Enable horizontal scrolling if needed */
@@ -479,6 +486,7 @@ html {
       border: 1px solid #ddd; /* Add a border for better visual separation */
       border-radius: 5px;
       color: #2e2e2e;
+      margin-bottom: 10px;
     }
     
     /* Optional: Adjust styles as needed for better appearance */
