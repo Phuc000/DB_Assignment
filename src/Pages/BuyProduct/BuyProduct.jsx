@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header, Footer } from "../../Components";
+import { useCart } from '../../Context/CartContext';
 import "./BuyProduct.css";
 
 const BuyProduct = () => {
@@ -8,6 +9,7 @@ const BuyProduct = () => {
   const [product, setProduct] = useState(null);
   const [productAtStore, setproductAtStore] = useState(null);
   const [quantity, setQuantity] = useState(1); // Default quantity is 1
+  const { dispatch } = useCart();
 
   useEffect(() => {
     // Fetch product details based on the productId
@@ -39,6 +41,15 @@ const BuyProduct = () => {
 
   const handleAddToCart = () => {
     // Implement your add to cart logic here
+    const purchaseInfo = {
+      productId: product.productId,
+      productName: product.productName,
+      quantity: quantity,
+      price: product.price,
+      // Add other relevant info
+    };
+
+    dispatch({ type: 'ADD_TO_CART', payload: purchaseInfo });
     console.log(`Added ${quantity} ${product.productName} to the cart.`);
   };
 

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {Header, Footer } from "../../Components";
+import axios from "axios";
 import "./Home.css";
+
 const Home = () => {
   const [currentAd, setCurrentAd] = useState(1);
+  const [stores, setStores] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,6 +25,23 @@ const Home = () => {
         .then((response) => response.json())
         .then((data) => setCategories(data))
         .catch((error) => console.error("Error fetching categories:", error));
+    }, []);
+
+    useEffect(() => {
+      axios.get("http://localhost:8080/store/", {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          return response.data;
+        })
+        .then((data) => {
+          console.log('Fetched Data:', data);
+          setStores(data);
+        })
+        .catch((error) => console.error(`Error fetching store data:`, error));
     }, []);
 
   return (
@@ -65,6 +85,20 @@ const Home = () => {
         </section>
         
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+        {/* Display stores horizontally */}
+        <div className="stores-container">
+          {stores.map((store) => (
+            <Link to={`/store/${store.StoreID}`} key={store.StoreID} className="store-link">
+              <div className="store-card">
+                <h3>{store.Name}</h3>
+                <p>{store.Location}</p>
+                <p>Contact: {store.ContactInfo}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
         <div className="catContainer container" id="catContainer">
           <section className="bannerCategories">
             <h2 className="subtitle subtitle--cat">OUR CATEGORIES</h2>
