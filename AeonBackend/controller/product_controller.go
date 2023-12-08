@@ -18,9 +18,44 @@ func NewProductController(g *gin.Engine, db *gorm.DB) {
 		router.GET("/promotion/", getListProductHavePromotion(db))
 		router.GET("/store/:id", getListProductByStoreID(db))
 		router.POST("/", createProduct(db))
+		router.GET("/:id", getProductByProductID(db))
+		router.GET("/atstore/:id", getProductInformationAtStoreByID(db))
 	}
 }
-
+func getProductInformationAtStoreByID(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		var product entity.Product
+		if err := db.Table("at").Where("ProductID = ?", id).First(&product).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, product)
+	}
+}
+func getProductByProductID(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		var product entity.Product
+		if err := db.Table("product").Where("ProductID = ?", id).First(&product).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, product)
+	}
+}
 func createProduct(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var data entity.ProductCreation

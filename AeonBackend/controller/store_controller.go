@@ -11,8 +11,11 @@ import (
 
 func NewStoreController(g *gin.Engine, db *gorm.DB) {
 	router := g.Group("/store")
-	router.Use(CORS())
-	router.GET("/", getAllStore(db))
+	{
+		router.Use(CORS())
+		router.GET("/", getAllStore(db))
+	}
+
 }
 func getAllStore(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
