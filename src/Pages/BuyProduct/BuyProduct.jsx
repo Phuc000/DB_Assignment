@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Header, Footer } from "../../Components";
 import "./BuyProduct.css";
 
@@ -61,7 +61,10 @@ const BuyProduct = () => {
               {/* Add more details as needed */}
               {/* Additional Information */}
               <div className="provider">
-                <p>Provider ID: {productAtStore.providerId}</p>
+                {/* Use Link to navigate to the Store page with productId */}
+                <Link to={`/Store/${productAtStore.providerId}`}>
+                  <p>Provider ID: {productAtStore.providerId}</p>
+                </Link>
                 <p>Stock: {productAtStore.stock}</p>
               {/* Add more details as needed */}
               </div>

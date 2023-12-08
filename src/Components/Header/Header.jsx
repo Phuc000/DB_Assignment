@@ -21,7 +21,7 @@ const Header = () => {
                 <div class="search_body">
                     <div class="search-container">
                       <input type="text" class="search-input" id="searchInput" placeholder="Search..."/>
-                      <button class="search-button" onclick={search}>Search</button>
+                      <button class="search-button">Search</button>
                     </div>
                   </div>
               </div>

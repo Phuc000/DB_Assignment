@@ -9,9 +9,19 @@ const Category = () => {
 
   useEffect(() => {
     // Fetch category-specific data from JSON file based on categoryName
-    fetch(`/assets/${categoryName.toLowerCase()}.json`)
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
+    fetch(`http://localhost:8080/products/category/${categoryName}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      mode: "cors", // no-cors, *cors, same-origin
+    })
+      .then((response) => {
+        console.log('Fetched Data:', response.json());
+        return response
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data.json());
+        return setProducts(data);
+      })
       .catch((error) => console.error(`Error fetching ${categoryName} data:`, error));
   }, [categoryName]);
 
@@ -25,19 +35,19 @@ const Category = () => {
         <div className="products__container container">
           {products.map((product) => (
             <Link
-            to={`/buy-product/${product.id}`}
-            key={product.id}
+            to={`/buy-product/${product.ProductID}`}
+            key={product.ProductID}
             className="product-link"
           >
-            <article className="product-card" key={product.name}>
+            <article className="product-card" key={product.PName}>
               <div className="product-card__image-container">
-                <img src={product.image} alt={product.name} />
-                {product.discount && <p className="product__disscount">{product.discount}% off</p>}
+                {/* <img src={product.image} alt={product.name} /> */}
+                {/* {product.discount && <p className="product__disscount">{product.discount}% off</p>} */}
               </div>
 
               <div className="product-card__body">
-                <p className="product-card__name">{product.name}</p>
-                <p className="product-card__price">Price: {product.price.toFixed(2)} <span>usd</span></p>
+                <p className="product-card__name">{product.PName}</p>
+                <p className="product-card__price">Price: {product.Price.toFixed(2)} <span>usd</span></p>
 
                 <div className="product-card__buttons">
                   <button className="btn btn--secondary">Buy</button>

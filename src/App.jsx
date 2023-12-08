@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home, Login, Cart, Category, BuyProduct } from "./Pages";
+import { Home, Login, Cart, Category, BuyProduct, Store } from "./Pages";
 import "./App.css";
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
             <Route path="/Category/:categoryName" element={<Category />} />
             <Route path="/Cart" element={<Cart />} />
             <Route path="/buy-product/:productId" element={<BuyProduct />} />
+            <Route path="/store/:storeId" element={<Store />} />
           </Routes>
         </div>
       </div>

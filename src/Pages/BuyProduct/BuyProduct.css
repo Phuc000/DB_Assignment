@@ -34,10 +34,12 @@
     margin-left: 10vw;
     margin-bottom: 20px;
     border: 1px solid red;
+    text-decoration: none;
   }
 
   .provider p {
     margin-bottom: 10px;
+    color: black;
   }
   
   .quantity-input {
