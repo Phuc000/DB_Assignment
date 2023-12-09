@@ -28,3 +28,7 @@ type At struct {
 	StoreID       int `json:"StoreID" gorm:"column:StoreID"`
 	NumberAtStore int `json:"NumberAtStore" gorm:"column:NumberAtStore"`
 }
+type TempTop5Product struct {
+	ProductID int     `json:"ProductID" gorm:"column:ProductID"`
+	Revenue   float64 `json:"Revenue" gorm:"column:Revenue"`
+}
