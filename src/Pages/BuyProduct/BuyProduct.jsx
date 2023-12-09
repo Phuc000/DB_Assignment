@@ -6,7 +6,7 @@ import axios from "axios";
 import "./BuyProduct.css";
 
 const BuyProduct = () => {
-  const { productId } = useParams();
+  const { productId, storeId } = useParams();
   const [product, setProduct] = useState(null);
   const [productAtStore, setproductAtStore] = useState(null);
   const [quantity, setQuantity] = useState(1); // Default quantity is 1
@@ -30,7 +30,7 @@ const BuyProduct = () => {
       .catch((error) => console.error(`Error fetching product ${productId} data:`, error));
 
       // Fetch additional information based on the productId
-      axios.get(`http://localhost:8080/products/atstore/${productId}`, {
+      axios.get(`http://localhost:8080/products/productatstore/${productId}/${storeId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -88,7 +88,7 @@ const BuyProduct = () => {
               <div className="provider">
                 {/* Use Link to navigate to the Store page with productId */}
                 <Link to={`/Store/${productAtStore.StoreID}`}>
-                  <p>Provider ID: {productAtStore.StoreID}</p>
+                  <p>Store: {productAtStore.StoreID}</p>
                 </Link>
                 <p>Stock: {productAtStore.NumberAtStore}</p>
               {/* Add more details as needed */}
