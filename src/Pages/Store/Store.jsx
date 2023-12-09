@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import {Header, Footer} from "../../Components";
+import {Header, Footer, ShowProduct } from "../../Components";
 import axios from "axios";
 
 import "./Store.css";
@@ -70,29 +70,9 @@ const Store = () => {
         </header>
         <div className="products__container container">
           {products.map((product) => (
-            <Link
-            to={`/buy-product/${product.ProductID}/${storeId}`}
-            key={product.ProductID}
-            className="product-link"
-          >
-            <article className="product-card" key={product.PName}>
-              <div className="product-card__image-container">
-                {/* <img src={product.image} alt={product.name} /> */}
-                {/* {product.discount && <p className="product__disscount">{product.discount}% off</p>} */}
-                {product.promotions && <p className="product__disscount">{product.totalDiscount.toFixed(2) * 100}% off</p>}
-              </div>
-
-              <div className="product-card__body">
-                <p className="product-card__name">{product.PName}</p>
-                <p className="product-card__price">Price: {product.Price.toFixed(2)} <span>usd</span></p>
-
-                <div className="product-card__buttons">
-                  <button className="btn btn--secondary">Buy</button>
-                  <button className="btn btn--secondary--transparent">Details</button>
-                </div>
-              </div>
-            </article>
-            </Link>
+            <>
+            <ShowProduct product={product} storeId={storeId} />
+            </>
           ))}
         </div>
       </div>

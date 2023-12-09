@@ -88,7 +88,7 @@ const BuyProduct = () => {
               <div className="provider">
                 {/* Use Link to navigate to the Store page with productId */}
                 <Link to={`/Store/${productAtStore.StoreID}`}>
-                  <p>Provider ID: {productAtStore.StoreID}</p>
+                  <p>Store: {productAtStore.StoreID}</p>
                 </Link>
                 <p>Stock: {productAtStore.NumberAtStore}</p>
               {/* Add more details as needed */}

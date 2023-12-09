@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {Header, Footer } from "../../Components";
+import {Header, Footer, ShowProduct } from "../../Components";
 import axios from "axios";
 import "./Home.css";
 
@@ -145,15 +145,9 @@ const Home = () => {
         <h2 className="promo-products-title">Featured Promotion Products</h2>
         <div className="promo-products-container">
           {promoProducts.map((product) => (
-            <div key={product.ProductID} className="promo-product">
-              <Link to={`/buy-product/${product.ProductID}`} className="promo-product-link">
-                <h3 className="promo-product-name">{product.PName}</h3>
-                <p className="promo-product-description">{product.Description}</p>
-                <p className="promo-product-price">${product.Price.toFixed(2)}</p>
-                <p className="promo-product-discount">${(product.Price * (1 - product.totalDiscount)).toFixed(2)}</p>
-                {product.totalDiscount && <p className="promo_product__disscount">{product.totalDiscount.toFixed(2) * 100}% off</p>}
-              </Link>
-            </div>
+            <>
+            <ShowProduct product={product} storeId={null} />
+            </>
           ))}
         </div>
       </div>
