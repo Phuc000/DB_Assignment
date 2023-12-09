@@ -19,8 +19,20 @@ func NewCustomerController(g *gin.Engine, db *gorm.DB) {
 		router.PUT("/:id", updateCustomerInfoById(db))                 // edit an item by ID
 		router.POST("/", createCustomer(db))                           // create customer
 		router.GET("/login/:phone/:fullname", getCustomerForLogin(db)) //get customer by phone and name
+		router.GET("/customer-rank/:customerID", getCustomerRank(db))
 	}
-
+}
+func getCustomerRank(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		customerID := c.Param("customerID")
+		var customer entity.CustomerPromo
+		result := db.Table("bill").First(&customer, "CustomerID = ?", customerID)
+		if result.Error != nil {
+			c.JSON(404, gin.H{"error": "Customer not found"})
+			return
+		}
+		c.JSON(http.StatusOK, customer)
+	}
 }
 func getCustomerForLogin(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
