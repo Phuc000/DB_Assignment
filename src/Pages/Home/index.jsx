@@ -55,7 +55,7 @@ const Home = () => {
           console.log('Fetched Data:', response.data);
           return response.data;
         })
-        .then((data) => {
+        .then(async (data) => {
           console.log('Fetched Data:', data);
           const uniqueProducts = data.reduce((unique, product) => {
             if (!unique.find((p) => p.ProductID === product.ProductID)) {
@@ -63,10 +63,41 @@ const Home = () => {
             }
             return unique;
           }, []);
-          setPromoProducts(uniqueProducts);
+          const promoProductsData = [];
+
+          for (const product of uniqueProducts) {
+            const promotionInfo = await fetchPromotionInfo(product.ProductID);
+            promoProductsData.push({
+              ...product,
+              promotions: promotionInfo,
+              totalDiscount: calculateTotalDiscount(promotionInfo),
+            });
+          }
+
+          setPromoProducts(promoProductsData);
         })
         .catch((error) => console.error(`Error fetching store data:`, error));
     }, []);
+
+    const fetchPromotionInfo = async (productId) => {
+      try {
+        const response = await axios.get(`http://localhost:8080/products/promotionfromproduct/${productId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error(`Error fetching promotion info for product ${productId}:`, error);
+        return [];
+      }
+    };
+  
+    const calculateTotalDiscount = (promotions) => {
+      const totalDiscount = promotions.reduce((total, promotion) => total + promotion.Discount, 0);
+      // Ensure the total discount does not exceed 0.99
+      return Math.min(totalDiscount, 0.99);
+    };
 
   return (
     <div className="home">
@@ -119,6 +150,8 @@ const Home = () => {
                 <h3 className="promo-product-name">{product.PName}</h3>
                 <p className="promo-product-description">{product.Description}</p>
                 <p className="promo-product-price">${product.Price.toFixed(2)}</p>
+                <p className="promo-product-discount">${(product.Price * (1 - product.totalDiscount)).toFixed(2)}</p>
+                {product.totalDiscount && <p className="promo_product__disscount">{product.totalDiscount.toFixed(2) * 100}% off</p>}
               </Link>
             </div>
           ))}
