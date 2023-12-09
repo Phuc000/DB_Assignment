@@ -48,7 +48,9 @@ func increaseProductAtStore(db *gorm.DB) func(c *gin.Context) {
 		var existingProduct entity.At
 		result := db.Table("at").First(&existingProduct, "ProductID = ? AND StoreID = ?", productid, storeid)
 		if result.Error != nil {
-			c.JSON(404, gin.H{"error": "Product or store not found"})
+			query := "INSERT INTO AT (ProductID, StoreID, NumberAtStore) VALUES (?,?,?)"
+			db.Exec(query, productid, storeid, amount)
+			c.JSON(http.StatusOK, gin.H{"success": true})
 			return
 		}
 		newQuantity := existingProduct.NumberAtStore + amount
