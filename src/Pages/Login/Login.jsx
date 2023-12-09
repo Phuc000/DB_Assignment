@@ -259,6 +259,11 @@ const Login = () => {
             </div>
           )}
         </section>
+        {!showSignup && !showmanagerLogin && !showuserLogin && (
+          <form >
+            <div className="form-label">Greetings {FName}</div>
+          </form>
+        )}
       </div>
       <Footer />
     </div>
