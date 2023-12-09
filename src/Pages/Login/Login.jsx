@@ -259,7 +259,7 @@ const Login = () => {
             </div>
           )}
         </section>
-        {!showSignup && !showmanagerLogin && !showuserLogin && (
+        {!showSignup && !showmanagerLogin && !showuserLogin && !showprivilgde && (
           <form >
             <div className="form-label">Greetings {FName}</div>
           </form>
