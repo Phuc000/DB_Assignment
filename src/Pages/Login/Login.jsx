@@ -4,20 +4,20 @@ import "./Login.css";
 
 const Login = () => {
   // Variables for customer information
-  const [account, setAccount] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setfullName] = useState("");
+
+  const [FName, setFName] = useState("");
+  const [LName, setLName] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setphone] = useState("");
 
   
   // Variable to swap between sign up and sign in
   const [showSignup, setShowSignup] = useState(false);
-  const [showLogin, setShowLogin] = useState(true);
-  // Variable to check if the account is logged in successful yet
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedInAccount, setLoggedInAccount] = useState("");
+  const [showuserLogin, setShowuserLogin] = useState(false);
+  const [showmanagerLogin, setShowmanagerLogin] = useState(false);
+  const [showprivilgde, setShowprivilgde] = useState(true);
 
- 
+  /*  make cookie when need to get customer id
   const setCookie = (name, value, days) => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + days);
@@ -39,37 +39,27 @@ const Login = () => {
   
     return null;
   }
-
-  const userID = getCookie("userID");
-
-  if (userID) {
-    console.log("Value of myCookie:", userID);
-  } else {
-    console.log("myCookie not found");
-  }
+  */
 
   const submitsignupForm = async () => {
-    try {
-      const endpoint = showLogin ? "loginEndpoint" : "signupEndpoint";
-
-      const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ FName, phone }),
-      });
-
         // Perform database update with the new customer information
-        await updateDatabase(FName,LName,address,phone/* other customer details */);
-    } catch (error) {
-      console.error(error);
-    }
+        try {
+          const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ FName, phone }),
+          });
+          if (response.ok)
+          await updateDatabase(FName,LName,address,phone/* other customer details */);
+        } catch (error) {
+          console.error(error);
+        }
   };
+
   const submitloginForm = async () => {
     try {
-      const endpoint = showLogin ? "loginEndpoint" : "signupEndpoint";
-
       const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
         method: "GET",
         headers: {
@@ -79,7 +69,7 @@ const Login = () => {
       });
       response.ok=true;
       if (response.ok) {
-        setShowLogin(false);
+        setShowuserLogin(false);
         setShowSignup(false);
         setFName("Customer fname");// Get customer from database
         setLName("Customer lname");
@@ -94,52 +84,138 @@ const Login = () => {
     }
   };
 
+  const submitmanagerLoginForm = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ FName, phone }),
+      });
+      response.ok=true;
+      if (response.ok) {
+        setShowuserLogin(false);
+        setShowSignup(false);
+        setFName("Manager fname");// Get Manager from database
+        setLName("Manager lname");
+        setphone("Manager phone");
+        setAddress("Manager address");
+        }
+       else {
+        console.error("Failed to submit form");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const toggleSignup = () => {
     setShowSignup(!showSignup);
-    setShowLogin(false);
+    setShowuserLogin(!showuserLogin);
     setFName("");
     setLName("");
     setphone("");
     setAddress("")
   };
-
+  const toggleUserlogin =() =>{
+    setShowuserLogin(!showuserLogin);
+    setShowprivilgde(!showprivilgde)
+  }
+  const toggleManagerlogin =() =>{
+    setShowmanagerLogin(!showmanagerLogin);
+    setShowprivilgde(!showprivilgde)
+  }
   return (
     <div className="login">
       <Header />
-      <div className="login-content">
-        <section className="form">
-          {showLogin && (
-            <form id="loginForm">
-              {/* Existing login form inputs here */}
+          {/*Choose privilegde */}
+          {showprivilgde && (
+            <form id="choosing priviledge">
+            <section className="form">
+            <button className="form-button" type="button" onClick={toggleManagerlogin} >
+            Manager
+            </button>
+            <button className="form-button" type="button" onClick={toggleUserlogin } >
+            Customer
+            </button>
+            </section>
+            </form>
+          )}
+          
+          {showmanagerLogin && (
+            <div className="managerform">
+              <form id="managerFormPopup" onSubmit={submitmanagerLoginForm}>
+                {/* Manager login form inputs */}
               <label className="form-label" >
-              Account:
+              First Name:
               </label>
               <input
                 className="form-input"
                 type="text"
-                id="Account"
-                name="Account"
+                id="FName"
+                name="FName"
                 required
-                value={account}
-                onChange={(e) => setAccount(e.target.value)}
+                value={FName}
+                onChange={(e) => setFName(e.target.value)}
               />
               <label className="form-label" >
-                Password:
+                Tel:
               </label>
               <input
                 className="form-input"
                 type="password"
-                id="Password"
-                name="Password"
+                id="Tel"
+                name="Tel"
                 required
-                value={password}
-                //test using input of password for cookie valu
-                onchange={handlePasswordchage}
-                //onChange={(e) => setPassword(e.target.value)}
+                value={phone}
+                //test using input of Tel for cookie valu
+                onChange={(e) => setphone(e.target.value)}
+              />
+              <button className="form-button" type="button" onClick={submitmanagerLoginForm} >
+                Log in
+              </button>
+              </form>
+            </div>
+          )}
+
+
+
+
+
+      <div className="login-content" >
+        <section className="form">
+          {/*This is where user login start*/ }
+          {showuserLogin && (
+            <form id="loginForm" onSubmit={submitloginForm}>
+              {/* Existing login form inputs here */}
+              <label className="form-label" >
+              First Name:
+              </label>
+              <input
+                className="form-input"
+                type="text"
+                id="FName"
+                name="FName"
+                required
+                value={FName}
+                onChange={(e) => setFName(e.target.value)}
+              />
+              <label className="form-label" >
+                Tel:
+              </label>
+              <input
+                className="form-input"
+                type="password"
+                id="Tel"
+                name="Tel"
+                required
+                value={phone}
+                //test using input of Tel for cookie valu
+                onChange={(e) => setphone(e.target.value)}
               />
               {/* ... */}
-              <button className="form-button" type="button" onClick={submitForm} >
-                Sign in
+              <button className="form-button" type="button" onClick={submitloginForm} >
+                Log in
               </button>
               <label className="form-sigup-label" >
                 Don't have an account?
@@ -153,30 +229,32 @@ const Login = () => {
           {/* Signup form pop-up */}
           {showSignup && (
             <div className="signup-popup">
-              <form id="signupFormPopup" onSubmit={submitForm}>
+              <form id="signupFormPopup" onSubmit={submitsignupForm}>
                 {/* Signup form inputs */}
-                <label className="form-label" >
-              Full Name:
+              <label className="form-label" >
+              First Name:
               </label>
-              <input className="form-input" type="text" id="fullName" name="fullName" required value={fullName} onChange={(e) => setfullName(e,target,value)}  />
+              <input className="form-input" type="text" id="FName" name="FName" required value={FName} onChange={(e) => setFName(e.target.value)}  />
+              <label className="form-label" >
+                Last Name:
+              </label>
+              <input className="form-input" type="text" id="LName" name="LName" required value={LName} onChange={(e) => setLName(e.target.value)} />
               <label className="form-label" >
                 Address:
               </label>
-              <input className="form-input" type="text" id="address" name="address" required value={address} onChange={(e) => setAddress(e,target.value)} />
-              
+              <input className="form-input" type="text" id="address" name="address" required value={address} onChange={(e) => setAddress(e.target.value)} />
               <label className="form-label" >
-                Account:
+                Phone:
               </label>
-              <input className="form-input" type="text" id="Account" name="Account" required value={account} onChange={(e) => setAccount(e.target.value)} />
-              <label className="form-label" >
-                Password:
-              </label>
-              <input className="form-input" type="text" id="Password" name="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input className="form-input" type="password" id="Phone" name="Phone" required value={phone} onChange={(e) => setphone(e.target.value)} />
               
                 {/* ... */}
                 <button className="form-button" type="submit">
                   Sign up
                 </button>
+                <button className="form-login-button" type="button" onClick={toggleSignup} >
+                Back to log in
+              </button>
               </form>
             </div>
           )}

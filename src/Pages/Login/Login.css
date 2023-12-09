@@ -1,14 +1,3 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    
-    align-items: center;
-    margin-top: 10px;
-    justify-content: center;
-    height: 100vh;
-}
 form {
     background-color: #fff;
     padding: 20px;
@@ -39,6 +28,7 @@ form {
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
+    margin-bottom: 10px;
 }
 .form-signup-label{
    
@@ -58,4 +48,17 @@ form {
     border-radius: 5px;
     cursor: pointer;
     width: 25%;
-}v
+}
+
+.form-login-button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 20%;
+    background-color:#3ba0fe;
+    color: #fff;
+    padding: 4px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
