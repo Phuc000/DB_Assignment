@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header, Footer } from "../../Components";
 import "./Login.css";
-
+import axios from "axios";
 const Login = () => {
   // Variables for customer information
 
@@ -17,14 +17,24 @@ const Login = () => {
   const [showmanagerLogin, setShowmanagerLogin] = useState(false);
   const [showprivilgde, setShowprivilgde] = useState(true);
 
-  /*  make cookie when need to get customer id
+
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
+
+  const [formData, setformData]= useState({
+    FName:'',
+    LName:'',
+    address:'',
+    phone:'',
+  })
+  /* make cookie when need to get customer id*/
   const setCookie = (name, value, days) => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + days);
     const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
     document.cookie = cookieValue;
   };
-
+  /*Take cookie
   function getCookie(cookieName) {
     const name = cookieName + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -38,76 +48,68 @@ const Login = () => {
     }
   
     return null;
-  }
-  */
+  }*/
+ 
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setformData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const submitsignupForm = async () => {
-        // Perform database update with the new customer information
-        try {
-          const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ FName, phone }),
-          });
-          if (response.ok)
-          await updateDatabase(FName,LName,address,phone/* other customer details */);
-        } catch (error) {
-          console.error(error);
-        }
+      try {
+          // Making a POST request using axios
+          const response = await axios.post('http://localhost:8080/customer/', formData);
+    
+          // Updating the state with the response data
+          setResponse(response.data);
+          setError(null);
+      } catch (error) {
+          // Handling errors
+          setResponse(null);
+          setError('Error posting data');
+          console.error('Error posting data:', error);
+      }
   };
 
-  const submitloginForm = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
-        method: "GET",
+    const submitloginForm = async () => {
+      axios.get(`http://localhost:8080/customer/${phone}/${FName}`, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ FName, phone }),
-      });
-      response.ok=true;
-      if (response.ok) {
+      })
+      .then((response) => {
+        console.log('Fetched Data:', response.data)
+        return response.data
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data)
+        setCookie('userID', data,1)
         setShowuserLogin(false);
         setShowSignup(false);
-        setFName("Customer fname");// Get customer from database
-        setLName("Customer lname");
-        setphone("Customer phone");
-        setAddress("Customer address");
-        }
-       else {
-        console.error("Failed to submit form");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      })
+      
+    };
 
   const submitmanagerLoginForm = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/${endpoint}`, {
-        method: "GET",
+      axios.get(`http://localhost:8080/manager/${phone}/${FName}`, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ FName, phone }),
-      });
-      response.ok=true;
-      if (response.ok) {
+      })
+      .then((response) => {
+        console.log('Fetched Data:', response.data)
+        return response.data
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data)
+        setCookie('managerID', data,1)
         setShowuserLogin(false);
         setShowSignup(false);
-        setFName("Manager fname");// Get Manager from database
-        setLName("Manager lname");
-        setphone("Manager phone");
-        setAddress("Manager address");
-        }
-       else {
-        console.error("Failed to submit form");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      })
   };
   const toggleSignup = () => {
     setShowSignup(!showSignup);
@@ -120,6 +122,8 @@ const Login = () => {
   const toggleUserlogin =() =>{
     setShowuserLogin(!showuserLogin);
     setShowprivilgde(!showprivilgde)
+    setFName("");
+    setphone("");
   }
   const toggleManagerlogin =() =>{
     setShowmanagerLogin(!showmanagerLogin);
@@ -218,7 +222,7 @@ const Login = () => {
                 Log in
               </button>
               <label className="form-sigup-label" >
-                Don't have an account?
+                Dont have an account?
               </label>
               <button className="form-signup-button" type="button" onClick={toggleSignup} >
                 Sign up
@@ -234,19 +238,19 @@ const Login = () => {
               <label className="form-label" >
               First Name:
               </label>
-              <input className="form-input" type="text" id="FName" name="FName" required value={FName} onChange={(e) => setFName(e.target.value)}  />
+              <input className="form-input" type="text" id="FName" name="FName" required value={formData.FName} onChange={handleInputChange}  />
               <label className="form-label" >
                 Last Name:
               </label>
-              <input className="form-input" type="text" id="LName" name="LName" required value={LName} onChange={(e) => setLName(e.target.value)} />
+              <input className="form-input" type="text" id="LName" name="LName" required value={formData.LName} onChange={handleInputChange} />
               <label className="form-label" >
                 Address:
               </label>
-              <input className="form-input" type="text" id="address" name="address" required value={address} onChange={(e) => setAddress(e.target.value)} />
+              <input className="form-input" type="text" id="address" name="address" required value={formData.address} onChange={handleInputChange} />
               <label className="form-label" >
                 Phone:
               </label>
-              <input className="form-input" type="password" id="Phone" name="Phone" required value={phone} onChange={(e) => setphone(e.target.value)} />
+              <input className="form-input" type="password" id="phone" name="phone" required value={formData.phone} onChange={handleInputChange} />
               
                 {/* ... */}
                 <button className="form-button" type="submit">
