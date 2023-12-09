@@ -16,7 +16,8 @@ const Login = () => {
   const [showuserLogin, setShowuserLogin] = useState(false);
   const [showmanagerLogin, setShowmanagerLogin] = useState(false);
   const [showprivilgde, setShowprivilgde] = useState(true);
-
+  const [showmanager, setShowmanager] = useState(false);
+  const [showuser, setShowuser] = useState(false);
 
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -62,7 +63,7 @@ const Login = () => {
   const submitsignupForm = async () => {
       try {
           // Making a POST request using axios
-          const response = await axios.post('http://localhost:8080/customer/', formData);
+          const response = await axios.post('http://localhost:8080/customers/', formData);
     
           // Updating the state with the response data
           setResponse(response.data);
@@ -76,7 +77,7 @@ const Login = () => {
   };
 
     const submitloginForm = async () => {
-      axios.get(`http://localhost:8080/customer/${phone}/${FName}`, {
+      axios.get(`http://localhost:8080/customers/${phone}/${FName}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -90,6 +91,7 @@ const Login = () => {
         setCookie('userID', data,1)
         setShowuserLogin(false);
         setShowSignup(false);
+        setShowuser(true);
       })
       
     };
@@ -109,6 +111,7 @@ const Login = () => {
         setCookie('managerID', data,1)
         setShowuserLogin(false);
         setShowSignup(false);
+        setShowmanager(true);
       })
   };
   const toggleSignup = () => {
@@ -124,6 +127,14 @@ const Login = () => {
     setShowprivilgde(!showprivilgde)
     setFName("");
     setphone("");
+  }
+  const togglemanager =() =>{
+    setShowmanagerLogin(!showmanagerLogin)
+    setShowmanager(!showmanager)
+  }
+  const toggleuser =() =>{
+    setShowuser(!showuser)
+    setShowuserLogin(!showuserLogin)
   }
   const toggleManagerlogin =() =>{
     setShowmanagerLogin(!showmanagerLogin);
@@ -148,7 +159,7 @@ const Login = () => {
           
           {showmanagerLogin && (
             <div className="managerform">
-              <form id="managerFormPopup" onSubmit={submitmanagerLoginForm}>
+              <form id="managerFormPopup" onSubmit={togglemanager}>
                 {/* Manager login form inputs */}
               <label className="form-label" >
               First Name:
@@ -175,16 +186,12 @@ const Login = () => {
                 //test using input of Tel for cookie valu
                 onChange={(e) => setphone(e.target.value)}
               />
-              <button className="form-button" type="button" onClick={submitmanagerLoginForm} >
+              <button className="form-button" type="button" onClick={togglemanager} >
                 Log in
               </button>
               </form>
             </div>
           )}
-
-
-
-
 
       <div className="login-content" >
         <section className="form">
@@ -218,7 +225,7 @@ const Login = () => {
                 onChange={(e) => setphone(e.target.value)}
               />
               {/* ... */}
-              <button className="form-button" type="button" onClick={submitloginForm} >
+              <button className="form-button" type="button" onClick={toggleuser} >
                 Log in
               </button>
               <label className="form-sigup-label" >
@@ -263,11 +270,20 @@ const Login = () => {
             </div>
           )}
         </section>
-        {!showSignup && !showmanagerLogin && !showuserLogin && !showprivilgde && (
-          <form >
-            <div className="form-label">Greetings {FName}</div>
+        {showuser &&(
+          <form>
+          <div>Hello user {FName}</div>
+          <div>I know your tel {phone}</div>
           </form>
         )}
+        {showmanager&&(
+          <form >
+          <div>Hello manager {FName}</div>
+          <div>To do</div>
+          </form>
+        )}
+
+
       </div>
       <Footer />
     </div>
