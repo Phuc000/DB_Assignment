@@ -1,7 +1,7 @@
 package entity
 
 type Customer struct {
-	CustomerID int    `json:"CustomerID" gorm:"column:customerID;primaryKey"`
+	CustomerID int    `json:"CustomerID" gorm:"column:CustomerID;primaryKey"`
 	CAddress   string `json:"CAddress" gorm:"column:CAddress"`
 	CFName     string `json:"CFName" gorm:"column:CFName"`
 	CLName     string `json:"CLName" gorm:"column:CLName"`
@@ -9,7 +9,7 @@ type Customer struct {
 }
 
 type CustomerCreation struct {
-	CustomerID int    `json:"CustomerID" gorm:"column:customerID;primaryKey"`
+	CustomerID int    `json:"CustomerID" gorm:"column:CustomerID;primaryKey"`
 	CAddress   string `json:"CAddress" gorm:"column:CAddress"`
 	CFName     string `json:"CFName" gorm:"column:CFName"`
 	CLName     string `json:"CLName" gorm:"column:CLName"`
@@ -19,7 +19,7 @@ type CustomerCreation struct {
 func (CustomerCreation) TableName() string { return "customer" }
 
 type CustomerUpdate struct {
-	CustomerID int    `json:"CustomerID" gorm:"column:customerID;primaryKey"`
+	CustomerID int    `json:"CustomerID" gorm:"column:CustomerID;primaryKey"`
 	CAddress   string `json:"CAddress" gorm:"column:CAddress"`
 	CFName     string `json:"CFName" gorm:"column:CFName"`
 	CLName     string `json:"CLName" gorm:"column:CLName"`
@@ -31,4 +31,10 @@ func (CustomerUpdate) TableName() string { return "customer" }
 type StoreManager struct {
 	EmployeeID int `json:"EmployeeID" gorm:"column:EmployeeID"`
 	StoreID    int `json:"StoreID" gorm:"column:StoreID"`
+}
+
+type CustomerPromo struct {
+	CustomerID int     `json:"CustomerID" gorm:"column:CustomerID;primaryKey"`
+	Rank       string  `json:"customerRank" gorm:"column:customerRank"`
+	Discount   float64 `json:"customerDiscount" gorm:"column:customerDiscount"`
 }
