@@ -7,6 +7,7 @@ import "./Home.css";
 const Home = () => {
   const [currentAd, setCurrentAd] = useState(1);
   const [stores, setStores] = useState([]);
+  const [promoProducts, setPromoProducts] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,18 +45,41 @@ const Home = () => {
         .catch((error) => console.error(`Error fetching store data:`, error));
     }, []);
 
+    useEffect(() => {
+      axios.get("http://localhost:8080/products/promotion/", {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          return response.data;
+        })
+        .then((data) => {
+          console.log('Fetched Data:', data);
+          const uniqueProducts = data.reduce((unique, product) => {
+            if (!unique.find((p) => p.ProductID === product.ProductID)) {
+              return [...unique, product];
+            }
+            return unique;
+          }, []);
+          setPromoProducts(uniqueProducts);
+        })
+        .catch((error) => console.error(`Error fetching store data:`, error));
+    }, []);
+
   return (
     <div className="home">
       <Header/>
       <div className="content-section">
 
-        <section class="hero">
-            <div class="hero__content">
-                <img src="/Images/logo.png" alt="Shop house logo" class="hero__logo" />
-                <p class="hero__text">
+        <section className="hero">
+            <div className="hero__content">
+                <img src="/Images/logo.png" alt="Shop house logo" className="hero__logo" />
+                <p className="hero__text">
                     Over 30 years of experience giving our customers the products at the best price.
                 </p>
-                <a href="#catContainer"><button class="btn btn--black btn--hero">Take a look of our categories</button></a>
+                <a href="#catContainer"><button className="btn btn--black btn--hero">Take a look of our categories</button></a>
             </div>
         </section>
         <br/>
@@ -86,17 +110,35 @@ const Home = () => {
         
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
-        {/* Display stores horizontally */}
-        <div className="stores-container">
-          {stores.map((store) => (
-            <Link to={`/store/${store.StoreID}`} key={store.StoreID} className="store-link">
-              <div className="store-card">
-                <h3>{store.Name}</h3>
-                <p>{store.Location}</p>
-                <p>Contact: {store.ContactInfo}</p>
-              </div>
-            </Link>
+        <div className="promo-products">
+        <h2 className="promo-products-title">Featured Promotion Products</h2>
+        <div className="promo-products-container">
+          {promoProducts.map((product) => (
+            <div key={product.ProductID} className="promo-product">
+              <Link to={`/buy-product/${product.ProductID}`} className="promo-product-link">
+                <h3 className="promo-product-name">{product.PName}</h3>
+                <p className="promo-product-description">{product.Description}</p>
+                <p className="promo-product-price">${product.Price.toFixed(2)}</p>
+              </Link>
+            </div>
           ))}
+        </div>
+      </div>
+        
+        {/* Display stores horizontally */}
+        <div className='stores'>
+          <h2 className="store--cat">OUR STORES</h2>
+          <div className="stores-container">
+            {stores.map((store) => (
+              <Link to={`/store/${store.StoreID}`} key={store.StoreID} className="store-link">
+                <div className="store-card">
+                  <h3>{store.Name}</h3>
+                  <p>{store.Location}</p>
+                  <p>Contact: {store.ContactInfo}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="catContainer container" id="catContainer">
