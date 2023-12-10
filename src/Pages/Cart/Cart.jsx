@@ -1,5 +1,5 @@
 // Cart.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Header, Footer } from '../../Components';
 import { useCart } from '../../Context/CartContext';
@@ -8,8 +8,8 @@ import './Cart.css';
 
 const Cart = () => {
   const { state, dispatch } = useCart();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
-  const [ lastBillId, setLastBillId ] = useState(500100);
+  const [selectedPaymentMethod, setSelectedPaymentMethod ] = useState('Credit Card');
+  const lastBillIdRef = useRef(500100);
 
   const handleRemoveItem = (index) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: index });
@@ -38,10 +38,24 @@ const Cart = () => {
       })
       .then((data) => {
         console.log('Fetched Data:', data);
-        setLastBillId(data);
+        lastBillIdRef.current = data;
       })
       .catch((error) => console.error(`Error fetching ${categoryName} data:`, error));
   }, []);
+
+  function getCookie(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+  
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return null;
+  }    
 
   const handleBuyButtonClick = async () => {
     try {
@@ -56,19 +70,33 @@ const Cart = () => {
         return result;
       }, {});
 
+      const newcustomerID = parseInt(getCookie('userID'), 10); // Ensure customerID is an integer
+
       // Send each store's bill to the backend separately
       const storePromises = Object.entries(itemsByStore).map(async ([storeID, items]) => {
+        const newstoreID = parseInt(storeID, 10); // Ensure storeID is an integer
+        const newBillId = lastBillIdRef.current + 1;
+        console.log(getCookie('userID'));
+        console.log(storeID);
+        console.log(purchaseTime.toISOString());
+        console.log(newBillId);
         const response = await axios.post('http://localhost:8080/transaction/', {
-          TransactionID: lastBillId,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          TransactionID: newBillId,
+          CustomerID: newcustomerID,
           // cart: items,
           // total: calculateTotalForStore(items),
           DateAndTime: purchaseTime.toISOString(), // Convert to ISO string for consistency
           PaymentMethod: selectedPaymentMethod,
-          storeID: storeID,
+          StoreID: newstoreID,
           // Add other relevant information
         });
+
+        // Update the ref with the new value
+        lastBillIdRef.current = newBillId;
         
-        setLastBillId(lastBillId+1);
         return response.data;
       });
 
@@ -140,8 +168,8 @@ const Cart = () => {
                 <label>
                   <input
                     type="radio"
-                    value="creditCard"
-                    checked={selectedPaymentMethod === 'creditCard'}
+                    value="Credit Card"
+                    checked={selectedPaymentMethod === 'Credit Card'}
                     onChange={handlePaymentMethodChange}
                   />
                   Credit Card
@@ -151,8 +179,8 @@ const Cart = () => {
                 <label>
                   <input
                     type="radio"
-                    value="debitCard"
-                    checked={selectedPaymentMethod === 'debitCard'}
+                    value="Debit Card"
+                    checked={selectedPaymentMethod === 'Debit Card'}
                     onChange={handlePaymentMethodChange}
                   />
                   Debit Card
@@ -162,8 +190,8 @@ const Cart = () => {
                 <label>
                   <input
                     type="radio"
-                    value="cash"
-                    checked={selectedPaymentMethod === 'cash'}
+                    value="Cash"
+                    checked={selectedPaymentMethod === 'Cash'}
                     onChange={handlePaymentMethodChange}
                   />
                   Cash

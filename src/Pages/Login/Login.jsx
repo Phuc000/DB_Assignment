@@ -58,14 +58,28 @@ const Login = () => {
   }
  
 
-  const signup =() => {
+  const signup = async () => {
     setformData({
       ...formData,
       CFName: CFName,
-      CLName: CFName,
+      CLName: CLName,
       CAddress: CAddress,
       CPhone: CPhone,
     });
+    console.log('Form Data:', formData); // Add this line
+    try {
+      // Making a POST request using axios
+      const response = await axios.post('http://localhost:8080/customers/', formData);
+
+      // Updating the state with the response data
+      setResponse(response.data);
+      setError(null);
+  } catch (error) {
+      // Handling errors
+      setResponse(null);
+      setError('Error posting data');
+      console.error('Error posting data:', error);
+  }
   };
   
   const submitsignupForm = async () => {
@@ -85,7 +99,7 @@ const Login = () => {
   };
 
     const submitloginForm = async () => {
-      axios.get(`http://localhost:8080/customers/login/${CPhone}/${CFName}`, {
+      const status = await axios.get(`http://localhost:8080/customers/login/${CPhone}/${CFName}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -96,11 +110,12 @@ const Login = () => {
       })
       .then((data) => {
         console.log('Fetched Data:', data)
-        setCookie('userID', data,1);       
+        setCookie( 'userID', data.CustomerID , 1);       
         setShowuserLogin(false);
         setShowSignup(false);
         setShowuser(true);
         setcookie(getCookie('userID'))
+        console.log(getCookie('userID'))
       })  
       axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
       headers: {
@@ -122,7 +137,7 @@ const Login = () => {
 
       
   const submitmanagerLoginForm = async () => {
-      axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
+        const status = await axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -133,13 +148,13 @@ const Login = () => {
       })
       .then((data) => {
         console.log('Fetched Data:', data)
-        setCookie('managerID', data,1)
+        setCookie('managerID', data.EmployeeID , 1 )
         setShowuserLogin(false);
         setShowSignup(false);
         setShowmanager(true);
         setcookie(getCookie('managerID'))
       })
-      axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
+      axios.get(`http://localhost:8080/employees/${getCookie('managerID')}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -150,8 +165,8 @@ const Login = () => {
         })
         .then((data) => {
           console.log('Fetched cookie:', data);
-          setCFName(data.CFName);
-          setCLName(data.CLName);
+          setCFName(data.FirstName);
+          setCLName(data.LastName);
           setCAddress(data.CAddress);
         })
         .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
@@ -334,7 +349,7 @@ const Login = () => {
               <input className="form-input" type="password" id="Phone" name="Phone" required value={CPhone} onChange={(e) => setCPhone(e.target.value)} />
               
                 {/* ... */}
-                <button className="form-button" type="submit" onClick={signup}>
+                <button className="form-button" type="button" onClick={signup}>
                   Sign up
                 </button>
                 <button className="form-login-button" type="button" onClick={toggleSignup} >
