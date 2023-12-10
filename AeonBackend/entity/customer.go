@@ -28,11 +28,6 @@ type CustomerUpdate struct {
 
 func (CustomerUpdate) TableName() string { return "customer" }
 
-type StoreManager struct {
-	EmployeeID int `json:"EmployeeID" gorm:"column:EmployeeID"`
-	StoreID    int `json:"StoreID" gorm:"column:StoreID"`
-}
-
 type CustomerPromo struct {
 	CustomerID int     `json:"CustomerID" gorm:"column:CustomerID;primaryKey"`
 	Rank       string  `json:"customerRank" gorm:"column:customerRank"`
