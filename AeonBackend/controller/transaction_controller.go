@@ -108,6 +108,7 @@ func getPromotionFromTransactionID(db *gorm.DB) func(c *gin.Context) {
 		})
 	}
 }
+
 func getLastBillID(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var id int
@@ -138,6 +139,7 @@ func getAllItemsByBillID(db *gorm.DB) func(c *gin.Context) {
 		c.JSON(http.StatusOK, products)
 	}
 }
+
 func createInclude(db *gorm.DB) func(ctx *gin.Context) {
 	return func(c *gin.Context) {
 		var data entity.IncludeCreation
@@ -147,12 +149,14 @@ func createInclude(db *gorm.DB) func(ctx *gin.Context) {
 			})
 			return
 		}
+
 		if err := db.Create(&data).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
 			return
 		}
+
 		c.JSON(http.StatusOK, gin.H{
 			"new_include": data.TransactionID,
 		})
