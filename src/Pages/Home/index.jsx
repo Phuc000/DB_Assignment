@@ -9,6 +9,7 @@ const Home = () => {
   const [stores, setStores] = useState([]);
   const [promoProducts, setPromoProducts] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
+  const [currentTopProductIndex, setCurrentTopProductIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,16 +82,44 @@ const Home = () => {
         })
         .then((data) => {
           console.log('Fetched Data:', data);
-          const uniqueProducts = data.reduce((unique, product) => {
-            if (!unique.find((p) => p.ProductID === product.ProductID)) {
-              return [...unique, product];
-            }
-            return unique;
-          }, []);
-          setTopProducts(uniqueProducts);
-        })
-        .catch((error) => console.error(`Error fetching store data:`, error));
+        // Fetch product information for each product in the top5products/2023 response
+        const productPromises = data.map((product) =>
+          axios.get(`http://localhost:8080/products/${product.ProductID}`, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+        );
+
+        // Wait for all product information requests to complete
+        Promise.all(productPromises)
+          .then((productResponses) => {
+            // Extract product information from each response
+            const productsData = productResponses.map((productResponse) => productResponse.data);
+
+            // Combine the product information with the revenue data
+            const combinedData = data.map((product, index) => ({
+              ...product,
+              ...productsData[index],
+            }));
+
+            console.log(combinedData);
+            // Set the combined data in the state
+            setTopProducts(combinedData);
+          })
+          .catch((error) => console.error('Error fetching product information:', error));
+      })
+      .catch((error) => console.error('Error fetching store data:', error));
     }, []);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        // Change the top product every 2 seconds
+        setCurrentTopProductIndex((prevIndex) => (prevIndex + 1) % topProducts.length);
+      }, 3000);
+  
+      return () => clearInterval(interval);
+    }, [topProducts]);
   
     return (
     <div className="home">
@@ -109,33 +138,15 @@ const Home = () => {
         <br/>
         <section className="bannerblock">
           <div id="banner">
-            <img
-              src={`/Images/bg_desktop.jpg`}
-              alt="Ad 1"
-              style={{ opacity: currentAd === 1 ? 1 : 0 }}
-            />
-            <img
-              src={`/Images/logo.png`}
-              alt="Ad 2"
-              style={{ opacity: currentAd === 2 ? 1 : 0 }}
-            />
-            <img
-              src={`/Images/items/technology/monitor_dell.png`}
-              alt="Ad 3"
-              style={{ opacity: currentAd === 3 ? 1 : 0 }}
-            />
-            {topProducts.map((product) => (
-            <>
-            <div style={{ opacity: currentAd === 4 ? 1 : 0 }}>
-              <p>Top product: {product.ProductID}</p>
-              {/* <ShowProduct product={product} storeId={null} /> */}
-            </div>
-            </>
-          ))}
+          <h2 className="promo-products-title">Our Top Products</h2>
+          {topProducts.map((product, index) => (
+              <div key={index} className='top-item' style={{ opacity: index === currentTopProductIndex ? 1 : 0 }}>
+                {/* Show the current top product */}
+                {index === currentTopProductIndex && <ShowProduct product={product} storeId={null} />}
+              </div>
+            ))}
           </div>
         </section>
-        
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
         <div className="promo-products">
         <h2 className="promo-products-title">Featured Promotion Products</h2>

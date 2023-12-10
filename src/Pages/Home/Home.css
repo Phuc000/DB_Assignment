@@ -382,7 +382,7 @@ html {
     opacity: 1;
   }
   #bannerblock {
-      background: url('../img/bg_mobile.jpg');
+      background: url('/Images/bg_mobile.jpg');
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -392,6 +392,20 @@ html {
       
       box-sizing: border-box; /* Include padding in the total width and height */
       margin-bottom: 40px;
+  }
+
+  .bannerblock {
+    display: flex;
+    justify-content: center;
+    background-color: #f482dbeb;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    border-radius: 10px;
+    padding-bottom: 2vw;
+  }
+
+  .top-item {
+    margin-left: 3vw;
   }
   /**********************/
   /*******Search bar*****/
