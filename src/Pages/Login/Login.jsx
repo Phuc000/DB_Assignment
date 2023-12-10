@@ -298,7 +298,7 @@
                 <form id="managerFormPopup" onSubmit={submitmanagerLoginForm}>
                   {/* Manager login form inputs */}
                 <label className="form-label" >
-                First Name:
+                Full Name:
                 </label>
                 <input
                   className="form-input"
@@ -336,7 +336,7 @@
               <form id="loginForm" onSubmit={submitloginForm}>
                 {/* Existing login form inputs here */}
                 <label className="form-label" >
-                First Name:
+                Full Name:
                 </label>
                 <input
                   className="form-input"
@@ -379,7 +379,7 @@
                 <form id="signupFormPopup" onSubmit={submitsignupForm}>
                   {/* Signup form inputs */}
                 <label className="form-label" >
-                First Name:
+                Full Name:
                 </label>
                 <input className="form-input" type="text" id="CFName" name="CFName" required value={CFName} onChange={(e) => setCFName(e.target.value)}  />
                 <label className="form-label" >
