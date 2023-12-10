@@ -20,6 +20,47 @@ func NewCustomerController(g *gin.Engine, db *gorm.DB) {
 		router.POST("/", createCustomer(db))                           // create customer
 		router.GET("/login/:phone/:fullname", getCustomerForLogin(db)) //get customer by phone and name
 		router.GET("/customer-rank/:customerID", getCustomerRank(db))
+		router.GET("/shipping/:id", getTransactionAndShipper(db))
+	}
+}
+func getTransactionAndShipper(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		var customer entity.Customer
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+		}
+		if err := db.Table("customer").Where("CustomerID = ?", id).First(&customer).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Customer not found"})
+			return
+		}
+		var bills []entity.Bill
+		var takingOrderings []entity.TakingOrdering
+		var shippers []entity.Shipper
+
+		db.Table("bill").Where("CustomerID = ?", customer.CustomerID).Find(&bills)
+		for _, bill := range bills {
+			var takingOrdering entity.TakingOrdering
+			var shipper entity.Shipper
+
+			db.Table("takingordering").Where("TransactionID = ?", bill.TransactionID).First(&takingOrdering)
+			db.Table("shipper").Where("ShipperID = ?", takingOrdering.ShipperID).First(&shipper)
+
+			takingOrderings = append(takingOrderings, takingOrdering)
+			shippers = append(shippers, shipper)
+		}
+		var result []gin.H
+		for i, bill := range bills {
+			result = append(result, gin.H{
+				"TransactionID": bill.TransactionID,
+				"ShipperID":     takingOrderings[i].ShipperID,
+				"ShipperName":   shippers[i].SFName + " " + shippers[i].SLName,
+			})
+		}
+
+		c.JSON(http.StatusOK, gin.H{"data": result})
 	}
 }
 func getCustomerRank(db *gorm.DB) gin.HandlerFunc {
