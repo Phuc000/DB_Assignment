@@ -25,6 +25,24 @@ func NewProductController(g *gin.Engine, db *gorm.DB) {
 		router.GET("/productatstore/:productid/:storeid", getProductAtAStore(db))
 		router.GET("/promotionfromproduct/:id", getPromotionsOfProductID(db))
 		router.PUT("/addtostore/:productid/:storeid/:amount", increaseProductAtStore(db))
+		router.GET("/product/:id", getProductByID(db))
+	}
+}
+func getProductByID(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		productID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		var product entity.Product
+		if err := db.Table("product").Where("ProductID = ?", productID).First(&product).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		c.JSON(http.StatusOK, product)
 	}
 }
 func increaseProductAtStore(db *gorm.DB) func(c *gin.Context) {
@@ -111,30 +129,31 @@ func getTop5RevenueProduct(db *gorm.DB) func(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+
 		var results []entity.TempTop5Product
 		query := fmt.Sprintf(`
-			SELECT
-				PRODUCT.ProductID,
-				SUM((INCLUDE.NumberOfProductInBill * (PRODUCT.Price * (1 - PROMOTION.Discount)))) AS Revenue
-			FROM
-				INCLUDE
-				JOIN BILL ON INCLUDE.TransactionID = BILL.TransactionID
-				JOIN PRODUCT ON INCLUDE.ProductID = PRODUCT.ProductID
-				JOIN PROMOTEBILL ON BILL.TransactionID = PROMOTEBILL.TransactionID
-				JOIN PROMOTION ON PROMOTEBILL.PromotionID = PROMOTION.PromotionID
-			WHERE
-				YEAR(BILL.DateAndTime) = ?
-			GROUP BY
-				PRODUCT.ProductID
-			ORDER BY
-				Revenue DESC
-			LIMIT 5
+		SELECT
+			PRODUCT.ProductID,
+			SUM((INCLUDE.NumberOfProductInBill * (PRODUCT.Price * (1 - PROMOTION.Discount)))) AS Revenue
+		FROM
+			INCLUDE
+			JOIN BILL ON INCLUDE.TransactionID = BILL.TransactionID
+			JOIN PRODUCT ON INCLUDE.ProductID = PRODUCT.ProductID
+			JOIN PROMOTEBILL ON BILL.TransactionID = PROMOTEBILL.TransactionID
+			JOIN PROMOTION ON PROMOTEBILL.PromotionID = PROMOTION.PromotionID
+		WHERE
+			YEAR(BILL.DateAndTime) = ?
+		GROUP BY
+			PRODUCT.ProductID
+		ORDER BY
+			Revenue DESC
+		LIMIT 5
 		`)
-
 		db.Raw(query, year).Scan(&results)
 		c.JSON(http.StatusOK, results)
 	}
 }
+
 func getProductInformationAtStoreByID(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))

@@ -38,7 +38,7 @@ const Cart = () => {
                     <p className="item-name">{item.PName}</p>
                   </Link>
                   <p className="item-quantity">Quantity: {item.Quantity}</p>
-                  <p className="item-storeid">Store: {item.StoreID}</p>
+                  <p className="item-storeid">Store: {item.StoreName}</p>
                   {item.Promotion && item.Promotion.length > 0 ? (
                   <>
                     <p className="promo-product-price">${item.Price.toFixed(2)}</p>

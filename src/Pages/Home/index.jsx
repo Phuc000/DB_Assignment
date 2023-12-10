@@ -8,6 +8,7 @@ const Home = () => {
   const [currentAd, setCurrentAd] = useState(1);
   const [stores, setStores] = useState([]);
   const [promoProducts, setPromoProducts] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,7 +56,7 @@ const Home = () => {
           console.log('Fetched Data:', response.data);
           return response.data;
         })
-        .then(async (data) => {
+        .then((data) => {
           console.log('Fetched Data:', data);
           const uniqueProducts = data.reduce((unique, product) => {
             if (!unique.find((p) => p.ProductID === product.ProductID)) {
@@ -63,43 +64,35 @@ const Home = () => {
             }
             return unique;
           }, []);
-          const promoProductsData = [];
-
-          for (const product of uniqueProducts) {
-            const promotionInfo = await fetchPromotionInfo(product.ProductID);
-            promoProductsData.push({
-              ...product,
-              promotions: promotionInfo,
-              totalDiscount: calculateTotalDiscount(promotionInfo),
-            });
-          }
-
-          setPromoProducts(promoProductsData);
+          setPromoProducts(uniqueProducts);
         })
         .catch((error) => console.error(`Error fetching store data:`, error));
     }, []);
 
-    const fetchPromotionInfo = async (productId) => {
-      try {
-        const response = await axios.get(`http://localhost:8080/products/promotionfromproduct/${productId}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        return response.data;
-      } catch (error) {
-        console.error(`Error fetching promotion info for product ${productId}:`, error);
-        return [];
-      }
-    };
+    useEffect(() => {
+      axios.get("http://localhost:8080/products/top5products/2023", {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          return response.data;
+        })
+        .then((data) => {
+          console.log('Fetched Data:', data);
+          const uniqueProducts = data.reduce((unique, product) => {
+            if (!unique.find((p) => p.ProductID === product.ProductID)) {
+              return [...unique, product];
+            }
+            return unique;
+          }, []);
+          setTopProducts(uniqueProducts);
+        })
+        .catch((error) => console.error(`Error fetching store data:`, error));
+    }, []);
   
-    const calculateTotalDiscount = (promotions) => {
-      const totalDiscount = promotions.reduce((total, promotion) => total + promotion.Discount, 0);
-      // Ensure the total discount does not exceed 0.99
-      return Math.min(totalDiscount, 0.99);
-    };
-
-  return (
+    return (
     <div className="home">
       <Header/>
       <div className="content-section">
@@ -131,11 +124,14 @@ const Home = () => {
               alt="Ad 3"
               style={{ opacity: currentAd === 3 ? 1 : 0 }}
             />
-            <img
-              src={`/Images/items/drinks/cocaCola_pack.png`}
-              alt="Ad 4"
-              style={{ opacity: currentAd === 4 ? 1 : 0 }}
-            />
+            {topProducts.map((product) => (
+            <>
+            <div style={{ opacity: currentAd === 4 ? 1 : 0 }}>
+              <p>Top product: {product.ProductID}</p>
+              {/* <ShowProduct product={product} storeId={null} /> */}
+            </div>
+            </>
+          ))}
           </div>
         </section>
         

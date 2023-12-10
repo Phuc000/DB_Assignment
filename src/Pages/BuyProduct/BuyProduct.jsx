@@ -12,6 +12,7 @@ const BuyProduct = () => {
   const [quantity, setQuantity] = useState(1); // Default quantity is 1
   const [promotions, setPromotions] = useState([]);
   const [totalDiscount, setTotalDiscount] = useState(0);
+  const [ store, setStore ] = useState();
   const { state, dispatch } = useCart();
 
   useEffect(() => {
@@ -68,6 +69,23 @@ const BuyProduct = () => {
     fetchPromotionInfo();
   }, [productId]);
 
+  useEffect(() => {
+    axios.get(`http://localhost:8080/store/${storeId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          return response.data;
+        })
+        .then((data) => {
+          console.log('Fetched Data:', data);
+          setStore(data);
+        })
+        .catch((error) => console.error(`Error fetching store ${storeId} data:`, error));
+    }, [storeId]);
+
   const calculateTotalDiscount = (promotions) => {
     if (!promotions || promotions.length === 0) {
       return 0; // No discounts
@@ -110,6 +128,7 @@ const BuyProduct = () => {
         Quantity: quantity,
         Price: product.Price,
         StoreID: productAtStore.StoreID,
+        StoreName: store.Name,
         Promotion: promotions,
         TotalDiscount: totalDiscount
         // Add other relevant info
@@ -152,9 +171,9 @@ const BuyProduct = () => {
               <div className="provider">
                 {/* Use Link to navigate to the Store page with productId */}
                 <Link to={`/Store/${productAtStore.StoreID}`}>
-                  <p>Store: {productAtStore.StoreID}</p>
+                  {store?.Name && <p>Store: {store.Name}</p>}
+                  <p>Stock: {productAtStore.NumberAtStore}</p>
                 </Link>
-                <p>Stock: {productAtStore.NumberAtStore}</p>
               {/* Add more details as needed */}
               </div>
             </div>
