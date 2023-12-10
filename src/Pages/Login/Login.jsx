@@ -89,6 +89,10 @@
           CLName: CLName,
           CAddress: CAddress,
           CPhone: CPhone,
+          // CustomerID: newID,
+          // CFName: CFName,
+          // CLName: CLName,
+          // CAddress: CAddress,
           // CPhone: CPhone
         });   
       })    
