@@ -19,8 +19,8 @@ const Login = () => {
   const [showSignup, setShowSignup] = useState(false);
   const [showuserLogin, setShowuserLogin] = useState(false);
   const [showmanagerLogin, setShowmanagerLogin] = useState(false);
-  const [showprivilgde, setShowprivilgde] = useState(false);
-  const [showmanager, setShowmanager] = useState(true);
+  const [showprivilgde, setShowprivilgde] = useState(true);
+  const [showmanager, setShowmanager] = useState(false);
   const [showuser, setShowuser] = useState(false);
 
   //Cookie
@@ -102,7 +102,7 @@ const Login = () => {
         setShowuser(true);
         setcookie(getCookie('userID'))
       })  
-      axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
+      axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
       headers: {
           "Content-Type": "application/json",
       },
@@ -119,7 +119,7 @@ const Login = () => {
         })
         .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
       }
-        
+
       
   const submitmanagerLoginForm = async () => {
       axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
@@ -139,7 +139,7 @@ const Login = () => {
         setShowmanager(true);
         setcookie(getCookie('managerID'))
       })
-      axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+      axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
       headers: {
         "Content-Type": "application/json",
       },
