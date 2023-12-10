@@ -73,13 +73,14 @@ const Cart = () => {
       const newcustomerID = parseInt(getCookie('userID'), 10); // Ensure customerID is an integer
 
       // Send each store's bill to the backend separately
-      const storePromises = Object.entries(itemsByStore).map(async ([storeID, items]) => {
+      const storePromises = Object.entries(itemsByStore).map(async ([storeID, items], index) => {
         const newstoreID = parseInt(storeID, 10); // Ensure storeID is an integer
-        const newBillId = lastBillIdRef.current + 1;
+        let newBillId = lastBillIdRef.current + index + 1;
         console.log(getCookie('userID'));
         console.log(storeID);
         console.log(purchaseTime.toISOString());
         console.log(newBillId);
+        // Step 1: Post the bill information
         const response = await axios.post('http://localhost:8080/transaction/', {
           headers: {
             'Content-Type': 'application/json',
@@ -93,11 +94,26 @@ const Cart = () => {
           StoreID: newstoreID,
           // Add other relevant information
         });
-
-        // Update the ref with the new value
-        lastBillIdRef.current = newBillId;
         
+        // Step 2: Post the NumberOfProductinBill for each item in the bill
+      const itemPromises = items.map(async (item) => {
+        const response = await axios.post('http://localhost:8080/transaction/items/', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          TransactionID: newBillId,
+          ProductID: item.ProductID,
+          StoreID: newstoreID,
+          NumberOfProductInBill: item.Quantity, // Assuming quantity is the number of products in the bill
+        });
+
         return response.data;
+      });
+
+      // Wait for all item transactions to complete
+      const itemResponses = await Promise.all(itemPromises);
+
+      return { bill: response.data, items: itemResponses };
       });
 
       // Wait for all store transactions to complete
