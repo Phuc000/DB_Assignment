@@ -18,7 +18,7 @@ const Login = () => {
   const [showprivilgde, setShowprivilgde] = useState(true);
   const [showmanager, setShowmanager] = useState(false);
   const [showuser, setShowuser] = useState(false);
-
+  const [cookie, setcookie] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
@@ -77,7 +77,7 @@ const Login = () => {
   };
 
     const submitloginForm = async () => {
-      axios.get(`http://localhost:8080/customers/${CPhone}/${CFName}`, {
+      axios.get(`http://localhost:8080/customers/login/${CPhone}/${CFName}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -92,12 +92,13 @@ const Login = () => {
         setShowuserLogin(false);
         setShowSignup(false);
         setShowuser(true);
-      })
-      
+        setcookie(getCookie('userID'))
+      })  
     };
 
+
   const submitmanagerLoginForm = async () => {
-      axios.get(`http://localhost:8080/manager/${CPhone}/${CFName}`, {
+      axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -112,9 +113,48 @@ const Login = () => {
         setShowuserLogin(false);
         setShowSignup(false);
         setShowmanager(true);
+        setcookie(getCookie('managerID'))
       })
   };
-  
+  useEffect(() => {
+    // Fetch category-specific data from JSON file based on categoryName
+    axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log('Fetched Data:', response.data);
+        return response.data;
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data);
+        setCFName(data.CFName);
+        setCLName(data.CLName);
+        setCAddress(data.CAddress);
+      })
+      .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+  }, [cookie]);
+  useEffect(() => {
+    // Fetch category-specific data from JSON file based on categoryName
+    axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log('Fetched Data:', response.data);
+        return response.data;
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data);
+        setCFName(data.CFName);
+        setCLName(data.LastName);
+        setCAddress(data.Address);
+      })
+      .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+  }, [cookie]);
+
   const toggleSignup = () => {
     setShowSignup(!showSignup);
     setShowuserLogin(!showuserLogin);
@@ -129,14 +169,14 @@ const Login = () => {
     setCFName("");
     setCPhone("");
   }
-  const togglemanager =() =>{
+  /*const togglemanager =() =>{
     setShowmanagerLogin(!showmanagerLogin)
     setShowmanager(!showmanager)
   }
   const toggleuser =() =>{
     setShowuser(!showuser)
     setShowuserLogin(!showuserLogin)
-  }
+  }*/
   const toggleManagerlogin =() =>{
     setShowmanagerLogin(!showmanagerLogin);
     setShowprivilgde(!showprivilgde)
@@ -160,7 +200,7 @@ const Login = () => {
           
           {showmanagerLogin && (
             <div className="managerform">
-              <form id="managerFormPopup" onSubmit={togglemanager}>
+              <form id="managerFormPopup" onSubmit={submitmanagerLoginForm}>
                 {/* Manager login form inputs */}
               <label className="form-label" >
               First Name:
@@ -187,7 +227,7 @@ const Login = () => {
                 //test using input of Tel for cookie valu
                 onChange={(e) => setCPhone(e.target.value)}
               />
-              <button className="form-button" type="button" onClick={togglemanager} >
+              <button className="form-button" type="button" onClick={submitmanagerLoginForm} >
                 Log in
               </button>
               </form>
@@ -226,7 +266,7 @@ const Login = () => {
                 onChange={(e) => setCPhone(e.target.value)}
               />
               {/* ... */}
-              <button className="form-button" type="button" onClick={toggleuser} >
+              <button className="form-button" type="button" onClick={submitloginForm} >
                 Log in
               </button>
               <label className="form-sigup-label" >
@@ -264,7 +304,7 @@ const Login = () => {
                 <button className="form-button" type="submit">
                   Sign up
                 </button>
-                <button className="form-login-button" type="button" onClick={toggleSignup} >
+                <button className="form-login-button" type="button" onClick={submitsignupForm} >
                 Back to log in
               </button>
               </form>
@@ -274,13 +314,12 @@ const Login = () => {
         {showuser &&(
           <form>
           <div>Hello user {CFName}</div>
-          <div>I know your tel {CPhone}</div>
+          <div>Your number {CPhone}</div>
           </form>
         )}
         {showmanager&&(
           <form >
           <div>Hello manager {CFName}</div>
-          <div>To do</div>
           </form>
         )}
 
