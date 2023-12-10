@@ -10,10 +10,20 @@ const cartReducer = (state, action) => {
         ...state,
         cart: [...state.cart, action.payload],
       };
-      case 'REMOVE_FROM_CART':
+    case 'REMOVE_FROM_CART':
       return {
         ...state,
         cart: state.cart.filter((_, index) => index !== action.payload),
+      };
+    case 'UPDATE_CART_ITEM':
+      const updatedCart = state.cart.map((item) =>
+        item.ProductID === action.payload.ProductID && item.StoreID === action.payload.StoreID
+          ? { ...item, Quantity: action.payload.Quantity }
+          : item
+      );
+      return {
+        ...state,
+        cart: updatedCart,
       };
     // Add more cases for other actions as needed
     default:

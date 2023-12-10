@@ -40,6 +40,7 @@
     display: flex;
     justify-content: space-between; /* Space items evenly along the row */
     align-items: center; /* Center items vertically */
+    position: relative;
   }
   
   .item-details {
@@ -53,9 +54,33 @@
     margin-bottom: 10px;
   }
   
-  .item-quantity, .item-price {
+  .item-quantity {
     font-size: 14px;
     color: #555;
+  }
+
+  .item-storeid {
+    margin-top: 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .item-price {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .cart_product__disscount_num {
+    margin: 0px;
+
+  display: inline-block;
+  background: #fe3bd4;
+  border-radius: 8px;
+  padding: 0.4em 0.6em;
+
+  position: absolute;
+  bottom: 24px;
+  left: 160px;
   }
 
   .remove-item-button {
