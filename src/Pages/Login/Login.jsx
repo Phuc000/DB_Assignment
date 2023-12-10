@@ -1,7 +1,7 @@
   import { useEffect, useState } from "react";
   import { Header, Footer } from "../../Components";
   import "./Login.css";
-  import axios from "axios";
+  import axios, { AxiosError } from "axios";
   const Login = () => {
     // Variables for customer information
 
@@ -11,6 +11,7 @@
     const [CPhone, setCPhone] = useState("");
     const [rank, setrank] = useState("");
     const [transaction, settransaction] = useState([]);
+    const [promotion, setpromotion] = useState([]);
     //Varables for product restock
     const [productID, setproductID] = useState("");
     const [storeID, setstoreID] = useState("");
@@ -161,6 +162,20 @@
               settransaction(data);
             })
             .catch((error) => console.error(`Error fetching ${getCookie('userID')} data:`, error));
+          axios.get('http://localhost:8080/promotion/',{
+            headers: {
+              "Content-Type": "application/json",
+          },
+          })
+            .then((response) => {
+              console.log('Fetched Cookie:', response.data);
+              return response.data;
+            })
+            .then((data) => {
+              console.log('Fetched data:', data);
+              setpromotion(data);
+            })
+            .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
         }
 
         
@@ -393,15 +408,24 @@
             <form>
             <div>Hello user {CFName}</div>
             <div>Your number {CPhone}</div>
-            <div>Your current rank: {rank} {getRankIcon} </div>
+            <div>Your current rank: {rank} {getRankIcon()} </div>
             <div>Your Transactions:</div>
             <ul>
-              {transaction.map((transactionItem) => (
-                <li key={transactionItem.transactionID}>
-                  <div>Transaction ID: {transactionItem.transactionID}</div>
-                  <div>Shipper ID: {transactionItem.ShipperID}</div>
-                  <div>Shipper Name: {transactionItem.ShipperName}</div>
-                  
+              {transaction.map((transaction) => (
+                <li key={transaction.transactionID}>
+                  <div>Transaction ID: {transaction.transactionID}</div>
+                  <div>Shipper ID: {transaction.ShipperID}</div>
+                  <div>Shipper Name: {transaction.ShipperName}</div>
+                </li>
+              ))}
+            </ul>
+            <div>Your Promotions:</div>
+            <ul>
+              {promotion.map((promotion) => (
+                <li key={promotion.promotionID}>
+                  <div>Promotion ID: {promotion.promotionID}</div>
+                  <div>Promotion Name: {promotion.promotionName}</div>
+                  {/* Add other promotion details you want to display */}
                 </li>
               ))}
             </ul>
