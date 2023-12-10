@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import {Header, Footer} from "../../Components";
+import {Header, Footer, ShowProduct } from "../../Components";
 import axios from "axios";
 
 import "./Store.css";
@@ -20,12 +20,46 @@ const Store = () => {
           console.log('Fetched Data:', response.data);
           return response.data;
         })
-        .then((data) => {
+        .then(async (data) => {
           console.log('Fetched Data:', data);
-          setProducts(data);
+          const promoProductsData = [];
+
+          for (const product of data) {
+            const promotionInfo = await fetchPromotionInfo(product.ProductID);
+            promoProductsData.push({
+              ...product,
+              promotions: promotionInfo,
+              totalDiscount: calculateTotalDiscount(promotionInfo),
+            });
+          }
+
+          setProducts(promoProductsData);
         })
         .catch((error) => console.error(`Error fetching store ${storeId} data:`, error));
     }, [storeId]);
+
+    const fetchPromotionInfo = async (productId) => {
+      try {
+        const response = await axios.get(`http://localhost:8080/products/promotionfromproduct/${productId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error(`Error fetching promotion info for product ${productId}:`, error);
+        return [];
+      }
+    };
+  
+    const calculateTotalDiscount = (promotions) => {
+      if (!promotions || promotions.length === 0) {
+        return 0; // No discounts
+      }
+      const totalDiscount = promotions.reduce((total, promotion) => total + promotion.Discount, 0);
+      // Ensure the total discount does not exceed 0.99
+      return Math.min(totalDiscount, 0.99);
+    };
 
   return (
     <div className="store">
@@ -36,28 +70,9 @@ const Store = () => {
         </header>
         <div className="products__container container">
           {products.map((product) => (
-            <Link
-            to={`/buy-product/${product.ProductID}`}
-            key={product.ProductID}
-            className="product-link"
-          >
-            <article className="product-card" key={product.PName}>
-              <div className="product-card__image-container">
-                {/* <img src={product.image} alt={product.name} /> */}
-                {/* {product.discount && <p className="product__disscount">{product.discount}% off</p>} */}
-              </div>
-
-              <div className="product-card__body">
-                <p className="product-card__name">{product.PName}</p>
-                <p className="product-card__price">Price: {product.Price.toFixed(2)} <span>usd</span></p>
-
-                <div className="product-card__buttons">
-                  <button className="btn btn--secondary">Buy</button>
-                  <button className="btn btn--secondary--transparent">Details</button>
-                </div>
-              </div>
-            </article>
-            </Link>
+            <>
+            <ShowProduct product={product} storeId={storeId} />
+            </>
           ))}
         </div>
       </div>

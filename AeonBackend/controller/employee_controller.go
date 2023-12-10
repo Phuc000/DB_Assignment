@@ -18,6 +18,40 @@ func NewEmployeeController(g *gin.Engine, db *gorm.DB) {
 		router.PUT("/:id", updateEmployeeInfoByID(db))
 		router.POST("/", createEmployee(db))
 		router.DELETE("/:id", deleteEmployee(db))
+		router.GET("/info/:name/:phone", getManagerIDbyNameAndPhone(db))
+	}
+}
+func GetEmployeeByFullNameAndPhone(db *gorm.DB, fullName string, phone string) (*entity.Employee, error) {
+	var employee entity.Employee
+	query := db.Table("employee").
+		Select("employee.*").
+		Joins("JOIN ephone ON employee.EmployeeID = ephone.EmployeeID").
+		Where("CONCAT(employee.FirstName, ' ', employee.LastName) = ?", fullName).
+		Where("ephone.EPhone = ?", phone).
+		Where("employee.EmployeeID IN (SELECT EmployeeID FROM store_manager)").
+		First(&employee)
+
+	if query.Error != nil {
+		return nil, query.Error
+	}
+	return &employee, nil
+}
+func getManagerIDbyNameAndPhone(db *gorm.DB) func(ctx *gin.Context) {
+	return func(c *gin.Context) {
+		fullName := c.Param("name")
+		phone := c.Param("phone")
+
+		employee, err := GetEmployeeByFullNameAndPhone(db, fullName, phone)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Internal Server Error"})
+			return
+		}
+
+		if employee != nil {
+			c.JSON(http.StatusOK, employee)
+		} else {
+			c.JSON(404, gin.H{"error": "Employee not found or not a store manager"})
+		}
 	}
 }
 

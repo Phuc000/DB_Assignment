@@ -26,8 +26,25 @@
     margin-bottom: 10px;
   }
   
+  .product-info {
+    position: relative;
+  }
+
   .product-info p {
     margin: 5px 0;
+  }
+
+  .product__disscount_num {
+    margin: 0px;
+
+  display: inline-block;
+  background: #fe3bd4;
+  border-radius: 8px;
+  padding: 0.4em 0.6em;
+
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
   }
   
   .provider {
