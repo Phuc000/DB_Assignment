@@ -39,3 +39,8 @@ type EmployeeUpdate struct {
 	Address    string  `json:"Address" gorm:"column:Address"`
 	StoreID    int     `json:"StoreID" gorm:"column:StoreID"`
 }
+
+type StoreManager struct {
+	EmployeeID int `json:"EmployeeID" gorm:"column:EmployeeID"`
+	StoreID    int `json:"StoreID" gorm:"column:StoreID"`
+}

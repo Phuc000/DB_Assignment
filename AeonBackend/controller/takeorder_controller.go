@@ -15,7 +15,7 @@ func NewTakeOrderController(g *gin.Engine, db *gorm.DB) {
 	{
 		router.Use(CORS())
 		router.POST("/order", createOrdering(db))
-
+		
 	}
 }
 func createOrdering(db *gorm.DB) func(ctx *gin.Context) {
