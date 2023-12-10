@@ -10,23 +10,30 @@ const Login = () => {
   const [CAddress, setCAddress] = useState("");
   const [CPhone, setCPhone] = useState("");
 
-  
+  //Varables for product restock
+  const [productID, setproductID] = useState("");
+  const [storeID, setstoreID] = useState("");
+  const [amount, setamount] = useState("");
+
   // Variable to swap between sign up and sign in
   const [showSignup, setShowSignup] = useState(false);
   const [showuserLogin, setShowuserLogin] = useState(false);
   const [showmanagerLogin, setShowmanagerLogin] = useState(false);
-  const [showprivilgde, setShowprivilgde] = useState(true);
-  const [showmanager, setShowmanager] = useState(false);
+  const [showprivilgde, setShowprivilgde] = useState(false);
+  const [showmanager, setShowmanager] = useState(true);
   const [showuser, setShowuser] = useState(false);
+
+  //Cookie
   const [cookie, setcookie] = useState(false);
+
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
   const [formData, setformData]= useState({
-    FName:'',
-    LName:'',
-    address:'',
-    phone:'',
+    CFName:'',
+    CLName:'',
+    CAddress:'',
+    CPhone:'',
   })
   /* make cookie when need to get customer id*/
   const setCookie = (name, value, days) => {
@@ -47,19 +54,20 @@ const Login = () => {
         return cookie.substring(name.length, cookie.length);
       }
     }
-  
     return null;
   }
  
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const signup =() => {
     setformData({
       ...formData,
-      [name]: value,
+      CFName: CFName,
+      CLName: CFName,
+      CAddress: CAddress,
+      CPhone: CPhone,
     });
   };
-
+  
   const submitsignupForm = async () => {
       try {
           // Making a POST request using axios
@@ -95,8 +103,7 @@ const Login = () => {
         setcookie(getCookie('userID'))
       })  
     };
-
-
+    
   const submitmanagerLoginForm = async () => {
       axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
         headers: {
@@ -124,11 +131,11 @@ const Login = () => {
       },
     })
       .then((response) => {
-        console.log('Fetched Data:', response.data);
+        console.log('Fetched cookie:', response.data);
         return response.data;
       })
       .then((data) => {
-        console.log('Fetched Data:', data);
+        console.log('Fetched cookie:', data);
         setCFName(data.CFName);
         setCLName(data.CLName);
         setCAddress(data.CAddress);
@@ -136,24 +143,37 @@ const Login = () => {
       .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
   }, [cookie]);
   useEffect(() => {
-    // Fetch category-specific data from JSON file based on categoryName
     axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
-        console.log('Fetched Data:', response.data);
+        console.log('Fetched Cookie:', response.data);
         return response.data;
       })
       .then((data) => {
-        console.log('Fetched Data:', data);
+        console.log('Fetched Cookie:', data);
         setCFName(data.CFName);
         setCLName(data.LastName);
         setCAddress(data.Address);
       })
       .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
   }, [cookie]);
+
+  const restock = async () => {
+    axios.put(`http://localhost:8080/products/addtostore/${productID}/${storeID}/${amount}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      console.log('Restock success', response)
+      /*setproductID('');
+      setstoreID('');
+      setamount('');*/
+    })
+  }
 
   const toggleSignup = () => {
     setShowSignup(!showSignup);
@@ -181,6 +201,7 @@ const Login = () => {
     setShowmanagerLogin(!showmanagerLogin);
     setShowprivilgde(!showprivilgde)
   }
+  
   return (
     <div className="login">
       <Header />
@@ -286,25 +307,25 @@ const Login = () => {
               <label className="form-label" >
               First Name:
               </label>
-              <input className="form-input" type="text" id="CFName" name="CFName" required value={formData.FName} onChange={handleInputChange}  />
+              <input className="form-input" type="text" id="CFName" name="CFName" required value={CFName} onChange={(e) => setCFName(e.target.value)}  />
               <label className="form-label" >
                 Last Name:
               </label>
-              <input className="form-input" type="text" id="CLName" name="CLName" required value={formData.LName} onChange={handleInputChange} />
+              <input className="form-input" type="text" id="CLName" name="CLName" required value={CLName} onChange={(e) => setCLName(e.target.value)} />
               <label className="form-label" >
                 Address:
               </label>
-              <input className="form-input" type="text" id="CAddress" name="CAddress" required value={formData.address} onChange={handleInputChange} />
+              <input className="form-input" type="text" id="CAddress" name="CAddress" required value={CAddress} onChange={(e) => setCAddress(e.target.value)} />
               <label className="form-label" >
                 Phone:
               </label>
-              <input className="form-input" type="password" id="Phone" name="Phone" required value={formData.phone} onChange={handleInputChange} />
+              <input className="form-input" type="password" id="Phone" name="Phone" required value={CPhone} onChange={(e) => setCPhone(e.target.value)} />
               
                 {/* ... */}
-                <button className="form-button" type="submit">
+                <button className="form-button" type="submit" onClick={signup}>
                   Sign up
                 </button>
-                <button className="form-login-button" type="button" onClick={submitsignupForm} >
+                <button className="form-login-button" type="button" onClick={toggleSignup} >
                 Back to log in
               </button>
               </form>
@@ -320,6 +341,21 @@ const Login = () => {
         {showmanager&&(
           <form >
           <div>Hello manager {CFName}</div>
+          <label className="form-label" >
+            ProductID:
+          </label>
+          <input className="form-input" type="text" id="productID" name="ProductID" value={productID} required onChange={(e) => setproductID(e.target.value)} />
+          <label className="form-label" >
+            StoreID
+          </label>
+          <input className="form-input" type="text" id="productID" name="ProductID" value={storeID} required onChange={(e) => setstoreID(e.target.value)} />
+          <label className="form-label" >
+            Ammount:
+          </label>
+          <input className="form-input" type="text" id="productID" name="ProductID" value={amount} required onChange={(e) => setamount(e.target.value)} />
+          <button className="form-button" onClick={restock}>
+            Restock
+          </button>
           </form>
         )}
 
@@ -331,3 +367,4 @@ const Login = () => {
 };
 
 export default Login;
+ 
