@@ -30,7 +30,7 @@ const Header = () => {
                   <p className="a__navbar btn btn--primary">HOME</p>
                 </Link>
                 <a href="#" className="a__navbar btn btn--primary"><li className="nav__item">CONTACT US</li></a>
-                <a href="#" className="a__navbar btn btn--primary"><li className="nav__item">OFFERTS</li></a>
+                <a href="#" className="a__navbar btn btn--primary"><li className="nav__item">OFFERS</li></a>
                 <Link to="/Cart" className={getNavItemClass("/Cart")}>
                   <p className="a__navbar btn btn--primary">MY CART</p>
                 </Link>

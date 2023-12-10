@@ -36,6 +36,7 @@
       CLName:'',
       CAddress:'',
       CPhone:'',
+      CustomerID: 0,
     })
     /* make cookie when need to get customer id*/
     const setCookie = (name, value, days) => {
@@ -68,6 +69,29 @@
         CAddress: CAddress,
         CPhone: CPhone,
       });
+      const status = await axios.get(`http://localhost:8080/customers/lastid`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log('Fetched Data:', response.data)
+        return response.data
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data)
+        const newID = data + 1
+        console.log(newID)
+        setformData({
+          ...formData,
+          CustomerID: newID,
+          CFName: CFName,
+          CLName: CLName,
+          CAddress: CAddress,
+          CPhone: CPhone,
+        });   
+      })    
+      
       console.log('Form Data:', formData); // Add this line
       try {
         // Making a POST request using axios
@@ -82,7 +106,7 @@
         setError('Error posting data');
         console.error('Error posting data:', error);
     }
-    axios.get(`http://localhost:8080/customers/customer-rank/${getCookie('userID')}`,{
+    const response = await axios.get(`http://localhost:8080/customers/customer-rank/${getCookie('userID')}`,{
         headers: {
           "Content-Type": "application/json",
         },
@@ -92,14 +116,16 @@
         return response.data
       })
       .then((data) => {
-        console.log('Fetched Data:', data);
-        setrank(data);
+        console.log('Fetched Data:', data.rank);
+        setrank(data.rank);
       })
+      setShowuserLogin(true);
+      setShowSignup(false);
     };
     
     const submitsignupForm = async () => {
         try {
-            // Making a POST request using axios
+                    // Making a POST request using axios
             const response = await axios.post('http://localhost:8080/customers/', formData);
       
             // Updating the state with the response data
@@ -160,8 +186,8 @@
               return response.data;
             })
             .then((data) => {
-              console.log('Fetched Data:', data);
-              settransaction(data);
+              console.log('Fetched Data:', data.data);
+              settransaction(data.data);
             })
             .catch((error) => console.error(`Error fetching ${getCookie('userID')} data:`, error));
           axios.get('http://localhost:8080/promotion/',{
@@ -235,15 +261,15 @@
     const getRankIcon = () => {
       switch (rank) {
         case 'iron':
-          return < img src= "./frame.png" alt="Iron Icon"/>;
+          return < img src= "Images/bronze.png" alt="Iron Icon"/>;
         case 'bronze':
-          return < img src= "./frame.png" alt="Bronze Icon"/>;
+          return < img src= "Images/plat.png" alt="Bronze Icon"/>;
         case 'silver':
-          return < img src= "./logo.png" alt="Silver Icon"/>;
+          return < img src= "Images/plat.png" alt="Silver Icon"/>;
         case 'gold':
-          return < img src= "./user.png" alt="Gold Icon"/>;
+          return < img src= "Images/plat.png" alt="Gold Icon"/>;
           case 'platinum':
-            return < img src= "./frame.png" alt="Platinum Icon"/>;
+            return < img src= "Images/plat.png" alt="Platinum Icon"/>;
         default:
           return null; // You can customize this based on your actual rank values
       }
@@ -283,6 +309,7 @@
             {showprivilgde && (
               <form id="choosing priviledge">
               <section className="form">
+                <p>Login as:</p>
               <button className="form-button" type="button" onClick={toggleManagerlogin} >
               Manager
               </button>
@@ -407,26 +434,36 @@
             )}
           </section>
           {showuser &&(
-            <form>
-            <div>Hello user {CFName}</div>
+            <form className="customer_form">
+            <div>Hello user {CFName} {CLName}</div>
             <div>Your number {CPhone}</div>
-            <div>Your current rank: {rank} {getRankIcon()} </div>
+            {rank !== null ? (
+              <div>
+                Your current rank: {rank} {getRankIcon()}
+              </div>
+            ) : (
+              <p>No rank available</p>
+            )}
             <div>Your Transactions:</div>
             <ul>
-              {transaction.map((transaction) => (
-                <li key={transaction.transactionID}>
-                  <div>Transaction ID: {transaction.transactionID}</div>
-                  <div>Shipper ID: {transaction.ShipperID}</div>
-                  <div>Shipper Name: {transaction.ShipperName}</div>
-                </li>
-              ))}
+              {transaction && transaction.length > 0 ? (
+                transaction.map((transaction) => (
+                  <li key={transaction.transactionID}>
+                    <div>Transaction ID: {transaction.TransactionID}</div>
+                    <div>Shipper ID: {transaction.ShipperID}</div>
+                    <div>Shipper Name: {transaction.ShipperName}</div>
+                  </li>
+                ))
+              ) : (
+                <li>No transactions available</li>
+              )}
             </ul>
             <div>Your Promotions:</div>
-            <ul>
+            <ul className="ul_promo_list">
               {promotion.map((promotion) => (
-                <li key={promotion.promotionID}>
-                  <div>Promotion ID: {promotion.promotionID}</div>
-                  <div>Promotion Name: {promotion.promotionName}</div>
+                <li key={promotion.promotionID} className="promo_list">
+                  <div>Promotion ID: {promotion.PromotionID}</div>
+                  <div>Promotion Name: {promotion.Name}</div>
                   {/* Add other promotion details you want to display */}
                 </li>
               ))}

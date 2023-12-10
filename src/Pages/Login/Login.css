@@ -62,3 +62,10 @@ form {
     border-radius: 5px;
     cursor: pointer;
 }
+.customer_form {
+    margin-left: 30vw;
+    min-width: 35vw;
+}
+.promo_list {
+    min-width: 30vw;
+}

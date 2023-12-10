@@ -107,6 +107,13 @@ const Cart = () => {
           NumberOfProductInBill: item.Quantity, // Assuming quantity is the number of products in the bill
         });
 
+        const response2 = await axios.post('http://localhost:8080/ship/order', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          TransactionID: newBillId,
+        });
+
         return response.data;
       });
 
