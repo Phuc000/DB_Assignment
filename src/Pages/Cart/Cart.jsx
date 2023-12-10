@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header, Footer } from '../../Components';
 import { useCart } from '../../Context/CartContext';
+import axios from 'axios'; // Import axios for making HTTP requests
 import './Cart.css';
 
 const Cart = () => {
   const { state, dispatch } = useCart();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
+  const [ lastBillId, setLastBillId ] = useState(500100);
 
   const handleRemoveItem = (index) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: index });
@@ -23,16 +25,55 @@ const Cart = () => {
     setSelectedPaymentMethod(event.target.value);
   };
 
+  useEffect(() => {
+    // Fetch category-specific data from JSON file based on categoryName
+    axios.get(`http://localhost:8080/transaction/last`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Fetched Data:', response.data);
+        return response.data;
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data);
+        setLastBillId(data);
+      })
+      .catch((error) => console.error(`Error fetching ${categoryName} data:`, error));
+  }, []);
+
   const handleBuyButtonClick = async () => {
     try {
-      // const purchaseTime = new Date(); // Get the current time
-      // You can customize the endpoint and headers based on your backend requirements
-      // const response = await axios.post('http://localhost:8080/transaction/', {
-      //   cart: state.cart,
-      //   total: calculateTotal(),
-      // purchaseTime: purchaseTime.toISOString(), // Convert to ISO string for consistency
-      //   paymentMethod: selectedPaymentMethod,
-      // });
+      const purchaseTime = new Date(); // Get the current time
+      // Split the cart items based on StoreID
+      const itemsByStore = state.cart.reduce((result, item) => {
+        const storeID = item.StoreID;
+        if (!result[storeID]) {
+          result[storeID] = [];
+        }
+        result[storeID].push(item);
+        return result;
+      }, {});
+
+      // Send each store's bill to the backend separately
+      const storePromises = Object.entries(itemsByStore).map(async ([storeID, items]) => {
+        const response = await axios.post('http://localhost:8080/transaction/', {
+          TransactionID: lastBillId,
+          // cart: items,
+          // total: calculateTotalForStore(items),
+          DateAndTime: purchaseTime.toISOString(), // Convert to ISO string for consistency
+          PaymentMethod: selectedPaymentMethod,
+          storeID: storeID,
+          // Add other relevant information
+        });
+        
+        setLastBillId(lastBillId+1);
+        return response.data;
+      });
+
+      // Wait for all store transactions to complete
+      const storeResponses = await Promise.all(storePromises);
 
       // Clear the cart after a successful purchase
       dispatch({ type: 'CLEAR_CART' });
@@ -42,6 +83,13 @@ const Cart = () => {
       console.error('Error while processing the purchase:', error);
       // Handle error scenarios, e.g., show an error message to the user
     }
+  };
+
+  // Helper function to calculate the total for a specific store
+  const calculateTotalForStore = (items) => {
+    return items.reduce((total, item) => {
+      return total + (item.Price * (1 - item.TotalDiscount)) * item.Quantity;
+    }, 0);
   };
 
   return (
