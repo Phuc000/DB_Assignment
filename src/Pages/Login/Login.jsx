@@ -5,10 +5,10 @@ import axios from "axios";
 const Login = () => {
   // Variables for customer information
 
-  const [FName, setFName] = useState("");
-  const [LName, setLName] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setphone] = useState("");
+  const [CFName, setCFName] = useState("");
+  const [CLName, setCLName] = useState("");
+  const [CAddress, setCAddress] = useState("");
+  const [CPhone, setCPhone] = useState("");
 
   
   // Variable to swap between sign up and sign in
@@ -18,7 +18,7 @@ const Login = () => {
   const [showprivilgde, setShowprivilgde] = useState(true);
   const [showmanager, setShowmanager] = useState(false);
   const [showuser, setShowuser] = useState(false);
-
+  const [cookie, setcookie] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
@@ -35,7 +35,7 @@ const Login = () => {
     const cookieValue = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
     document.cookie = cookieValue;
   };
-  /*Take cookie
+  /*Take cookie*/
   function getCookie(cookieName) {
     const name = cookieName + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -49,7 +49,7 @@ const Login = () => {
     }
   
     return null;
-  }*/
+  }
  
 
   const handleInputChange = (e) => {
@@ -77,7 +77,7 @@ const Login = () => {
   };
 
     const submitloginForm = async () => {
-      axios.get(`http://localhost:8080/customers/${phone}/${FName}`, {
+      axios.get(`http://localhost:8080/customers/login/${CPhone}/${CFName}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -88,16 +88,17 @@ const Login = () => {
       })
       .then((data) => {
         console.log('Fetched Data:', data)
-        setCookie('userID', data,1)
+        setCookie('userID', data,1);       
         setShowuserLogin(false);
         setShowSignup(false);
         setShowuser(true);
-      })
-      
+        setcookie(getCookie('userID'))
+      })  
     };
 
+
   const submitmanagerLoginForm = async () => {
-      axios.get(`http://localhost:8080/manager/${phone}/${FName}`, {
+      axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -112,30 +113,70 @@ const Login = () => {
         setShowuserLogin(false);
         setShowSignup(false);
         setShowmanager(true);
+        setcookie(getCookie('managerID'))
       })
   };
+  useEffect(() => {
+    // Fetch category-specific data from JSON file based on categoryName
+    axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log('Fetched Data:', response.data);
+        return response.data;
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data);
+        setCFName(data.CFName);
+        setCLName(data.CLName);
+        setCAddress(data.CAddress);
+      })
+      .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+  }, [cookie]);
+  useEffect(() => {
+    // Fetch category-specific data from JSON file based on categoryName
+    axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log('Fetched Data:', response.data);
+        return response.data;
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data);
+        setCFName(data.CFName);
+        setCLName(data.LastName);
+        setCAddress(data.Address);
+      })
+      .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+  }, [cookie]);
+
   const toggleSignup = () => {
     setShowSignup(!showSignup);
     setShowuserLogin(!showuserLogin);
-    setFName("");
-    setLName("");
-    setphone("");
-    setAddress("")
+    setCFName("");
+    setCLName("");
+    setCPhone("");
+    setCAddress("")
   };
   const toggleUserlogin =() =>{
     setShowuserLogin(!showuserLogin);
     setShowprivilgde(!showprivilgde)
-    setFName("");
-    setphone("");
+    setCFName("");
+    setCPhone("");
   }
-  const togglemanager =() =>{
+  /*const togglemanager =() =>{
     setShowmanagerLogin(!showmanagerLogin)
     setShowmanager(!showmanager)
   }
   const toggleuser =() =>{
     setShowuser(!showuser)
     setShowuserLogin(!showuserLogin)
-  }
+  }*/
   const toggleManagerlogin =() =>{
     setShowmanagerLogin(!showmanagerLogin);
     setShowprivilgde(!showprivilgde)
@@ -159,7 +200,7 @@ const Login = () => {
           
           {showmanagerLogin && (
             <div className="managerform">
-              <form id="managerFormPopup" onSubmit={togglemanager}>
+              <form id="managerFormPopup" onSubmit={submitmanagerLoginForm}>
                 {/* Manager login form inputs */}
               <label className="form-label" >
               First Name:
@@ -167,11 +208,11 @@ const Login = () => {
               <input
                 className="form-input"
                 type="text"
-                id="FName"
-                name="FName"
+                id="CFName"
+                name="CFName"
                 required
-                value={FName}
-                onChange={(e) => setFName(e.target.value)}
+                value={CFName}
+                onChange={(e) => setCFName(e.target.value)}
               />
               <label className="form-label" >
                 Tel:
@@ -180,13 +221,13 @@ const Login = () => {
                 className="form-input"
                 type="password"
                 id="Tel"
-                name="Tel"
+                name="CPhone"
                 required
-                value={phone}
+                value={CPhone}
                 //test using input of Tel for cookie valu
-                onChange={(e) => setphone(e.target.value)}
+                onChange={(e) => setCPhone(e.target.value)}
               />
-              <button className="form-button" type="button" onClick={togglemanager} >
+              <button className="form-button" type="button" onClick={submitmanagerLoginForm} >
                 Log in
               </button>
               </form>
@@ -205,11 +246,11 @@ const Login = () => {
               <input
                 className="form-input"
                 type="text"
-                id="FName"
-                name="FName"
+                id="CFName"
+                name="CFName"
                 required
-                value={FName}
-                onChange={(e) => setFName(e.target.value)}
+                value={CFName}
+                onChange={(e) => setCFName(e.target.value)}
               />
               <label className="form-label" >
                 Tel:
@@ -220,12 +261,12 @@ const Login = () => {
                 id="Tel"
                 name="Tel"
                 required
-                value={phone}
+                value={CPhone}
                 //test using input of Tel for cookie valu
-                onChange={(e) => setphone(e.target.value)}
+                onChange={(e) => setCPhone(e.target.value)}
               />
               {/* ... */}
-              <button className="form-button" type="button" onClick={toggleuser} >
+              <button className="form-button" type="button" onClick={submitloginForm} >
                 Log in
               </button>
               <label className="form-sigup-label" >
@@ -245,25 +286,25 @@ const Login = () => {
               <label className="form-label" >
               First Name:
               </label>
-              <input className="form-input" type="text" id="FName" name="FName" required value={formData.FName} onChange={handleInputChange}  />
+              <input className="form-input" type="text" id="CFName" name="CFName" required value={formData.FName} onChange={handleInputChange}  />
               <label className="form-label" >
                 Last Name:
               </label>
-              <input className="form-input" type="text" id="LName" name="LName" required value={formData.LName} onChange={handleInputChange} />
+              <input className="form-input" type="text" id="CLName" name="CLName" required value={formData.LName} onChange={handleInputChange} />
               <label className="form-label" >
                 Address:
               </label>
-              <input className="form-input" type="text" id="address" name="address" required value={formData.address} onChange={handleInputChange} />
+              <input className="form-input" type="text" id="CAddress" name="CAddress" required value={formData.address} onChange={handleInputChange} />
               <label className="form-label" >
                 Phone:
               </label>
-              <input className="form-input" type="password" id="phone" name="phone" required value={formData.phone} onChange={handleInputChange} />
+              <input className="form-input" type="password" id="Phone" name="Phone" required value={formData.phone} onChange={handleInputChange} />
               
                 {/* ... */}
                 <button className="form-button" type="submit">
                   Sign up
                 </button>
-                <button className="form-login-button" type="button" onClick={toggleSignup} >
+                <button className="form-login-button" type="button" onClick={submitsignupForm} >
                 Back to log in
               </button>
               </form>
@@ -272,14 +313,13 @@ const Login = () => {
         </section>
         {showuser &&(
           <form>
-          <div>Hello user {FName}</div>
-          <div>I know your tel {phone}</div>
+          <div>Hello user {CFName}</div>
+          <div>Your number {CPhone}</div>
           </form>
         )}
         {showmanager&&(
           <form >
-          <div>Hello manager {FName}</div>
-          <div>To do</div>
+          <div>Hello manager {CFName}</div>
           </form>
         )}
 
