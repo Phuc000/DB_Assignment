@@ -111,6 +111,8 @@
             setError('Error posting data');
             console.error('Error posting data:', error);
         }
+        setShowuserLogin(true);
+        setShowSignup(false);
     };
 
       const submitloginForm = async () => {
