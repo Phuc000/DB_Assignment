@@ -19,8 +19,8 @@ const Login = () => {
   const [showSignup, setShowSignup] = useState(false);
   const [showuserLogin, setShowuserLogin] = useState(false);
   const [showmanagerLogin, setShowmanagerLogin] = useState(false);
-  const [showprivilgde, setShowprivilgde] = useState(false);
-  const [showmanager, setShowmanager] = useState(true);
+  const [showprivilgde, setShowprivilgde] = useState(true);
+  const [showmanager, setShowmanager] = useState(false);
   const [showuser, setShowuser] = useState(false);
 
   //Cookie
@@ -102,8 +102,25 @@ const Login = () => {
         setShowuser(true);
         setcookie(getCookie('userID'))
       })  
-    };
-    
+      axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+      headers: {
+          "Content-Type": "application/json",
+      },
+      })
+        .then((response) => {
+          console.log('Fetched Cookie:', response.data);
+          return response.data;
+        })
+        .then((data) => {
+          console.log('Fetched Cookie:', data);
+          setCFName(data.CFName);
+          setCLName(data.LastName);
+          setCAddress(data.Address);
+        })
+        .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+      }
+
+      
   const submitmanagerLoginForm = async () => {
       axios.get(`http://localhost:8080/employees/info/${CFName}/${CPhone}`, {
         headers: {
@@ -122,44 +139,24 @@ const Login = () => {
         setShowmanager(true);
         setcookie(getCookie('managerID'))
       })
-  };
-  useEffect(() => {
-    // Fetch category-specific data from JSON file based on categoryName
-    axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+      axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((response) => {
-        console.log('Fetched cookie:', response.data);
-        return response.data;
       })
-      .then((data) => {
-        console.log('Fetched cookie:', data);
-        setCFName(data.CFName);
-        setCLName(data.CLName);
-        setCAddress(data.CAddress);
-      })
-      .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
-  }, [cookie]);
-  useEffect(() => {
-    axios.get(`http://localhost:8080/employees/info/${getCookie('managerID')}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        console.log('Fetched Cookie:', response.data);
-        return response.data;
-      })
-      .then((data) => {
-        console.log('Fetched Cookie:', data);
-        setCFName(data.CFName);
-        setCLName(data.LastName);
-        setCAddress(data.Address);
-      })
-      .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
-  }, [cookie]);
+        .then((response) => {
+          console.log('Fetched cookie:', response.data);
+          return response.data;
+        })
+        .then((data) => {
+          console.log('Fetched cookie:', data);
+          setCFName(data.CFName);
+          setCLName(data.CLName);
+          setCAddress(data.CAddress);
+        })
+        .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+    };
+  
 
   const restock = async () => {
     axios.put(`http://localhost:8080/products/addtostore/${productID}/${storeID}/${amount}`, {
@@ -172,6 +169,21 @@ const Login = () => {
       /*setproductID('');
       setstoreID('');
       setamount('');*/
+    })
+  }
+  const getrank =() => {
+    axios.get(`http://localhost:8080/customers/customer-rank/${cookie}`,{
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      console.log('Fetched Data:', response.data)
+      return response.data
+    })
+    .then((data) => {
+      console.log('Fetched Data:', data);
+      setrank(data);
     })
   }
 
@@ -201,7 +213,7 @@ const Login = () => {
     setShowmanagerLogin(!showmanagerLogin);
     setShowprivilgde(!showprivilgde)
   }
-  
+
   return (
     <div className="login">
       <Header />
