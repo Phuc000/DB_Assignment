@@ -1,5 +1,5 @@
 // Cart.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header, Footer } from '../../Components';
 import { useCart } from '../../Context/CartContext';
@@ -7,6 +7,7 @@ import './Cart.css';
 
 const Cart = () => {
   const { state, dispatch } = useCart();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('creditCard');
 
   const handleRemoveItem = (index) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: index });
@@ -16,6 +17,31 @@ const Cart = () => {
     return state.cart.reduce((total, item) => {
       return total + (item.Price * (1 - item.TotalDiscount)) * item.Quantity;
     }, 0);
+  };
+
+  const handlePaymentMethodChange = (event) => {
+    setSelectedPaymentMethod(event.target.value);
+  };
+
+  const handleBuyButtonClick = async () => {
+    try {
+      // const purchaseTime = new Date(); // Get the current time
+      // You can customize the endpoint and headers based on your backend requirements
+      // const response = await axios.post('http://localhost:8080/transaction/', {
+      //   cart: state.cart,
+      //   total: calculateTotal(),
+      // purchaseTime: purchaseTime.toISOString(), // Convert to ISO string for consistency
+      //   paymentMethod: selectedPaymentMethod,
+      // });
+
+      // Clear the cart after a successful purchase
+      dispatch({ type: 'CLEAR_CART' });
+
+      // Redirect to a success or confirmation page
+    } catch (error) {
+      console.error('Error while processing the purchase:', error);
+      // Handle error scenarios, e.g., show an error message to the user
+    }
   };
 
   return (
@@ -60,10 +86,49 @@ const Cart = () => {
                 </button>
               </div>
             ))}
+            <div className="payment-method">
+              <h3>Choose Payment Method:</h3>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="creditCard"
+                    checked={selectedPaymentMethod === 'creditCard'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Credit Card
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="debitCard"
+                    checked={selectedPaymentMethod === 'debitCard'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Debit Card
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="cash"
+                    checked={selectedPaymentMethod === 'cash'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Cash
+                </label>
+              </div>
+            </div>
             <div className="cart-summary">
               {/* You can display the total or other summary information here */}
               <p>Total: ${calculateTotal().toFixed(2)}</p>
             </div>
+            <button className="buy-button" onClick={handleBuyButtonClick}>
+              Buy
+            </button>
           </div>
         )}
       </div>

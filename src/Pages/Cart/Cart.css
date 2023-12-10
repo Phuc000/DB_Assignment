@@ -98,5 +98,10 @@
   }
   
   /* Add more styles for cart summary or other components as needed */
-  
+  .buy-button {
+    max-width: 8vw;
+    background-color: #fe3bd4;
+    border-radius: 5px;
+    border-color: #fe3bd4;
+  }
   
