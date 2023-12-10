@@ -44,6 +44,19 @@ func NewTransactionController(g *gin.Engine, db *gorm.DB) {
 		router.GET("/:id", getBillByID(db))
 		router.POST("/items/", createInclude(db))
 		router.GET("/items/:id", getAllItemsByBillID(db))
+		router.GET("/last", getLastBillID(db))
+	}
+}
+func getLastBillID(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		var id int
+		query := fmt.Sprintf(`
+			SELECT MAX(TransactionID) AS MaxTransactionID
+			FROM BILL;
+		`)
+
+		db.Raw(query).Scan(&id)
+		c.JSON(http.StatusOK, id)
 	}
 }
 func getAllItemsByBillID(db *gorm.DB) func(c *gin.Context) {
