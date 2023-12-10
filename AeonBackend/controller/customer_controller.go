@@ -22,16 +22,47 @@ func NewCustomerController(g *gin.Engine, db *gorm.DB) {
 		router.GET("/customer-rank/:customerID", getCustomerRank(db))
 	}
 }
-func getCustomerRank(db *gorm.DB) func(c *gin.Context) {
+func getCustomerRank(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Get customer ID from the URL parameter
 		customerID := c.Param("customerID")
-		var customer entity.CustomerPromo
-		result := db.Table("bill").First(&customer, "CustomerID = ?", customerID)
-		if result.Error != nil {
-			c.JSON(404, gin.H{"error": "Customer not found"})
+
+		// Query products and amounts for the given customerID
+		var includes []entity.Include
+		if err := db.Table("include").Where("TransactionID IN (SELECT TransactionID FROM bill WHERE CustomerID = ?)", customerID).
+			Find(&includes).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, customer)
+
+		// Calculate total money spent
+		var totalMoneySpent float64
+		for _, include := range includes {
+			var product entity.Product
+			if err := db.Table("product").Where("ProductID = ?", include.ProductID).First(&product).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
+			totalMoneySpent += product.Price * float64(include.NumberOfProductInBill) * 20000
+		}
+
+		// Calculate rank based on total money spent
+		var rank string
+		switch {
+		case totalMoneySpent >= 100000000:
+			rank = "platinum"
+		case totalMoneySpent >= 50000000:
+			rank = "gold"
+		case totalMoneySpent >= 25000000:
+			rank = "silver"
+		case totalMoneySpent >= 10000000:
+			rank = "iron"
+		default:
+			rank = "none"
+		}
+
+		// Return the result
+		c.JSON(http.StatusOK, gin.H{"rank": rank})
 	}
 }
 func getCustomerForLogin(db *gorm.DB) func(c *gin.Context) {
