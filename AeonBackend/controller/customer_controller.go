@@ -6,6 +6,8 @@ import (
 
 	"AeonBackend/entity"
 
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -21,6 +23,19 @@ func NewCustomerController(g *gin.Engine, db *gorm.DB) {
 		router.GET("/login/:phone/:fullname", getCustomerForLogin(db)) //get customer by phone and name
 		router.GET("/customer-rank/:customerID", getCustomerRank(db))
 		router.GET("/shipping/:id", getTransactionAndShipper(db))
+		router.GET("/lastid", getLastCustomerID(db))
+	}
+}
+func getLastCustomerID(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		var id int
+		query := fmt.Sprintf(`
+			SELECT MAX(CustomerID) AS MaxCustomerID
+			FROM CUSTOMER;
+		`)
+
+		db.Raw(query).Scan(&id)
+		c.JSON(http.StatusOK, id)
 	}
 }
 func getTransactionAndShipper(db *gorm.DB) func(c *gin.Context) {
