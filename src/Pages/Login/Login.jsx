@@ -59,9 +59,9 @@
       }
       return null;
     }
-  
 
-    const signup = async () => {
+    useEffect(() => {
+      // This effect will be triggered whenever formData is updated
       setformData({
         ...formData,
         CFName: CFName,
@@ -69,30 +69,65 @@
         CAddress: CAddress,
         CPhone: CPhone,
       });
-      const status = await axios.get(`http://localhost:8080/customers/lastid`, {
+    
+      if(formData.CustomerID === 0) {
+      axios.get(`http://localhost:8080/customers/lastid`, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
-        console.log('Fetched Data:', response.data)
-        return response.data
+        .then((response) => response.data)
+        .then((data) => {
+          console.log('Fetched Data:', data)
+          const newID = data + 1;
+          setformData({
+            ...formData,
+            CustomerID: newID,
+            CFName: CFName,
+            CLName: CLName,
+            CAddress: CAddress,
+            CPhone: CPhone,
+          });
+        })
+        .then(() => {
+          // Use useEffect to ensure state update is complete before calling submitsignupForm
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+      }
+    }, [formData]);
+  
+
+    const signup = () => {
+
+      console.log('Form Data:', formData);
+
+      axios.get(`http://localhost:8080/customers/lastid`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .then((data) => {
-        console.log('Fetched Data:', data)
-        const newID = data + 1
-        console.log(newID)
-        setformData({
-          ...formData,
-          CustomerID: newID,
-          CFName: CFName,
-          CLName: CLName,
-          CAddress: CAddress,
-          CPhone: CPhone,
-        });   
-      })    
-      
-      console.log('Form Data:', formData); // Add this line
+        .then((response) => response.data)
+        .then((data) => {
+          console.log('Fetched Data:', data)
+          const newID = data + 1;
+          setformData({
+            ...formData,
+            CustomerID: newID,
+            CFName: CFName,
+            CLName: CLName,
+            CAddress: CAddress,
+            CPhone: CPhone,
+          });
+        })
+        .then(() => {
+          console.log('Form Data:', formData);
+          // Use useEffect to ensure state update is complete before calling submitsignupForm
+          submitsignupForm();
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    };
+    
+    const submitsignupForm = async () => {
       try {
         // Making a POST request using axios
         const response = await axios.post('http://localhost:8080/customers/', formData);
@@ -106,39 +141,8 @@
         setError('Error posting data');
         console.error('Error posting data:', error);
     }
-    const response = await axios.get(`http://localhost:8080/customers/customer-rank/${getCookie('userID')}`,{
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log('Fetched Data:', response.data)
-        return response.data
-      })
-      .then((data) => {
-        console.log('Fetched Data:', data.rank);
-        setrank(data.rank);
-      })
       setShowuserLogin(true);
       setShowSignup(false);
-    };
-    
-    const submitsignupForm = async () => {
-        try {
-                    // Making a POST request using axios
-            const response = await axios.post('http://localhost:8080/customers/', formData);
-      
-            // Updating the state with the response data
-            setResponse(response.data);
-            setError(null);
-        } catch (error) {
-            // Handling errors
-            setResponse(null);
-            setError('Error posting data');
-            console.error('Error posting data:', error);
-        }
-        setShowuserLogin(true);
-        setShowSignup(false);
     };
 
       const submitloginForm = async () => {
@@ -176,6 +180,21 @@
             setCAddress(data.Address);
           })
           .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
+
+      axios.get(`http://localhost:8080/customers/customer-rank/${getCookie('userID')}`,{
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log('Fetched Data:', response.data)
+        return response.data
+      })
+      .then((data) => {
+        console.log('Fetched Data:', data.rank);
+        setrank(data.rank);
+      })
+
           axios.get(`http://localhost:8080/customers/shipping/${getCookie('userID')}`, {
             headers: {
               'Content-Type': 'application/json',
@@ -261,15 +280,15 @@
     const getRankIcon = () => {
       switch (rank) {
         case 'iron':
-          return < img src= "Images/bronze.png" alt="Iron Icon"/>;
+          return < img src= "Images/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
         case 'bronze':
-          return < img src= "Images/plat.png" alt="Bronze Icon"/>;
+          return < img src= "Images/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
         case 'silver':
-          return < img src= "Images/plat.png" alt="Silver Icon"/>;
+          return < img src= "Images/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
         case 'gold':
-          return < img src= "Images/plat.png" alt="Gold Icon"/>;
+          return < img src= "Images/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
           case 'platinum':
-            return < img src= "Images/plat.png" alt="Platinum Icon"/>;
+            return < img src= "Images/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
         default:
           return null; // You can customize this based on your actual rank values
       }
@@ -282,6 +301,10 @@
       setCLName("");
       setCPhone("");
       setCAddress("")
+      setformData({
+        ...formData,
+        CustomerID: 0,
+      });
     };
     const toggleUserlogin =() =>{
       setShowuserLogin(!showuserLogin);
@@ -437,7 +460,7 @@
             <form className="customer_form">
             <div>Hello user {CFName} {CLName}</div>
             <div>Your number {CPhone}</div>
-            {rank !== null ? (
+            {rank !== "" ? (
               <div>
                 Your current rank: {rank} {getRankIcon()}
               </div>
