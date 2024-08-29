@@ -398,6 +398,7 @@ html {
     display: flex;
     justify-content: center;
     background-color: #f482dbeb;
+    height: 300px;
     margin-left: 10vw;
     margin-right: 10vw;
     border-radius: 10px;

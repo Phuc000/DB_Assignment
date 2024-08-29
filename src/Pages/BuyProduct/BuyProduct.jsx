@@ -86,6 +86,20 @@ const BuyProduct = () => {
         .catch((error) => console.error(`Error fetching store ${storeId} data:`, error));
     }, [storeId]);
 
+  function getCookie(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+  
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return null;
+  };    
+
   const calculateTotalDiscount = (promotions) => {
     if (!promotions || promotions.length === 0) {
       return 0; // No discounts
@@ -102,6 +116,10 @@ const BuyProduct = () => {
   };
 
   const handleAddToCart = () => {
+    if (!getCookie('userID')) {
+      console.error("Error: User is not logged in.");
+      return; // Prevent adding to cart if user is not logged in
+    }
     // Check if the product already exists in the cart
     const existingCartItem = state.cart.find(
       (item) => item.ProductID === product.ProductID && item.StoreID === productAtStore.StoreID

@@ -69,6 +69,10 @@
         CAddress: CAddress,
         CPhone: CPhone,
       });
+
+      if (CFName === "" || CLName === "" || CAddress === "" || CPhone === "") {
+        return;
+      }
     
       if(formData.CustomerID === 0) {
       axios.get(`http://localhost:8080/customers/lastid`, {
@@ -94,7 +98,7 @@
         })
         .catch((error) => console.error("Error fetching data:", error));
       }
-    }, [formData]);
+    }, [CFName, CLName, CAddress, CPhone]);
   
 
     const signup = () => {

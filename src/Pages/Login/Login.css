@@ -63,6 +63,8 @@ form {
     cursor: pointer;
 }
 .customer_form {
+    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: 30vw;
     min-width: 35vw;
 }
