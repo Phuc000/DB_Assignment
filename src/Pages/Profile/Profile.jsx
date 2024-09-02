@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header, Footer } from "../../Components";
 import "./Profile.css";
 import axios, { AxiosError } from "axios";
 const Profile = () => {
   // Variables for customer information
+
+  const navigate = useNavigate();
 
   const [CFName, setCFName] = useState("");
   const [CLName, setCLName] = useState("");
@@ -59,6 +62,13 @@ const Profile = () => {
     }
     return null;
   }
+
+//   delete cookie 
+    function deleteCookie(cookieName) {
+        if (getCookie(cookieName)) {
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+    }
 
   useEffect(() => {
     // This effect will be triggered whenever formData is updated
@@ -227,25 +237,29 @@ const Profile = () => {
         .then((data) => {
           console.log('Fetched cookie:', data);
           setCFName(data.FirstName);
-          setCLName(data.LastName);
-          setCAddress(data.CAddress);
+          setCLName(data["LastName "]);
+          setCAddress(data["Address "]);
         })
         .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
     };
   
 
-  const restock = async () => {
+  const restock = async (event) => {
+    event.preventDefault();
+    console.log('Restock:', productID, storeID, amount);
     axios.put(`http://localhost:8080/products/addtostore/${productID}/${storeID}/${amount}`, {
       headers: {
         "Content-Type": "application/json",
       },
     })
     .then((response) => {
-      console.log('Restock success', response)
+      console.log('Restock success', response);
+      return response.data;
       /*setproductID('');
       setstoreID('');
       setamount('');*/
     })
+    .catch((error) => console.error(`Error restocking ${productID} data:`, error));
   }
 
   const getRankIcon = () => {
@@ -295,6 +309,13 @@ const Profile = () => {
     setShowmanagerLogin(!showmanagerLogin);
     setShowprivilgde(!showprivilgde)
   }
+
+    function logout(user) {
+        deleteCookie(user);
+        // go to home page
+        navigate("/");
+    }
+
 
   useState(() => {
     if (getCookie("userID")) {
@@ -348,26 +369,32 @@ const Profile = () => {
               </li>
             ))}
           </ul>
+            <button className="form-button" onClick={() => logout('userID')}>
+                Logout
+            </button>
           </form>
         )}
         {showmanager&&(
           <form >
-          <div>Hello manager {CFName}</div>
+          <div>Hello manager {CFName} {CLName}! </div>
           <label className="form-label" >
             ProductID:
           </label>
           <input className="form-input" type="text" id="productID" name="ProductID" value={productID} required onChange={(e) => setproductID(e.target.value)} />
           <label className="form-label" >
-            StoreID
+            StoreID:
           </label>
           <input className="form-input" type="text" id="productID" name="ProductID" value={storeID} required onChange={(e) => setstoreID(e.target.value)} />
           <label className="form-label" >
-            Ammount:
+            Amount:
           </label>
           <input className="form-input" type="text" id="productID" name="ProductID" value={amount} required onChange={(e) => setamount(e.target.value)} />
           <button className="form-button" onClick={restock}>
             Restock
           </button>
+            <button className="form-button" onClick={() => logout('managerID')}>
+                Logout
+            </button>
           </form>
         )}
         {!showuser && !showmanager &&(
