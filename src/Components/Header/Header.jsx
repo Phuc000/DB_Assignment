@@ -2,7 +2,26 @@ import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
+
+    function getCookie(cookieName) {
+      const name = cookieName + "=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookieArray = decodedCookie.split(';');
+    
+      for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
     const location = useLocation();
+    let showProfile = false;
+    if (getCookie("userID") || getCookie('managerID')) {
+      showProfile = true;
+    }
 
     const getNavItemClass = (pathname) => {
       return location.pathname === pathname ? "navbar-item current-page" : "navbar-item";
@@ -34,9 +53,12 @@ const Header = () => {
                 <Link to="/Cart" className={getNavItemClass("/Cart")}>
                   <p className="a__navbar btn btn--primary">MY CART</p>
                 </Link>
-                <Link to="/Login" className={getNavItemClass("/Login")}>
+                {!showProfile && <Link to="/Login" className={getNavItemClass("/Login")}>
                   <p className="a__navbar btn btn--primary">LOGIN</p>
-                </Link>
+                </Link>}
+                {showProfile && <Link to="/Profile" className={getNavItemClass("/Profile")}>
+                  <p className="a__navbar btn btn--primary">PROFILE</p>
+                </Link>}
             </ul>
             <i className="fas fa-bars wrap-menu" aria-label="Abrir menú"></i>
           </nav>

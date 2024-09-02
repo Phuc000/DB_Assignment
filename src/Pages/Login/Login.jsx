@@ -334,7 +334,7 @@
         <Header />
             {/*Choose privilegde */}
             {showprivilgde && (
-              <form id="choosing priviledge">
+              <form id="choosing priviledge" className="priviledge-form">
               <section className="form">
                 <p>Login as:</p>
               <button className="form-button" type="button" onClick={toggleManagerlogin} >

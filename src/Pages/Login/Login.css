@@ -7,6 +7,11 @@ form {
     margin-left: 45%;
 }
 
+.priviledge-form {
+    margin-top: 12vh;
+    margin-bottom: 15vh;
+}
+
 .form-label {
     display: block;
     margin-top: 8px;
