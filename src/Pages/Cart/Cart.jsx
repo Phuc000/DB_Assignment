@@ -9,6 +9,7 @@ import './Cart.css';
 const Cart = () => {
   const { state, dispatch } = useCart();
   const [selectedPaymentMethod, setSelectedPaymentMethod ] = useState('Credit Card');
+  const [billPromotion, setBillPromotion] = useState({});
   const lastBillIdRef = useRef(500100);
 
   const handleRemoveItem = (index) => {
@@ -149,7 +150,10 @@ const Cart = () => {
       <div className="cart-content">
         <h1 className="cart-title">My Cart</h1>
         {state.cart.length === 0 ? (
-          <p className="empty-cart-message">Your cart is empty.</p>
+          <div className="empty-cart">
+            <img src='/Images/Frame.png' alt='empty cart' className='empty-card-img' />
+            <p className="empty-cart-message">Your cart is empty.</p>
+          </div>
         ) : (
           <div className="cart-items">
             {state.cart.map((item, index) => (
@@ -185,6 +189,10 @@ const Cart = () => {
                 </button>
               </div>
             ))}
+            <div className='promotion-select'>
+              <h3>Apply Promotion:</h3>
+
+            </div>
             <div className="payment-method">
               <h3>Choose Payment Method:</h3>
               <div>

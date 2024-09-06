@@ -14,6 +14,7 @@ const BuyProduct = () => {
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [ store, setStore ] = useState();
   const { state, dispatch } = useCart();
+  const [buttonClass, setButtonClass] = useState('');
 
   useEffect(() => {
     // Fetch product details based on the productId
@@ -116,10 +117,20 @@ const BuyProduct = () => {
   };
 
   const handleAddToCart = () => {
+    // Handle button class changes
     if (!getCookie('userID')) {
       console.error("Error: User is not logged in.");
       return; // Prevent adding to cart if user is not logged in
     }
+
+    setButtonClass('onclic');
+    setTimeout(() => {
+      setButtonClass('validate');
+      setTimeout(() => {
+        setButtonClass('');
+      }, 1250);
+    }, 2250);
+
     // Check if the product already exists in the cart
     const existingCartItem = state.cart.find(
       (item) => item.ProductID === product.ProductID && item.StoreID === productAtStore.StoreID
@@ -138,6 +149,7 @@ const BuyProduct = () => {
       // Update the quantity of the existing item in the cart
       dispatch({ type: 'UPDATE_CART_ITEM', payload: { ...existingCartItem, Quantity: newQuantity } });
       console.log(`Updated quantity of ${product.PName} in the cart: ${newQuantity}`);
+      setQuantity(1); // Reset the quantity to 1 after adding to cart
     } else {
       // If the product does not exist, add it to the cart
       const purchaseInfo = {
@@ -155,6 +167,7 @@ const BuyProduct = () => {
       // Add the new item to the cart
       dispatch({ type: 'ADD_TO_CART', payload: purchaseInfo });
       console.log(`Added ${quantity} ${product.PName} to the cart.`);
+      setQuantity(1); // Reset the quantity to 1 after adding to cart
     }
   };  
 
@@ -208,7 +221,12 @@ const BuyProduct = () => {
               />
             </div>
             {/* Add to Cart Button */}
-            <button className="add-to-cart" onClick={handleAddToCart}>Add to Cart</button>
+            <button
+              id='add-to-cart-button'
+              className={`add-to-cart ${buttonClass}`}
+              onClick={handleAddToCart}
+            >
+            </button>
           </>
         ) : (
           <p>Loading...</p>
