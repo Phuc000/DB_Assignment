@@ -5,6 +5,7 @@ import { Header, Footer } from '../../Components';
 import { useCart } from '../../Context/CartContext';
 import axios from 'axios'; // Import axios for making HTTP requests
 import './Cart.css';
+import './Style.scss'
 
 const Cart = () => {
   const { state, dispatch } = useCart();
@@ -184,8 +185,12 @@ const Cart = () => {
                 <button
                   className="remove-item-button"
                   onClick={() => handleRemoveItem(index)}
+                  class="button" href="#" role="button"
                 >
-                  Remove
+                  <span>remove</span>
+                  <div class="icon">
+                    <i class="fa fa-remove"></i>
+                  </div>
                 </button>
               </div>
             ))}

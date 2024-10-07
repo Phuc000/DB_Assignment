@@ -19,11 +19,11 @@ const Footer = () => {
                         <h3 className="footer-subtitle">OUR SOCIAL MEDIA</h3>
                         <ul className="footer__list social__list">
                             <a href="#" className="social__link">
-                                <li className="footer__item social__item"><i className="fab fa-facebook"></i></li></a>
+                                <li className="footer__item social__item"><i className="fa fa-facebook"></i></li></a>
                             <a href="#" className="social__link">
-                                <li className="footer__item social__item"><i className="fab fa-instagram"></i></li> </a>
+                                <li className="footer__item social__item"><i className="fa fa-instagram"></i></li> </a>
                             <a href="#" className="social__link">
-                                <li className="footer__item social__item"><i className="fab fa-twitter-square"></i></li>
+                                <li className="footer__item social__item"><i className="fa fa-twitter-square"></i></li>
                             </a>
                         </ul>
                     </div>
