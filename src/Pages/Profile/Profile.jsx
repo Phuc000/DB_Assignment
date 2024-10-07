@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header, Footer } from "../../Components";
-import "./Profile.css";
+import { Header, Footer, UserMenu } from "../../Components";
+import "./Profile.scss";
 import axios, { AxiosError } from "axios";
 const Profile = () => {
   // Variables for customer information
@@ -111,53 +111,53 @@ const Profile = () => {
   }, [CFName, CLName, CAddress, CPhone]);
 
 
-  const signup = () => {
+  // const signup = () => {
 
-    console.log('Form Data:', formData);
+  //   console.log('Form Data:', formData);
 
-    axios.get(`http://localhost:8080/customers/lastid`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.data)
-      .then((data) => {
-        console.log('Fetched Data:', data)
-        const newID = data + 1;
-        setformData({
-          ...formData,
-          CustomerID: newID,
-          CFName: CFName,
-          CLName: CLName,
-          CAddress: CAddress,
-          CPhone: CPhone,
-        });
-      })
-      .then(() => {
-        console.log('Form Data:', formData);
-        // Use useEffect to ensure state update is complete before calling submitsignupForm
-        submitsignupForm();
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  };
+  //   axios.get(`http://localhost:8080/customers/lastid`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((response) => response.data)
+  //     .then((data) => {
+  //       console.log('Fetched Data:', data)
+  //       const newID = data + 1;
+  //       setformData({
+  //         ...formData,
+  //         CustomerID: newID,
+  //         CFName: CFName,
+  //         CLName: CLName,
+  //         CAddress: CAddress,
+  //         CPhone: CPhone,
+  //       });
+  //     })
+  //     .then(() => {
+  //       console.log('Form Data:', formData);
+  //       // Use useEffect to ensure state update is complete before calling submitsignupForm
+  //       submitsignupForm();
+  //     })
+  //     .catch((error) => console.error("Error fetching data:", error));
+  // };
   
-  const submitsignupForm = async () => {
-    try {
-      // Making a POST request using axios
-      const response = await axios.post('http://localhost:8080/customers/', formData);
+  // const submitsignupForm = async () => {
+  //   try {
+  //     // Making a POST request using axios
+  //     const response = await axios.post('http://localhost:8080/customers/', formData);
 
-      // Updating the state with the response data
-      setResponse(response.data);
-      setError(null);
-  } catch (error) {
-      // Handling errors
-      setResponse(null);
-      setError('Error posting data');
-      console.error('Error posting data:', error);
-  }
-    setShowuserLogin(true);
-    setShowSignup(false);
-  };
+  //     // Updating the state with the response data
+  //     setResponse(response.data);
+  //     setError(null);
+  // } catch (error) {
+  //     // Handling errors
+  //     setResponse(null);
+  //     setError('Error posting data');
+  //     console.error('Error posting data:', error);
+  // }
+  //   setShowuserLogin(true);
+  //   setShowSignup(false);
+  // };
 
     const submitloginForm = async () => {
 
@@ -265,15 +265,15 @@ const Profile = () => {
   const getRankIcon = () => {
     switch (rank) {
       case 'iron':
-        return < img src= "Images/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
+        return < img src= "Images/user-ranks/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
       case 'bronze':
-        return < img src= "Images/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
+        return < img src= "Images/user-ranks/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
       case 'silver':
-        return < img src= "Images/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
+        return < img src= "Images/user-ranks/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
       case 'gold':
-        return < img src= "Images/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
+        return < img src= "Images/user-ranks/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
         case 'platinum':
-          return < img src= "Images/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
+          return < img src= "Images/user-ranks/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
       default:
         return null; // You can customize this based on your actual rank values
     }
@@ -333,46 +333,50 @@ const Profile = () => {
       <Header />
           
 
-      <div className="login-content" >
+      <div className="profile-content" >
         {showuser &&(
-          <form className="customer_form">
-          <div>Hello user {CFName} {CLName}</div>
-          <div>Your number {CPhone}</div>
-          {rank !== "" ? (
-            <div>
-              Your current rank: {rank} {getRankIcon()}
-            </div>
-          ) : (
-            <p>No rank available</p>
-          )}
-          <div>Your Transactions:</div>
-          <ul>
-            {transaction && transaction.length > 0 ? (
-              transaction.map((transaction) => (
-                <li key={transaction.transactionID}>
-                  <div>Transaction ID: {transaction.TransactionID}</div>
-                  <div>Shipper ID: {transaction.ShipperID}</div>
-                  <div>Shipper Name: {transaction.ShipperName}</div>
-                </li>
-              ))
+          <div className="profile-content-wrapper"> 
+            <UserMenu username={`${CFName} ${CLName}`} />
+            <form className="customer_profile_form">
+            {/* <UserMenu /> */}
+            <div>Hello user {CFName} {CLName}</div>
+            <div>Your number {CPhone}</div>
+            {rank !== "" ? (
+              <div>
+                Your current rank: {rank} {getRankIcon()}
+              </div>
             ) : (
-              <li>No transactions available</li>
+              <p>No rank available</p>
             )}
-          </ul>
-          <div>Your Promotions:</div>
-          <ul className="ul_promo_list">
-            {promotion.map((promotion) => (
-              <li key={promotion.promotionID} className="promo_list">
-                <div>Promotion ID: {promotion.PromotionID}</div>
-                <div>Promotion Name: {promotion.Name}</div>
-                {/* Add other promotion details you want to display */}
-              </li>
-            ))}
-          </ul>
-            <button className="form-button" onClick={() => logout('userID')}>
-                Logout
-            </button>
-          </form>
+            <div>Your Transactions:</div>
+            <ul>
+              {transaction && transaction.length > 0 ? (
+                transaction.map((transaction) => (
+                  <li key={transaction.transactionID}>
+                    <div>Transaction ID: {transaction.TransactionID}</div>
+                    <div>Shipper ID: {transaction.ShipperID}</div>
+                    <div>Shipper Name: {transaction.ShipperName}</div>
+                  </li>
+                ))
+              ) : (
+                <li>No transactions available</li>
+              )}
+            </ul>
+            <div>Your Promotions:</div>
+            <ul className="ul_promo_list">
+              {promotion.map((promotion) => (
+                <li key={promotion.promotionID} className="promo_list">
+                  <div>Promotion ID: {promotion.PromotionID}</div>
+                  <div>Promotion Name: {promotion.Name}</div>
+                  {/* Add other promotion details you want to display */}
+                </li>
+              ))}
+            </ul>
+              <button className="form-button" onClick={() => logout('userID')}>
+                  Logout
+              </button>
+            </form>
+          </div>
         )}
         {showmanager&&(
           <form >
