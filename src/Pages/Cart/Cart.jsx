@@ -1,7 +1,7 @@
 // Cart.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Header, Footer } from '../../Components';
+import { Header, Footer, Title } from '../../Components';
 import { useCart } from '../../Context/CartContext';
 import axios from 'axios'; // Import axios for making HTTP requests
 import './Cart.css';
@@ -149,7 +149,8 @@ const Cart = () => {
     <div className="cart">
       <Header />
       <div className="cart-content">
-        <h1 className="cart-title">My Cart</h1>
+        {/* <h1 className="cart-title">My Cart</h1> */}
+        <Title titleText="My Cart" size={24} />
         {state.cart.length === 0 ? (
           <div className="empty-cart">
             <img src='/Images/Frame.png' alt='empty cart' className='empty-card-img' />
