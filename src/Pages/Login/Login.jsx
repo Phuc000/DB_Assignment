@@ -1,5 +1,5 @@
   import { useEffect, useState } from "react";
-  import { Header, Footer } from "../../Components";
+  import { Header, Footer, SignInForm, SignUpForm } from "../../Components";
   import "./Login.css";
   import axios, { AxiosError } from "axios";
   const Login = () => {
@@ -329,6 +329,17 @@
       setShowprivilgde(!showprivilgde)
     }
 
+  const [type, setType] = useState("signIn");
+  const containerClass =
+    "cred-box-container " + (type === "signUp" ? "right-panel-active" : "");
+
+  const toggleSignState = text => {
+    if (text !== type) {
+      setType(text);
+      return;
+    }
+  };
+
     return (
       <div className="login">
         <Header />
@@ -387,77 +398,38 @@
           <section className="form">
             {/*This is where user login start*/ }
             {showuserLogin && (
-              <form id="loginForm" onSubmit={submitloginForm}>
-                {/* Existing login form inputs here */}
-                <label className="form-label" >
-                Full Name:
-                </label>
-                <input
-                  className="form-input"
-                  type="text"
-                  id="CFName"
-                  name="CFName"
-                  required
-                  value={CFName}
-                  onChange={(e) => setCFName(e.target.value)}
-                />
-                <label className="form-label" >
-                  Tel:
-                </label>
-                <input
-                  className="form-input"
-                  type="password"
-                  id="Tel"
-                  name="Tel"
-                  required
-                  value={CPhone}
-                  //test using input of Tel for cookie valu
-                  onChange={(e) => setCPhone(e.target.value)}
-                />
-                {/* ... */}
-                <button className="form-button" type="button" onClick={submitloginForm} >
-                  Log in
-                </button>
-                <label className="form-sigup-label" >
-                  Dont have an account?
-                </label>
-                <button className="form-signup-button" type="button" onClick={toggleSignup} >
-                  Sign up
-                </button>
-              </form>
-            )}
-
-            {/* Signup form pop-up */}
-            {showSignup && (
-              <div className="signup-popup">
-                <form id="signupFormPopup" onSubmit={submitsignupForm}>
-                  {/* Signup form inputs */}
-                <label className="form-label" >
-                Full Name:
-                </label>
-                <input className="form-input" type="text" id="CFName" name="CFName" required value={CFName} onChange={(e) => setCFName(e.target.value)}  />
-                <label className="form-label" >
-                  Last Name:
-                </label>
-                <input className="form-input" type="text" id="CLName" name="CLName" required value={CLName} onChange={(e) => setCLName(e.target.value)} />
-                <label className="form-label" >
-                  Address:
-                </label>
-                <input className="form-input" type="text" id="CAddress" name="CAddress" required value={CAddress} onChange={(e) => setCAddress(e.target.value)} />
-                <label className="form-label" >
-                  Phone:
-                </label>
-                <input className="form-input" type="password" id="Phone" name="Phone" required value={CPhone} onChange={(e) => setCPhone(e.target.value)} />
-                
-                  {/* ... */}
-                  <button className="form-button" type="button" onClick={signup}>
-                    Sign up
-                  </button>
-                  <button className="form-login-button" type="button" onClick={toggleSignup} >
-                  Back to log in
-                </button>
-                </form>
+              <div className={containerClass} id="container">
+              <SignUpForm toggleSignState={toggleSignState} />
+              <SignInForm />
+              <div className="overlay-container">
+                <div className="overlay">
+                  <div className="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>
+                      To keep connected with us please login with your personal info
+                    </p>
+                    <button
+                      className="ghost-button"
+                      id="signIn"
+                      onClick={() => toggleSignState("signIn")}
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                  <div className="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button
+                      className="ghost-button"
+                      id="signUp"
+                      onClick={() => toggleSignState("signUp")}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </div>
               </div>
+            </div>
             )}
           </section>
           {showuser &&(

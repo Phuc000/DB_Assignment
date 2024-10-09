@@ -5,3 +5,5 @@ export { default as Header } from "./Header/Header";
 export { default as ShowProduct } from "./ShowProduct/ShowProduct";
 export { default as UserMenu } from "./UserMenu/UserMenu";
 export { default as Title } from "./Common/Title/Title";
+export { default as SignUpForm } from "./Common/SignUpForm/SignUpForm";
+export { default as SignInForm } from "./Common/SignInForm/SignInForm";
