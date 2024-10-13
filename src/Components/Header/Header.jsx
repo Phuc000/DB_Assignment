@@ -60,7 +60,7 @@ const Header = () => {
                   <p className="a__navbar btn btn--primary">PROFILE</p>
                 </Link>}
             </ul>
-            <i className="fas fa-bars wrap-menu" aria-label="Abrir menú"></i>
+            <i className="fa fa-bars wrap-menu" aria-label="Abrir menú"></i>
           </nav>
         </div>
     )

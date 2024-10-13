@@ -97,10 +97,10 @@ function SignInForm() {
             <i className="fa fa-facebook-f" />
           </a>
           <a href="#" className="social">
-            <i className="fa fa-google-plus" />
+            <i className="fa fa-google" />
           </a>
           <a href="#" className="social">
-            <i className="fa fa-linkedin" />
+            <i className="fa fa-envelope-o" />
           </a>
         </div>
         <span>or use your account</span>
@@ -120,8 +120,8 @@ function SignInForm() {
           onChange={handleChange}
             required
         />
-        <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <a className="link-L1" href="#">Forgot your password?</a>
+        <button className="button-77">Sign In</button>
       </form>
     </div>
   );

@@ -134,10 +134,10 @@ function SignUpForm( {toggleSignState} ) {
             <i className="fa fa-facebook-f" />
           </a>
           <a href="#" className="social">
-            <i className="fa fa-google-plus" />
+            <i className="fa fa-google" />
           </a>
           <a href="#" className="social">
-            <i className="fa fa-linkedin" />
+            <i className="fa fa-envelope-o" />
           </a>
         </div>
         <span>or use your email for registration</span>
@@ -173,7 +173,7 @@ function SignUpForm( {toggleSignState} ) {
           placeholder="Phone Number"
             required
         />
-        <button>Sign Up</button>
+        <button className="button-77">Sign Up</button>
       </form>
     </div>
   );

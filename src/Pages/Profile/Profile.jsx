@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header, Footer, UserMenu } from "../../Components";
 import "./Profile.scss";
+import MyAccount from "../../Components/Common/UserComponents/MyAccount";
+import MyOrders from "../../Components/Common/UserComponents/MyOrders";
+import Promotions from "../../Components/Common/UserComponents/Promotions";
 import axios, { AxiosError } from "axios";
 const Profile = () => {
   // Variables for customer information
@@ -328,6 +331,13 @@ const Profile = () => {
     }
   }, []);
 
+  const [activeComponent, setActiveComponent] = useState("MyAccount");  // Default active component
+
+  // Function to handle which menu item is clicked
+  const handleMenuClick = (componentName) => {
+    setActiveComponent(componentName);
+  };
+
   return (
     <div className="login">
       <Header />
@@ -336,7 +346,12 @@ const Profile = () => {
       <div className="profile-content" >
         {showuser &&(
           <div className="profile-content-wrapper"> 
-            <UserMenu username={`${CFName} ${CLName}`} />
+            <UserMenu username={`${CFName} ${CLName}`} onMenuClick={handleMenuClick} />
+            <div className="component-container">
+                {activeComponent === "MyOrders" && <MyOrders />}
+                {activeComponent === "Promotions" && <Promotions />}
+                {activeComponent === "MyAccount" && <MyAccount />}
+            </div>
             <form className="customer_profile_form">
             {/* <UserMenu /> */}
             <div>Hello user {CFName} {CLName}</div>
