@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {Header, Footer, ShowProduct } from "../../Components";
+import FeatureAd from '../../Components/Common/Feature_Ad/FeatureAd';
 import axios from "axios";
 import "./Home.css";
 
@@ -137,14 +138,23 @@ const Home = () => {
         </section>
         <br/>
         <section className="bannerblock">
-          <div id="banner">
-          <h2 className="promo-products-title">Our Top Products</h2>
-          {topProducts.map((product, index) => (
-              <div key={index} className='top-item' style={{ opacity: index === currentTopProductIndex ? 1 : 0 }}>
-                {/* Show the current top product */}
-                {index === currentTopProductIndex && <ShowProduct product={product} storeId={null} />}
-              </div>
-            ))}
+          <div className='banner-wrapper'>
+            <h2 className="promo-products-title">Our Top Products</h2>
+            {/* <div className='banner-wrapper'> */}
+            <div className="promo-products-container ">
+            {topProducts.map((product, index) => (
+                <div 
+                  key={index} className='top-item' 
+                  style={{  
+                    // opacity: index === currentTopProductIndex ? 1 : 0,
+                    // width: index === currentTopProductIndex ? '100%' : '0',
+                    display: index === currentTopProductIndex ? 'block' : 'none',
+                   }}>
+                  {/* Show the current top product */}
+                  {index === currentTopProductIndex && <ShowProduct product={product} storeId={null} />}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -195,6 +205,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <FeatureAd />
       <Footer/>
     </div>
   );

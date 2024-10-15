@@ -72,12 +72,26 @@ const ShowProduct = ({ product, storeId }) => {
         className="product-link"
       >
       <article className="product-card" key={product.PName}>
+      {/* <div className='product-img-wrapper'>
+        {product.Image ? (
+          <img src={`${product.Image}`} alt={product.PName} className="product-card__img" />
+        ) : (
+          <img src="/Images/no-image.jpg" alt={product.PName} className="product-card__img" />
+        )}
+      </div> */}
       <div className="product-card__body">
+        <div className='product-img-wrapper'>
+          {product.Image ? (
+            <img src={`${product.Image}`} alt={product.PName} className="product-card__img" />
+          ) : (
+            <img src="/Images/no-image.jpg" alt={product.PName} className="product-card__img" />
+          )}
+        </div>
         <p className="product-card__name">{product.PName}</p>
         {promotions && promotions.length > 0 ? (
             <>
                 <p className="promo-product-price">${product.Price.toFixed(2)}</p>
-                <p className="product__disscount">{totalDiscount.toFixed(2) * 100}% off</p>
+                <p className="product__disscount">-{totalDiscount.toFixed(2) * 100}%</p>
                 <p className="promo-product-discount">${(product.Price * (1 - totalDiscount)).toFixed(2)}</p>
             </>
         ) : (
