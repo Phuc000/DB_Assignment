@@ -16,6 +16,15 @@ const BuyProduct = () => {
   const { state, dispatch } = useCart();
   const [buttonClass, setButtonClass] = useState('');
 
+  const defaultImages = [
+    '/Images/no-image.jpg',
+    '/Images/ad3.png',
+    '/Images/ad1.png',
+    '/Images/ad2.png'
+  ];
+
+  const [selectedImage, setSelectedImage] = useState(defaultImages[0]); 
+
   useEffect(() => {
     // Fetch product details based on the productId
     axios.get(`http://localhost:8080/products/${productId}`, {
@@ -177,56 +186,78 @@ const BuyProduct = () => {
       <div className="buy-product-content">
         {product && productAtStore ? (
           <>
-            
-            <h2 className="product-name">{product.PName} Details</h2>
-            <div className='info'>
-              <div className="product-info">
-                <p>Product ID: {product.ProductID}</p>
-                <p>Product Name: {product.PName}</p>
-                <p>Category: {product.Category}</p>
-                <p>Description: {product.Description}</p>
-                {promotions && promotions.length > 0 ? (
-                  <>
-                    <p className="promo-product-price">${product.Price.toFixed(2)}</p>
-                    <p className="product__disscount_num">{totalDiscount.toFixed(2) * 100}% off</p>
-                    <p className="promo-product-discount">${(product.Price * (1 - totalDiscount)).toFixed(2)}</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="product-card__price">${product.Price.toFixed(2)}</p>
-                  </>
-                )}
-              </div>
-              {/* Add more details as needed */}
-              {/* Additional Information */}
-              <div className="provider">
-                {/* Use Link to navigate to the Store page with productId */}
-                <Link to={`/Store/${productAtStore.StoreID}`}>
-                  {store?.Name && <p>Store: {store.Name}</p>}
-                  <p>Stock: {productAtStore.NumberAtStore}</p>
-                </Link>
-              {/* Add more details as needed */}
+            <div className="product-image-section">
+              {/* Main Product Image */}
+              <img src={selectedImage} alt={product.PName} className="product-image" />
+
+              {/* Thumbnail Images */}
+              <div className="product-thumbnails">
+                {defaultImages.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="thumbnail-image"
+                    onClick={() => setSelectedImage(img)}
+                  />
+                ))}
               </div>
             </div>
-            {/* Quantity Input */}
-            <div className="quantity-input">
-              <label htmlFor="quantity">Enter Quantity:</label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                value={quantity}
-                onChange={handleQuantityChange}
-                min="1"
-              />
+            <div className='product-info-section'>
+              <Link to={`/Category/${product.Category}`}>
+                <p className='product-category'>{product.Category}</p>
+              </Link>
+              <h2 className="product-name">{product.PName}</h2>
+              <div className='info'>
+                <div className="product-info">
+                  <p>Category: {product.Category}</p>
+                  <p className="product-description">{product.Description}</p>
+                  {promotions && promotions.length > 0 ? (
+                    <>
+                      <p className="promo-product-price">${product.Price.toFixed(2)}</p>
+                      <p className="product__disscount_num">{totalDiscount.toFixed(2) * 100}% off</p>
+                      <p className="promo-product-discount">${(product.Price * (1 - totalDiscount)).toFixed(2)}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="product-card__price">${product.Price.toFixed(2)}</p>
+                    </>
+                  )}
+                </div>
+
+                {/* Add more details as needed */}
+                {/* Additional Information */}
+                <div className="provider">
+                  {/* Use Link to navigate to the Store page with productId */}
+                  <Link to={`/Store/${productAtStore.StoreID}`}>
+                    {store?.Name && <p>Store: {store.Name}</p>}
+                    <p>Stock: {productAtStore.NumberAtStore}</p>
+                  </Link>
+                {/* Add more details as needed */}
+                </div>
+              </div>
+              {/* Quantity Input */}
+              <div className=''>
+                <div className="quantity-input">
+                  <label htmlFor="quantity"></label>
+                  <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    min="1"
+                  />
+                </div>
+                {/* Add to Cart Button */}
+                <button
+                  id='add-to-cart-button'
+                  className={`add-to-cart ${buttonClass}`}
+                  onClick={handleAddToCart}
+                >
+                </button>
+              </div>
             </div>
-            {/* Add to Cart Button */}
-            <button
-              id='add-to-cart-button'
-              className={`add-to-cart ${buttonClass}`}
-              onClick={handleAddToCart}
-            >
-            </button>
           </>
         ) : (
           <p>Loading...</p>
