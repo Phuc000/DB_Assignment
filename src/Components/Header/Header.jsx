@@ -48,7 +48,10 @@ const Header = () => {
                 <Link to="/" className={getNavItemClass("/")}>
                   <p className="a__navbar btn btn--primary">HOME</p>
                 </Link>
-                <a href="#" className="a__navbar btn btn--primary"><li className="nav__item">ABOUT US</li></a>
+                {/* <a href="#" className="a__navbar btn btn--primary"><li className="nav__item">ABOUT US</li></a> */}
+                <Link to={"/AboutUs"} className={getNavItemClass("/AboutUs")}>
+                  <p className="a__navbar btn btn--primary">ABOUT US</p>
+                </Link>
                 <a href="#" className="a__navbar btn btn--primary"><li className="nav__item">OFFERS</li></a>
                 <Link to="/Cart" className={getNavItemClass("/Cart")}>
                   <p className="a__navbar btn btn--primary">MY CART</p>

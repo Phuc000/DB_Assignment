@@ -397,7 +397,9 @@ html {
   .bannerblock {
     display: flex;
     justify-content: center;
-    background-color: #f482dbeb;
+    background: url('/Images/promo-banner.jpg');
+    background-size: cover;
+    background-position: 57px -120px;
     height: 500px;
     margin-left: 10vw;
     margin-right: 10vw;

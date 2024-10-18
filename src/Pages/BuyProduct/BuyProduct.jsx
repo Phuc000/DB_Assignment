@@ -18,9 +18,9 @@ const BuyProduct = () => {
 
   const defaultImages = [
     '/Images/no-image.jpg',
-    '/Images/ad3.png',
-    '/Images/ad1.png',
-    '/Images/ad2.png'
+    '/Images/ad/ad3.png',
+    '/Images/ad/ad1.png',
+    '/Images/ad/ad2.png'
   ];
 
   const [selectedImage, setSelectedImage] = useState(defaultImages[0]); 
