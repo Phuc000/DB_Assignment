@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700;900&display=swap');
+
+$aeon_pink: #fe3bd4;
 
 /*Categories product*/
 .product-link {
@@ -96,8 +99,12 @@
 
 .product-card__price {
     font-size: var(--fz_lg);
+    color: #272727;
     text-transform: uppercase;
     margin: 0px 0px 12px 0px; 
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
 }
 
 .product-card__price span {
@@ -112,15 +119,21 @@
 
 /* when has discount */
 .promo-product-price {
-    font-size: 16px;
+    font-size: 18px;
     margin-top: 8px;
     color: #3a3a3a; /* Set a color for the price */
     text-decoration: line-through;
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 5px;
   }
   
   .promo-product-discount {
-    font-size: 16px;
-    color: #e44d26; /* Set a color for the price */
+    margin-top: 0;
+    font-size: 20px;
+    color: #df4923; /* Set a color for the price */
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
   }
   
   .promo_product__disscount {
