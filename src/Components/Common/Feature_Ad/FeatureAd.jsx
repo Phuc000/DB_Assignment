@@ -36,7 +36,7 @@ const FeatureAd = () => {
         <div key={index} className="feature-card">
           <div className="feature-icon">
             {/* Replace the icon with an image */}
-            <img src={`./Images/${feature.icon}`} alt={feature.title} />
+            <img src={`/Images/${feature.icon}`} alt={feature.title} />
           </div>
           <div className="feature-info">
             <h4 className="feature-title">{feature.title}</h4>

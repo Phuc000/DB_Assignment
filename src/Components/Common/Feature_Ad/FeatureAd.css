@@ -23,8 +23,8 @@
 
   
   .feature-icon img {
-    max-width: 70px; /* Adjust image size */
-    max-height: 70px;
+    max-width: 60px; /* Adjust image size */
+    max-height: 60px;
     margin-right: 10px;
     transition: transform 0.3s ease; /* Add transition for smooth hover effect */
   }
@@ -36,14 +36,14 @@
   }
   
   .feature-title {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #333;
     margin: 12px 0;
   }
   
   .feature-description {
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: #888;
   }
 

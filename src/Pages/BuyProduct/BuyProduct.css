@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700;900&display=swap');
+
+.aeon_pink {
+  color: #fe3bd4;
+}
+
 .buy-product {
     margin: 0;
     padding: 0;
@@ -28,6 +34,7 @@
     width: 100%;
     height: auto;
     border-radius: 10px;
+    border: 1px solid #e0e0e0;
   }
   
   .product-thumbnails {
@@ -37,8 +44,8 @@
   }
   
   .thumbnail-image {
-    max-width: 100px;
-    max-height: 100px;
+    max-width: 90px;
+    max-height: 90px;
     object-fit: cover;
     cursor: pointer;
     border: 1px solid #ddd;
@@ -59,7 +66,7 @@
   }
 
   .product-name {
-    color: #333;
+    color: rgb(35, 54, 67);
     font-size: 2rem;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -88,8 +95,34 @@
     margin-bottom: 20px;
   }
 
+  .product-card-price {
+    padding-top: 10px;
+    font-size: 2rem;
+    color: #fe3bd4;
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .promo-product-price_2 {
+    padding-top: 10px;
+    font-size: 16px;
+    margin-top: 8px;
+    color: #626262; /* Set a color for the price */
+    text-decoration: line-through;
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
+  }
+  
+  .promo-product-discount_2 {
+    font-size: 2rem;
+    color: #fe3bd4;
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
+  }
+
   .product__disscount_num {
     margin: 0px;
+    color: white;
 
   display: inline-block;
   background: #fe3bd4;
@@ -97,8 +130,15 @@
   padding: 0.4em 0.6em;
 
   position: absolute;
-  bottom: 8px;
+  bottom: 35%;
   right: 8px;
+  }
+  .product-at-store {
+    display: flex;
+  }
+  .product-at-store p {
+    margin-top: 20px;
+    margin-right: 2px;
   }
   
   .provider {

@@ -151,7 +151,7 @@ const Home = () => {
                     display: index === currentTopProductIndex ? 'block' : 'none',
                    }}>
                   {/* Show the current top product */}
-                  {index === currentTopProductIndex && <ShowProduct product={product} storeId={null} />}
+                  <ShowProduct product={product} storeId={null} />
                 </div>
               ))}
             </div>

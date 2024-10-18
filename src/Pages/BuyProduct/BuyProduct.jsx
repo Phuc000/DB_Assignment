@@ -210,31 +210,39 @@ const BuyProduct = () => {
               <h2 className="product-name">{product.PName}</h2>
               <div className='info'>
                 <div className="product-info">
-                  <p>Category: {product.Category}</p>
+                  <div className="">
+                    {/* Use Link to navigate to the Store page with productId */}
+                    <Link className='product-category' to={`/Store/${productAtStore.StoreID}`}>
+                      {store?.Name && <p>{store.Name}</p>}
+                    </Link>
+                  {/* Add more details as needed */}
+                  </div>
+                  {/* <p>Category: {product.Category}</p> */}
                   <p className="product-description">{product.Description}</p>
                   {promotions && promotions.length > 0 ? (
                     <>
-                      <p className="promo-product-price">${product.Price.toFixed(2)}</p>
+                      <p className="promo-product-price_2">${product.Price.toFixed(2)}</p>
                       <p className="product__disscount_num">{totalDiscount.toFixed(2) * 100}% off</p>
-                      <p className="promo-product-discount">${(product.Price * (1 - totalDiscount)).toFixed(2)}</p>
+                      <p className="promo-product-discount_2">${(product.Price * (1 - totalDiscount)).toFixed(2)}</p>
                     </>
                   ) : (
                     <>
-                      <p className="product-card__price">${product.Price.toFixed(2)}</p>
+                      <p className="product-card-price">${product.Price.toFixed(2)}</p>
                     </>
                   )}
+                  <div className='product-at-store'>
+                    <p>Stock: </p>
+                    <p className='aeon_pink'> {productAtStore.NumberAtStore} Items In Stock</p>
+                  </div>
                 </div>
 
                 {/* Add more details as needed */}
                 {/* Additional Information */}
-                <div className="provider">
-                  {/* Use Link to navigate to the Store page with productId */}
+                {/* <div className="provider">
                   <Link to={`/Store/${productAtStore.StoreID}`}>
                     {store?.Name && <p>Store: {store.Name}</p>}
-                    <p>Stock: {productAtStore.NumberAtStore}</p>
                   </Link>
-                {/* Add more details as needed */}
-                </div>
+                </div> */}
               </div>
               {/* Quantity Input */}
               <div className=''>

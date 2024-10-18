@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {Header, Footer, ShowProduct } from "../../Components";
+import FeatureAd from '../../Components/Common/Feature_Ad/FeatureAd';
 import axios from "axios";
 
 import "./Store.css";
@@ -58,6 +59,7 @@ const Store = () => {
           ))}
         </div>
       </div>
+      <FeatureAd />
     <Footer/>
     </div>
   );
