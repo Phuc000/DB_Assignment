@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Header, Footer } from "../../Components";
 import { useCart } from '../../Context/CartContext';
 import axios from "axios";
-import "./BuyProduct.css";
+import "./BuyProduct.scss";
 
 const BuyProduct = () => {
   const { productId, storeId } = useParams();
