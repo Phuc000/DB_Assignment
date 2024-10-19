@@ -4,18 +4,13 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, Title, CartSummary } from '../../Components';
 import { useCart } from '../../Context/CartContext';
 import axios from 'axios'; // Import axios for making HTTP requests
-import './Cart.css';
-import './Style.scss'
+import './CheckOut.css';
 
 const Cart = () => {
   const { state, dispatch } = useCart();
   const [selectedPaymentMethod, setSelectedPaymentMethod ] = useState('Credit Card');
   const [billPromotion, setBillPromotion] = useState({});
   const lastBillIdRef = useRef(500100);
-
-  const handleRemoveItem = (index) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: index });
-  };
 
   const calculateTotal = () => {
     return state.cart.reduce((total, item) => {
@@ -155,7 +150,7 @@ const Cart = () => {
       <Header />
       <div className="cart-content">
         {/* <h1 className="cart-title">My Cart</h1> */}
-        <Title titleText="My Cart" size={24} />
+        <Title titleText="Checkout" size={24} />
         {state.cart.length === 0 ? (
           <div className="empty-cart">
             <img src='/Images/Frame.png' alt='empty cart' className='empty-card-img' />
@@ -166,53 +161,82 @@ const Cart = () => {
             <p className="cart-item-count">You have 
               <span className="item-count-number"> {state.cart.length} </span>
             item(s) in your cart.</p>
-            <div className="cart-items">
-              {state.cart.map((item, index) => (
-                <div key={index} className="cart-item">
-                  <div className="item-details">
-                    <Link 
-                      to={`/buy-product/${item.ProductID}/${item.StoreID}`} 
-                      key={item.ProductID}
-                      className="product-link"
-                    >
-                      <p className="item-name">{item.PName}</p>
-                    </Link>
-                    <p className="item-quantity">Quantity: {item.Quantity}</p>
-                    <p className="item-storeid">Store: {item.StoreName}</p>
-                    {item.Promotion && item.Promotion.length > 0 ? (
-                    <>
-                      <p className="promo-product-price">${item.Price.toFixed(2)}</p>
-                      <p className="cart_product__disscount_num">{item.TotalDiscount.toFixed(2) * 100}% off</p>
-                      <p className="promo-product-discount">Price: ${(item.Price * (1 - item.TotalDiscount)).toFixed(2)}</p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="item-price">Price: ${item.Price.toFixed(2)}</p>
-                    </>
-                  )}
-                    {/* Add other details as needed */}
-                  </div>
-                  <button
-                    className="remove-item-button"
-                    onClick={() => handleRemoveItem(index)}
-                    class="button" href="#" role="button"
+          <div className="cart-items">
+            {state.cart.map((item, index) => (
+              <div key={index} className="cart-item">
+                <div className="item-details">
+                  <Link 
+                    to={`/buy-product/${item.ProductID}/${item.StoreID}`} 
+                    key={item.ProductID}
+                    className="product-link"
                   >
-                    <span>remove</span>
-                    <div class="icon">
-                      <i class="fa fa-remove"></i>
-                    </div>
-                  </button>
+                    <p className="item-name">{item.PName}</p>
+                  </Link>
+                  <p className="item-quantity">Quantity: {item.Quantity}</p>
+                  <p className="item-storeid">Store: {item.StoreName}</p>
+                  {item.Promotion && item.Promotion.length > 0 ? (
+                  <>
+                    <p className="promo-product-price">${item.Price.toFixed(2)}</p>
+                    <p className="cart_product__disscount_num">{item.TotalDiscount.toFixed(2) * 100}% off</p>
+                    <p className="promo-product-discount">Price: ${(item.Price * (1 - item.TotalDiscount)).toFixed(2)}</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="item-price">Price: ${item.Price.toFixed(2)}</p>
+                  </>
+                )}
+                  {/* Add other details as needed */}
                 </div>
-              ))}
-              <div className='promotion-select'>
-                <h3>Apply Promotion</h3>
-            
               </div>
-              <div className="cart-summary">
-                {/* You can display the total or other summary information here */}
-                <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} />
+            ))}
+            <div className='promotion-select'>
+              <h3>Apply Promotion:</h3>
+
+            </div>
+            <div className="payment-method">
+              <h3>Choose Payment Method:</h3>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Credit Card"
+                    checked={selectedPaymentMethod === 'Credit Card'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Credit Card
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Debit Card"
+                    checked={selectedPaymentMethod === 'Debit Card'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Debit Card
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Cash"
+                    checked={selectedPaymentMethod === 'Cash'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Cash
+                </label>
               </div>
             </div>
+            <div className="cart-summary">
+              {/* You can display the total or other summary information here */}
+              <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} />
+            </div>
+            <button className="buy-button" onClick={handleBuyButtonClick}>
+              Buy
+            </button>
+          </div>
           </div>
         )}
       </div>
