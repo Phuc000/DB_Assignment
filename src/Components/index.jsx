@@ -7,3 +7,5 @@ export { default as UserMenu } from "./UserMenu/UserMenu";
 export { default as Title } from "./Common/Title/Title";
 export { default as SignUpForm } from "./Common/SignUpForm/SignUpForm";
 export { default as SignInForm } from "./Common/SignInForm/SignInForm";
+export { default as FeatureAd } from "./Common/Feature_Ad/FeatureAd";
+export { default as StoreCard } from "./StoreCard/StoreCard";

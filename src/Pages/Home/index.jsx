@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {Header, Footer, ShowProduct } from "../../Components";
+import {Header, Footer, ShowProduct, StoreCard } from "../../Components";
 import FeatureAd from '../../Components/Common/Feature_Ad/FeatureAd';
 import axios from "axios";
 import "./Home.css";
@@ -174,13 +174,7 @@ const Home = () => {
           <h2 className="store--cat">OUR STORES</h2>
           <div className="stores-container">
             {stores.map((store) => (
-              <Link to={`/store/${store.StoreID}`} key={store.StoreID} className="store-link">
-                <div className="store-card">
-                  <h3>{store.Name}</h3>
-                  <p>{store.Location}</p>
-                  <p>Contact: {store.ContactInfo}</p>
-                </div>
-              </Link>
+              <StoreCard store={store} key={store.StoreID} />
             ))}
           </div>
         </div>
