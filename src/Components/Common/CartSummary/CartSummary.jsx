@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import './CartSummary.scss';
 
-const CartSummary = ({ subtotal = 0, shipping = 0, estimate = '', total = 0 }) => {
+const CartSummary = ({ subtotal = 0, shipping = 0, estimate = '', total = 0, checkout = false }) => {
     const navigate = useNavigate();
 
     const handleCheckOut = () => {
         navigate('/CheckOut');
+    };
+
+    const handleBackToCart = () => {
+        navigate('/Cart');
     };
 
   return (
@@ -30,9 +34,16 @@ const CartSummary = ({ subtotal = 0, shipping = 0, estimate = '', total = 0 }) =
         <span>Total</span>
         <span>${Number(total).toFixed(2)}</span>
       </div>
-      <button className="checkout-btn" onClick={handleCheckOut}>
-        Proceed To CheckOut <span>➔</span>
-      </button>
+      {!checkout && (
+        <button className="checkout-btn" onClick={handleCheckOut}>
+          Proceed To CheckOut <span>➔</span>
+        </button>
+      )}
+      {checkout && (
+        <button className="checkout-btn" onClick={handleBackToCart}>
+          Back To Cart <span>➔</span>
+        </button>
+      )}
     </div>
   );
 };

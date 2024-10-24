@@ -105,6 +105,7 @@ function SignInForm() {
         </div>
         <span>or use your account</span>
         <input
+          className="login_input"
           type="text"
           placeholder="Username"
           name="CUsername"
@@ -113,6 +114,7 @@ function SignInForm() {
           required
         />
         <input
+          className="login_input"
           type="password"
           name="CPhone"
           placeholder="Password"

@@ -142,6 +142,7 @@ function SignUpForm( {toggleSignState} ) {
         </div>
         <span>or use your email for registration</span>
         <input
+          className="login_input"
           type="text"
           name="CFName"
           value={state.CFName}
@@ -150,6 +151,7 @@ function SignUpForm( {toggleSignState} ) {
           required
         />
         <input
+          className="login_input"
           type="text"
           name="CLName"
           value={state.CLName}
@@ -158,6 +160,7 @@ function SignUpForm( {toggleSignState} ) {
           required
         />
         <input
+          className="login_input"
           type="text"
           name="CAddress"
           value={state.CAddress}
@@ -166,6 +169,7 @@ function SignUpForm( {toggleSignState} ) {
             required
         />
         <input
+          className="login_input"
           type="text"
           name="CPhone"
           value={state.CPhone}

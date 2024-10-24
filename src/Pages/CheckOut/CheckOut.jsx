@@ -140,7 +140,7 @@ const Cart = () => {
     }, 0);
   };
 
-  const subtotal = calculateTotal().toFixed(2);
+  const subtotal = Number(calculateTotal());
   const shipping = subtotal > 50 ? 0 : 5; // Example: Free shipping over $50
   const estimate = "Ho Chi Minh city"; // Example: Estimate based on the shipping address
   const total = subtotal + shipping;
@@ -194,7 +194,7 @@ const Cart = () => {
 
             </div>
             <div className="payment-method">
-              <h3>Choose Payment Method:</h3>
+              <h3>Choose Payment Method</h3>
               <div>
                 <label>
                   <input
@@ -231,7 +231,7 @@ const Cart = () => {
             </div>
             <div className="cart-summary">
               {/* You can display the total or other summary information here */}
-              <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} />
+              <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} checkout={true} />
             </div>
             <button className="buy-button" onClick={handleBuyButtonClick}>
               Buy

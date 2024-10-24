@@ -145,7 +145,7 @@ const Cart = () => {
     }, 0);
   };
 
-  const subtotal = calculateTotal().toFixed(2);
+  const subtotal = Number(calculateTotal());
   const shipping = subtotal > 50 ? 0 : 5; // Example: Free shipping over $50
   const estimate = "Ho Chi Minh city"; // Example: Estimate based on the shipping address
   const total = subtotal + shipping;
