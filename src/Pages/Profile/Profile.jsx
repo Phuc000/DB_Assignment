@@ -5,6 +5,11 @@ import "./Profile.scss";
 import MyAccount from "../../Components/Common/UserComponents/MyAccount";
 import MyOrders from "../../Components/Common/UserComponents/MyOrders";
 import Promotions from "../../Components/Common/UserComponents/Promotions";
+import Restock from "../../Components/Common/ManagerComponents/Restock";
+import CreateProduct from "../../Components/Common/ManagerComponents/CreateProduct";
+import CreatePromotion from "../../Components/Common/ManagerComponents/CreatePromotion";
+import Dashboard from "../../Components/Common/ManagerComponents/Dashboard";
+import StoreOrders from "../../Components/Common/ManagerComponents/StoreOrders";
 import axios, { AxiosError } from "axios";
 const Profile = () => {
   // Variables for customer information
@@ -319,6 +324,7 @@ const Profile = () => {
         navigate("/");
     }
 
+    const [activeComponent, setActiveComponent] = useState("MyAccount");  // Default active component
 
   useState(() => {
     if (getCookie("userID")) {
@@ -328,10 +334,10 @@ const Profile = () => {
     else if (getCookie("managerID")) {
       submitmanagerLoginForm();
       setShowmanager(true);
+      setActiveComponent("Restock");
     }
   }, []);
 
-  const [activeComponent, setActiveComponent] = useState("MyAccount");  // Default active component
 
   // Function to handle which menu item is clicked
   const handleMenuClick = (componentName) => {
@@ -346,7 +352,7 @@ const Profile = () => {
       <div className="profile-content" >
         {showuser &&(
           <div className="profile-content-wrapper"> 
-            <UserMenu username={`${CFName} ${CLName}`} onMenuClick={handleMenuClick} />
+            <UserMenu username={`${CFName} ${CLName}`} onMenuClick={handleMenuClick} mode="Customer" />
             <div className="component-container">
                 {activeComponent === "MyOrders" && <MyOrders />}
                 {activeComponent === "Promotions" && <Promotions />}
@@ -355,6 +361,19 @@ const Profile = () => {
           </div>
         )}
         {showmanager&&(
+          <>
+          <div className="profile-content-wrapper"> 
+            <UserMenu username={`${CFName} ${CLName}`} onMenuClick={handleMenuClick} mode="Manager" />
+            <div className="component-container">
+                {activeComponent === "Restock" && <Restock />}
+                {activeComponent === "CreateProduct" && <CreateProduct />}
+                {activeComponent === "CreatePromotion" && <CreatePromotion />}
+                {activeComponent === "Dashboard" && <Dashboard />}
+                {activeComponent === "StoreOrders" && <StoreOrders />}
+
+            </div>
+          </div>
+          
           <form >
           <div>Hello manager {CFName} {CLName}! </div>
           <label className="form-label" >
@@ -376,6 +395,7 @@ const Profile = () => {
                 Logout
             </button>
           </form>
+          </>
         )}
         {!showuser && !showmanager &&(
             <div>

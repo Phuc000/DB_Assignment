@@ -3,7 +3,7 @@ import Title from '../Common/Title/Title';
 import "./UserMenu.scss";
 
 
-const UserMenu = ({ username, onMenuClick }) => {
+const UserMenu = ({ username, onMenuClick, mode }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,13 +41,26 @@ const UserMenu = ({ username, onMenuClick }) => {
 
       
       <div class="usr-menu-list">
-        <ul>
-          <li><span onClick={() => onMenuClick("MyOrders")}>My Orders</span></li>
-          <li><span onClick={() => onMenuClick("Promotions")}>Promotions</span></li>
-          <li><span onClick={() => onMenuClick("MyAccount")}>My Account</span></li>
-          <li><span onClick={() => logout('userID')}>Logout</span></li>
+        {mode === "Customer" && (
+          <ul>
+            <li><span onClick={() => onMenuClick("MyOrders")}>My Orders</span></li>
+            <li><span onClick={() => onMenuClick("Promotions")}>Promotions</span></li>
+            <li><span onClick={() => onMenuClick("MyAccount")}>My Account</span></li>
+            <li><span onClick={() => logout('userID')}>Logout</span></li>
+          </ul>
+        )}
+        {mode === "Manager" && (
+          <ul>
+            <li><span onClick={() => onMenuClick("Dashboard")}>Dashboard</span></li>
+            <li><span onClick={() => onMenuClick("CreateProduct")}>Create New Product</span></li>
+            {/* <li><span onClick={() => onMenuClick("")}>Add New Product To Store</span></li> */}
+            <li><span onClick={() => onMenuClick("Restock")}>Restock</span></li>
+            <li><span onClick={() => onMenuClick("StoreOrders")}>View All Orders</span></li>
+            <li><span onClick={() => onMenuClick("CreatePromotion")}>Create Promotion</span></li>
+            <li><span onClick={() => logout('managerID')}>Logout</span></li>
+          </ul>
+        )}
 
-        </ul>
       </div>
     </div>
   );

@@ -366,7 +366,7 @@
                 Full Name:
                 </label>
                 <input
-                  className="form-input"
+                  // className="form-input"
                   type="text"
                   id="CFName"
                   name="CFName"
@@ -378,7 +378,7 @@
                   Tel:
                 </label>
                 <input
-                  className="form-input"
+                  // className="form-input"
                   type="password"
                   id="Tel"
                   name="CPhone"
@@ -432,43 +432,6 @@
             </div>
             )}
           </section>
-          {showuser &&(
-            <form className="customer_form">
-            <div>Hello user {CFName} {CLName}</div>
-            <div>Your number {CPhone}</div>
-            {rank !== "" ? (
-              <div>
-                Your current rank: {rank} {getRankIcon()}
-              </div>
-            ) : (
-              <p>No rank available</p>
-            )}
-            <div>Your Transactions:</div>
-            <ul>
-              {transaction && transaction.length > 0 ? (
-                transaction.map((transaction) => (
-                  <li key={transaction.transactionID}>
-                    <div>Transaction ID: {transaction.TransactionID}</div>
-                    <div>Shipper ID: {transaction.ShipperID}</div>
-                    <div>Shipper Name: {transaction.ShipperName}</div>
-                  </li>
-                ))
-              ) : (
-                <li>No transactions available</li>
-              )}
-            </ul>
-            <div>Your Promotions:</div>
-            <ul className="ul_promo_list">
-              {promotion.map((promotion) => (
-                <li key={promotion.promotionID} className="promo_list">
-                  <div>Promotion ID: {promotion.PromotionID}</div>
-                  <div>Promotion Name: {promotion.Name}</div>
-                  {/* Add other promotion details you want to display */}
-                </li>
-              ))}
-            </ul>
-            </form>
-          )}
           {showmanager&&(
             <form >
             <div>Hello manager {CFName}</div>
