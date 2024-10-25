@@ -24,7 +24,7 @@ function SignUpForm( {toggleSignState} ) {
         }
       
         if(state.CustomerID === "") {
-        axios.get(`http://localhost:8080/customers/lastid`, {
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/lastid`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -75,7 +75,7 @@ function SignUpForm( {toggleSignState} ) {
 
     console.log("state", state);
 
-    axios.get(`http://localhost:8080/customers/lastid`, {
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/lastid`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -100,7 +100,7 @@ function SignUpForm( {toggleSignState} ) {
   const submitsignupForm = async () => {
     try {
       // Making a POST request using axios
-      const response = await axios.post('http://localhost:8080/customers/', state);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/`, state);
 
       // Updating the state with the response data
       setResponse(response.data);

@@ -41,7 +41,7 @@ const MyAccount = () => {
 
     const submitloginForm = async () => {
 
-        axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/${getCookie('userID')}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -59,7 +59,7 @@ const MyAccount = () => {
           })
           .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
   
-      axios.get(`http://localhost:8080/customers/customer-rank/${getCookie('userID')}`,{
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/customer-rank/${getCookie('userID')}`,{
         headers: {
           "Content-Type": "application/json",
         },

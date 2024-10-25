@@ -64,7 +64,7 @@ function SignInForm() {
 
     const { CUsername, CPhone } = state;
     console.log(CUsername, CPhone)
-    const status = await axios.get(`http://localhost:8080/customers/login/${CPhone}/${CUsername}`, {
+    const status = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/login/${CPhone}/${CUsername}`, {
       headers: {
         "Content-Type": "application/json",
       },

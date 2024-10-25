@@ -13,7 +13,7 @@ const Store = () => {
 
     useEffect(() => {
       // Fetch category-specific data from JSON file based on categoryName
-      axios.get(`http://localhost:8080/products/store/${storeId}`, {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/store/${storeId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -28,7 +28,7 @@ const Store = () => {
         })
         .catch((error) => console.error(`Error fetching store ${storeId} data:`, error));
 
-      axios.get(`http://localhost:8080/store/${storeId}`, {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/store/${storeId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -53,9 +53,7 @@ const Store = () => {
         </header>
         <div className="products__container container">
           {products.map((product) => (
-            <>
-            <ShowProduct product={product} storeId={storeId} />
-            </>
+            <ShowProduct key={product.ProductID} product={product} storeId={storeId} />
           ))}
         </div>
       </div>

@@ -29,7 +29,7 @@ const Cart = () => {
 
   useEffect(() => {
     // Fetch category-specific data from JSON file based on categoryName
-    axios.get(`http://localhost:8080/transaction/last`, {
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/transaction/last`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -83,7 +83,7 @@ const Cart = () => {
         console.log(purchaseTime.toISOString());
         console.log(newBillId);
         // Step 1: Post the bill information
-        const response = await axios.post('http://localhost:8080/transaction/', {
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/transaction/`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -99,7 +99,7 @@ const Cart = () => {
         
         // Step 2: Post the NumberOfProductinBill for each item in the bill
       const itemPromises = items.map(async (item) => {
-        const response = await axios.post('http://localhost:8080/transaction/items/', {
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/transaction/items/`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -109,7 +109,7 @@ const Cart = () => {
           NumberOfProductInBill: item.Quantity, // Assuming quantity is the number of products in the bill
         });
 
-        const response2 = await axios.post('http://localhost:8080/ship/order', {
+        const response2 = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/ship/order`, {
           headers: {
             'Content-Type': 'application/json',
           },

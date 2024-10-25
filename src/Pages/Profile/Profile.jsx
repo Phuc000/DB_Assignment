@@ -88,7 +88,7 @@ const Profile = () => {
     }
   
     if(formData.CustomerID === 0) {
-    axios.get(`http://localhost:8080/customers/lastid`, {
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/lastid`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -118,7 +118,7 @@ const Profile = () => {
 
   //   console.log('Form Data:', formData);
 
-  //   axios.get(`http://localhost:8080/customers/lastid`, {
+  //   axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/lastid`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //     },
@@ -147,7 +147,7 @@ const Profile = () => {
   // const submitsignupForm = async () => {
   //   try {
   //     // Making a POST request using axios
-  //     const response = await axios.post('http://localhost:8080/customers/', formData);
+  //     const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/`, formData);
 
   //     // Updating the state with the response data
   //     setResponse(response.data);
@@ -164,7 +164,7 @@ const Profile = () => {
 
     const submitloginForm = async () => {
 
-      axios.get(`http://localhost:8080/customers/${getCookie('userID')}`, {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/${getCookie('userID')}`, {
       headers: {
           "Content-Type": "application/json",
       },
@@ -182,7 +182,7 @@ const Profile = () => {
         })
         .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
 
-    axios.get(`http://localhost:8080/customers/customer-rank/${getCookie('userID')}`,{
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/customer-rank/${getCookie('userID')}`,{
       headers: {
         "Content-Type": "application/json",
       },
@@ -196,7 +196,7 @@ const Profile = () => {
       setrank(data.rank);
     })
 
-        axios.get(`http://localhost:8080/customers/shipping/${getCookie('userID')}`, {
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/shipping/${getCookie('userID')}`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -210,7 +210,7 @@ const Profile = () => {
             settransaction(data.data);
           })
           .catch((error) => console.error(`Error fetching ${getCookie('userID')} data:`, error));
-        axios.get('http://localhost:8080/promotion/',{
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/promotion/`,{
           headers: {
             "Content-Type": "application/json",
         },
@@ -228,7 +228,7 @@ const Profile = () => {
 
       
   const submitmanagerLoginForm = async () => {
-      axios.get(`http://localhost:8080/employees/${getCookie('managerID')}`, {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/employees/${getCookie('managerID')}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -250,7 +250,7 @@ const Profile = () => {
   const restock = async (event) => {
     event.preventDefault();
     console.log('Restock:', productID, storeID, amount);
-    axios.put(`http://localhost:8080/products/addtostore/${productID}/${storeID}/${amount}`, {
+    axios.put(`${import.meta.env.VITE_REACT_APP_API_URL}/products/addtostore/${productID}/${storeID}/${amount}`, {
       headers: {
         "Content-Type": "application/json",
       },

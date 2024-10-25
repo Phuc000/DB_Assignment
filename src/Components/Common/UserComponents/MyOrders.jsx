@@ -19,7 +19,7 @@ const MyOrders = () => {
       }
 
     const submitloginForm = async () => {
-        axios.get(`http://localhost:8080/customers/shipping/${getCookie('userID')}`, {
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/shipping/${getCookie('userID')}`, {
             headers: {
               'Content-Type': 'application/json',
             },

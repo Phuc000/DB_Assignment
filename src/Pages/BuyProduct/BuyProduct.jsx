@@ -27,7 +27,7 @@ const BuyProduct = () => {
 
   useEffect(() => {
     // Fetch product details based on the productId
-    axios.get(`http://localhost:8080/products/${productId}`, {
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/${productId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -43,7 +43,7 @@ const BuyProduct = () => {
       .catch((error) => console.error(`Error fetching product ${productId} data:`, error));
 
       // Fetch additional information: number at store based on the productId
-      axios.get(`http://localhost:8080/products/productatstore/${productId}/${storeId}`, {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/productatstore/${productId}/${storeId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -63,7 +63,7 @@ const BuyProduct = () => {
   useEffect(() => {
     const fetchPromotionInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/products/promotionfromproduct/${productId}`, {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/promotionfromproduct/${productId}`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -80,7 +80,7 @@ const BuyProduct = () => {
   }, [productId]);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/store/${storeId}`, {
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/store/${storeId}`, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -32,7 +32,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-      axios.get("http://localhost:8080/store/", {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/store/`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -49,7 +49,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-      axios.get("http://localhost:8080/products/promotion/", {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/promotion/`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -72,7 +72,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-      axios.get("http://localhost:8080/products/top5products/2023", {
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/top5products/2023`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -85,7 +85,7 @@ const Home = () => {
           console.log('Fetched Data:', data);
         // Fetch product information for each product in the top5products/2023 response
         const productPromises = data.map((product) =>
-          axios.get(`http://localhost:8080/products/${product.ProductID}`, {
+          axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/${product.ProductID}`, {
             headers: {
               'Content-Type': 'application/json',
             },

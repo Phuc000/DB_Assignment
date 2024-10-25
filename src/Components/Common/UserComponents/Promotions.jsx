@@ -19,7 +19,7 @@ const Promotions = () => {
       }
 
     const submitloginForm = async () => {
-        axios.get('http://localhost:8080/promotion/',{
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/promotion/`,{
             headers: {
               "Content-Type": "application/json",
           },

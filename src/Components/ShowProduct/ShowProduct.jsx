@@ -14,7 +14,7 @@ const ShowProduct = ({ product, storeId }) => {
     const fetchStoreInfo = async () => {
       if (!pageStoreId) {
         try {
-          const response = await axios.get(`http://localhost:8080/products/atstore/${product.ProductID}`, {
+          const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/atstore/${product.ProductID}`, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -39,7 +39,7 @@ const ShowProduct = ({ product, storeId }) => {
   useEffect(() => {
     const fetchPromotionInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/products/promotionfromproduct/${product.ProductID}`, {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/promotionfromproduct/${product.ProductID}`, {
           headers: {
             'Content-Type': 'application/json',
           },

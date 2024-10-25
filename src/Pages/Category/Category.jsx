@@ -9,7 +9,7 @@ const Category = () => {
 
   useEffect(() => {
     // Fetch category-specific data from JSON file based on categoryName
-    axios.get(`http://localhost:8080/products/category/${categoryName}`, {
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/category/${categoryName}`, {
       headers: {
         'Content-Type': 'application/json',
       },
