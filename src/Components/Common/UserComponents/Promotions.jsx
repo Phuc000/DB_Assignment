@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./Promotions.scss";
 
 const Promotions = () => {
     const [promotion, setpromotion] = useState([]);
@@ -43,21 +44,33 @@ const Promotions = () => {
       }, []);
 
     return (
-      <div>
-        <h1>Promotions</h1>
-        <p>Check out our latest promotions!</p>
-        <div>Your Promotions:</div>
-            <ul className="ul_promo_list">
-              {promotion.map((promotion) => (
-                <li key={promotion.promotionID} className="promo_list">
-                  <div>Promotion ID: {promotion.PromotionID}</div>
-                  <div>Promotion Name: {promotion.Name}</div>
-                  {/* Add other promotion details you want to display */}
-                </li>
-              ))}
-            </ul>
+      <div className="promotion-container">
+        <h1 className="promotion-title">Promotions</h1>
+        <p className="promotion-subtitle">Check out our latest promotions!</p>
+        <div className="promo-list-title">Your Promotions:</div>
+        <ul className="promo-list">
+          {promotion.map((promotion) => (
+            <li key={promotion.PromotionID} className="promo-item">
+              <div className="promo-header">
+                <h3 className="promo-name">{promotion.Name}</h3>
+                <div className="promo-discount">
+                  <span>{Number(promotion.Discount * 100).toFixed(0)}%</span>
+                  <span>Off</span>
+                </div>
+              </div>
+              <div className="promo-details">
+                <p>{promotion.Description}</p>
+                <div className="promo-dates">
+                  <p><i className="fas fa-calendar-alt"></i><strong> Start Date:</strong> {new Date(promotion.StartDay).toLocaleDateString()}</p>
+                  <p><i className="fas fa-calendar-alt"></i><strong> End Date:</strong> {new Date(promotion.EndDay).toLocaleDateString()}</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     );
+
 }
 
 export default Promotions;

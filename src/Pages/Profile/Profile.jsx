@@ -352,45 +352,6 @@ const Profile = () => {
                 {activeComponent === "Promotions" && <Promotions />}
                 {activeComponent === "MyAccount" && <MyAccount />}
             </div>
-            <form className="customer_profile_form">
-            {/* <UserMenu /> */}
-            <div>Hello user {CFName} {CLName}</div>
-            <div>Your number {CPhone}</div>
-            {rank !== "" ? (
-              <div>
-                Your current rank: {rank} {getRankIcon()}
-              </div>
-            ) : (
-              <p>No rank available</p>
-            )}
-            <div>Your Transactions:</div>
-            <ul>
-              {transaction && transaction.length > 0 ? (
-                transaction.map((transaction) => (
-                  <li key={transaction.transactionID}>
-                    <div>Transaction ID: {transaction.TransactionID}</div>
-                    <div>Shipper ID: {transaction.ShipperID}</div>
-                    <div>Shipper Name: {transaction.ShipperName}</div>
-                  </li>
-                ))
-              ) : (
-                <li>No transactions available</li>
-              )}
-            </ul>
-            <div>Your Promotions:</div>
-            <ul className="ul_promo_list">
-              {promotion.map((promotion) => (
-                <li key={promotion.promotionID} className="promo_list">
-                  <div>Promotion ID: {promotion.PromotionID}</div>
-                  <div>Promotion Name: {promotion.Name}</div>
-                  {/* Add other promotion details you want to display */}
-                </li>
-              ))}
-            </ul>
-              <button className="form-button" onClick={() => logout('userID')}>
-                  Logout
-              </button>
-            </form>
           </div>
         )}
         {showmanager&&(

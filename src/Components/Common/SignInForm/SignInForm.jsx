@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 
 
@@ -81,7 +83,21 @@ function SignInForm() {
         // navigate to the home page
         navigate("/");
     }) 
-    .catch((error) => console.error("Error fetching data:", error));
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+
+      // show error message
+      toast.error('Invalid username or password', {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    });
+
     setState({
         CUsername: "",
         CPhone: ""
@@ -124,6 +140,7 @@ function SignInForm() {
         />
         <a className="link-L1" href="#">Forgot your password?</a>
         <button className="button-77">Sign In</button>
+        <ToastContainer />
       </form>
     </div>
   );

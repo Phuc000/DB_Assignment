@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header, Footer } from "../../Components";
 import { useCart } from '../../Context/CartContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import "./BuyProduct.scss";
 
@@ -129,6 +131,18 @@ const BuyProduct = () => {
     // Handle button class changes
     if (!getCookie('userID')) {
       console.error("Error: User is not logged in.");
+
+      toast.error('Log in to add items to your cart!', {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
       return; // Prevent adding to cart if user is not logged in
     }
 
@@ -159,6 +173,18 @@ const BuyProduct = () => {
       dispatch({ type: 'UPDATE_CART_ITEM', payload: { ...existingCartItem, Quantity: newQuantity } });
       console.log(`Updated quantity of ${product.PName} in the cart: ${newQuantity}`);
       setQuantity(1); // Reset the quantity to 1 after adding to cart
+
+      toast.success(`Updated quantity of ${product.PName} successfully!`, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
     } else {
       // If the product does not exist, add it to the cart
       const purchaseInfo = {
@@ -177,6 +203,17 @@ const BuyProduct = () => {
       dispatch({ type: 'ADD_TO_CART', payload: purchaseInfo });
       console.log(`Added ${quantity} ${product.PName} to the cart.`);
       setQuantity(1); // Reset the quantity to 1 after adding to cart
+
+      toast.success(`Added ${quantity} ${product.PName} to the cart.`, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };  
 
@@ -271,6 +308,18 @@ const BuyProduct = () => {
           <p>Loading...</p>
         )}
       </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Footer />
     </div>
   );
