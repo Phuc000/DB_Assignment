@@ -1,9 +1,11 @@
   import { useEffect, useState } from "react";
+  import { useNavigate } from "react-router-dom";
   import { Header, Footer, SignInForm, SignUpForm } from "../../Components";
   import "./Login.css";
   import axios, { AxiosError } from "axios";
   const Login = () => {
     // Variables for customer information
+    const navigate = useNavigate();
 
     const [CFName, setCFName] = useState("");
     const [CLName, setCLName] = useState("");
@@ -262,6 +264,7 @@
             setCFName(data.FirstName);
             setCLName(data.LastName);
             setCAddress(data.CAddress);
+            navigate("/Profile");
           })
           .catch((error) => console.error(`Error fetching ${cookie} data:`, error));
       };
@@ -432,27 +435,6 @@
             </div>
             )}
           </section>
-          {showmanager&&(
-            <form >
-            <div>Hello manager {CFName}</div>
-            <label className="form-label" >
-              ProductID:
-            </label>
-            <input className="form-input" type="text" id="productID" name="ProductID" value={productID} required onChange={(e) => setproductID(e.target.value)} />
-            <label className="form-label" >
-              StoreID
-            </label>
-            <input className="form-input" type="text" id="productID" name="ProductID" value={storeID} required onChange={(e) => setstoreID(e.target.value)} />
-            <label className="form-label" >
-              Ammount:
-            </label>
-            <input className="form-input" type="text" id="productID" name="ProductID" value={amount} required onChange={(e) => setamount(e.target.value)} />
-            <button className="form-button" onClick={restock}>
-              Restock
-            </button>
-            </form>
-          )}
-
 
         </div>
         <Footer />

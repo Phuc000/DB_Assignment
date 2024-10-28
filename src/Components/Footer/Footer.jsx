@@ -9,9 +9,9 @@ const Footer = () => {
                     <div className="footer__info">
                         <img src="/Images/logo_white.svg" alt="Shop house logo" className="footer__logo" />
                         <ul className="footer__list info__list">
-                            <li className="footer__item info__item">123 Nguyen Van Cu</li>
+                            <li className="footer__item info__item">268 Ly Thuong Kiet</li>
                             <li className="footer__item info__item">+84 999-999-999</li>
-                            <li className="footer__item info__item">AEON@aeon.com</li>
+                            <li className="footer__item info__item">IUFC@nest.com</li>
                         </ul>
                     </div>
 

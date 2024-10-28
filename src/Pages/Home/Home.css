@@ -509,9 +509,10 @@ html {
   overflow-x: auto; /* Enable horizontal scrolling if products overflow */
   gap: 20px; /* Adjust the gap between products as needed */
   padding-top: 5px;
-  padding-right: 3px;
-  margin-left: 5vw;
-  margin-right: 5vw;
+  margin-right: 3px;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-bottom: 5vh;
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: transparent transparent; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
@@ -570,15 +571,16 @@ html {
 
 /* store list */
     .store--cat {
-      padding-top: 5vh;
+      /* padding-top: 5vh; */
       font-size: var(--fz_lg);
       text-transform: uppercase;
       margin-left: 5vw;
     }
 
     .stores-container {
-      display: flex;
-      overflow-x: auto; /* Enable horizontal scrolling if needed */
+      display: grid;
+      grid-template-columns: auto auto auto;
+      gap: 15px;
       margin: 10px;
       margin-left: 5vw;
       margin-right: 5vw;
