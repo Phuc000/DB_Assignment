@@ -10,6 +10,7 @@ import CreateProduct from "../../Components/Common/ManagerComponents/CreateProdu
 import CreatePromotion from "../../Components/Common/ManagerComponents/CreatePromotion";
 import Dashboard from "../../Components/Common/ManagerComponents/Dashboard";
 import StoreOrders from "../../Components/Common/ManagerComponents/StoreOrders";
+import AccountDetails from "../../Components/Common/UserComponents/AccountDetail";
 import axios, { AxiosError } from "axios";
 const Profile = () => {
   // Variables for customer information
@@ -119,53 +120,6 @@ const Profile = () => {
   }, [CFName, CLName, CAddress, CPhone]);
 
 
-  // const signup = () => {
-
-  //   console.log('Form Data:', formData);
-
-  //   axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/lastid`, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.data)
-  //     .then((data) => {
-  //       console.log('Fetched Data:', data)
-  //       const newID = data + 1;
-  //       setformData({
-  //         ...formData,
-  //         CustomerID: newID,
-  //         CFName: CFName,
-  //         CLName: CLName,
-  //         CAddress: CAddress,
-  //         CPhone: CPhone,
-  //       });
-  //     })
-  //     .then(() => {
-  //       console.log('Form Data:', formData);
-  //       // Use useEffect to ensure state update is complete before calling submitsignupForm
-  //       submitsignupForm();
-  //     })
-  //     .catch((error) => console.error("Error fetching data:", error));
-  // };
-  
-  // const submitsignupForm = async () => {
-  //   try {
-  //     // Making a POST request using axios
-  //     const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/customers/`, formData);
-
-  //     // Updating the state with the response data
-  //     setResponse(response.data);
-  //     setError(null);
-  // } catch (error) {
-  //     // Handling errors
-  //     setResponse(null);
-  //     setError('Error posting data');
-  //     console.error('Error posting data:', error);
-  // }
-  //   setShowuserLogin(true);
-  //   setShowSignup(false);
-  // };
 
     const submitloginForm = async () => {
 
@@ -357,11 +311,11 @@ const Profile = () => {
                 {activeComponent === "MyOrders" && <MyOrders />}
                 {activeComponent === "Promotions" && <Promotions />}
                 {activeComponent === "MyAccount" && <MyAccount />}
+                {activeComponent === "AccountDetails" && <AccountDetails />}
             </div>
           </div>
         )}
         {showmanager&&(
-          <>
           <div className="profile-content-wrapper"> 
             <UserMenu username={`${CFName} ${CLName}`} onMenuClick={handleMenuClick} mode="Manager" />
             <div className="component-container">
@@ -374,28 +328,6 @@ const Profile = () => {
             </div>
           </div>
           
-          <form >
-          <div>Hello manager {CFName} {CLName}! </div>
-          <label className="form-label" >
-            ProductID:
-          </label>
-          <input className="form-input" type="text" id="productID" name="ProductID" value={productID} required onChange={(e) => setproductID(e.target.value)} />
-          <label className="form-label" >
-            StoreID:
-          </label>
-          <input className="form-input" type="text" id="productID" name="ProductID" value={storeID} required onChange={(e) => setstoreID(e.target.value)} />
-          <label className="form-label" >
-            Amount:
-          </label>
-          <input className="form-input" type="text" id="productID" name="ProductID" value={amount} required onChange={(e) => setamount(e.target.value)} />
-          <button className="form-button" onClick={restock}>
-            Restock
-          </button>
-            <button className="form-button" onClick={() => logout('managerID')}>
-                Logout
-            </button>
-          </form>
-          </>
         )}
         {!showuser && !showmanager &&(
             <div>

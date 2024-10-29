@@ -36,7 +36,7 @@ const UserMenu = ({ username, onMenuClick, mode }) => {
   return (
     <div className="menu-item-wrapper">
 
-      <Title titleText={`Hello, ${username}!`} />
+      <Title titleText={`Hello, ${username}!`} size={24} />
       <p className="text-base font-light italic">Welcome to your account.</p>
 
       
@@ -46,6 +46,7 @@ const UserMenu = ({ username, onMenuClick, mode }) => {
             <li><span onClick={() => onMenuClick("MyOrders")}>My Orders</span></li>
             <li><span onClick={() => onMenuClick("Promotions")}>Promotions</span></li>
             <li><span onClick={() => onMenuClick("MyAccount")}>My Account</span></li>
+            <li><span onClick={() => onMenuClick("AccountDetails")}>Account Details</span></li>
             <li><span onClick={() => logout('userID')}>Logout</span></li>
           </ul>
         )}

@@ -1,10 +1,12 @@
 import React from 'react';
 import './InfoForm.scss';
 
-const InfoForm = () => {
+const InfoForm = ( { title = "Billing Details" } ) => {
   return (
     <div className="billing-details">
-      <h2>Billing Details</h2>
+      <h2>
+        {title}
+      </h2>
       <form className="billing-form">
         <div className="form-row">
           <div className="form-group">
