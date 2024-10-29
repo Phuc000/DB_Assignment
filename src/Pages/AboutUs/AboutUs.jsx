@@ -11,7 +11,7 @@ const AboutUs = () => {
           <div className="about-us-content">
             {/* Left-side image */}
             <div className="about-us-image">
-              <img src="/Images/no-image.jpg" alt="About Us" />
+              <img src="/Images/about-us/img0.jpg" alt="About Us" />
             </div>
 
             {/* Right-side text */}
@@ -32,9 +32,9 @@ const AboutUs = () => {
                 <div className="about-us-carousel">
                     <button className="carousel-arrow left-arrow">{'<'}</button>
                     <div className="carousel-images">
-                      <img src="/Images/no-image.jpg" alt="carousel 1" />
-                      <img src="/Images/no-image.jpg" alt="carousel 2" />
-                      <img src="/Images/no-image.jpg" alt="carousel 3" />
+                      <img src="/Images/about-us/caro1.png" alt="carousel 1" />
+                      <img src="/Images/about-us/caro2.png" alt="carousel 2" />
+                      <img src="/Images/about-us/caro3.png" alt="carousel 3" />
                     </div>
                     <button className="carousel-arrow right-arrow">{'>'}</button>
                 </div>

@@ -155,18 +155,22 @@ const Cart = () => {
       <Header />
       <div className="cart-content">
         {/* <h1 className="cart-title">My Cart</h1> */}
-        <Title titleText="My Cart" size={24} />
+        <Title titleText="My Cart" size={24} margin_b={12} />
         {state.cart.length === 0 ? (
           <div className="empty-cart">
             <img src='/Images/Frame.png' alt='empty cart' className='empty-card-img' />
             <p className="empty-cart-message">Your cart is empty.</p>
           </div>
         ) : (
-          <div className="cart-items-wrapper">
+          <div>
             <p className="cart-item-count">You have 
               <span className="item-count-number"> {state.cart.length} </span>
             item(s) in your cart.</p>
+          <div className="cart-items-wrapper">
             <div className="cart-items">
+            {/* <p className="cart-item-count">You have 
+              <span className="item-count-number"> {state.cart.length} </span>
+            item(s) in your cart.</p> */}
               {state.cart.map((item, index) => (
                 <div key={index} className="cart-item">
                   <div className="item-details">
@@ -177,7 +181,6 @@ const Cart = () => {
                     >
                       <p className="item-name">{item.PName}</p>
                     </Link>
-                    <p className="item-quantity">Quantity: {item.Quantity}</p>
                     <p className="item-storeid">Store: {item.StoreName}</p>
                     {item.Promotion && item.Promotion.length > 0 ? (
                     <>
@@ -192,10 +195,11 @@ const Cart = () => {
                   )}
                     {/* Add other details as needed */}
                   </div>
+                  <p className="item-quantity">x {item.Quantity}</p>
                   <button
                     className="remove-item-button"
                     onClick={() => handleRemoveItem(index)}
-                    class="button" href="#" role="button"
+                    class="x_button" href="#" role="button"
                   >
                     <span>remove</span>
                     <div class="icon">
@@ -208,11 +212,12 @@ const Cart = () => {
                 <h3>Apply Promotion</h3>
             
               </div>
-              <div className="cart-summary">
-                {/* You can display the total or other summary information here */}
-                <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} />
-              </div>
             </div>
+            <div className="cart-summary">
+              {/* You can display the total or other summary information here */}
+              <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} />
+            </div>
+          </div>
           </div>
         )}
       </div>

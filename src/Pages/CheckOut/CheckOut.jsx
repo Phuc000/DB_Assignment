@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, Title, CartSummary } from '../../Components';
 import { useCart } from '../../Context/CartContext';
 import axios from 'axios'; // Import axios for making HTTP requests
-import './CheckOut.css';
+import '../Cart/Cart.css';
+import './CheckOut.scss';
 
 const Cart = () => {
   const { state, dispatch } = useCart();
@@ -150,18 +151,31 @@ const Cart = () => {
       <Header />
       <div className="cart-content">
         {/* <h1 className="cart-title">My Cart</h1> */}
-        <Title titleText="Checkout" size={24} />
+        <Title titleText="Checkout" size={24} margin_b={12} />
         {state.cart.length === 0 ? (
           <div className="empty-cart">
             <img src='/Images/Frame.png' alt='empty cart' className='empty-card-img' />
             <p className="empty-cart-message">Your cart is empty.</p>
           </div>
         ) : (
-          <div className="cart-items-wrapper">
+          <div>
             <p className="cart-item-count">You have 
               <span className="item-count-number"> {state.cart.length} </span>
             item(s) in your cart.</p>
+          <div className="cart-items-wrapper">
+          <div className="shipping-info-check">
+          <h2 
+              style={{ margin: 0 }} 
+            >
+              Billing Details
+            </h2>
+          </div>
           <div className="cart-items">
+            <h2 
+              style={{ margin: 0 }} 
+            >
+              Your Order
+            </h2>
             {state.cart.map((item, index) => (
               <div key={index} className="cart-item">
                 <div className="item-details">
@@ -172,7 +186,7 @@ const Cart = () => {
                   >
                     <p className="item-name">{item.PName}</p>
                   </Link>
-                  <p className="item-quantity">Quantity: {item.Quantity}</p>
+                  <p className="item-quantity_2">x {item.Quantity}</p>
                   <p className="item-storeid">Store: {item.StoreName}</p>
                   {item.Promotion && item.Promotion.length > 0 ? (
                   <>
@@ -236,6 +250,7 @@ const Cart = () => {
             <button className="buy-button" onClick={handleBuyButtonClick}>
               Buy
             </button>
+          </div>
           </div>
           </div>
         )}
