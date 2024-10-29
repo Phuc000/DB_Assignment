@@ -96,8 +96,10 @@
   }
 
   .item-price {
-    font-size: 16px;
+    font-size: 20px;
     color: #555;
+    font-weight: 900;
+    font-family: 'Quicksand', sans-serif;
   }
 
   .cart_product__disscount_num {
@@ -130,10 +132,27 @@
 
   /* Add more styles for cart summary or other components as needed */
   .buy-button {
-    max-width: 8vw;
-    background-color: #fe3bd4;
-    border-radius: 5px;
-    border-color: #fe3bd4;
+    width: 50%;
+    background-color: #fe3bd4;  /* aeon_pink color */
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #e02bb8;  /* Darker aeon_pink on hover */
+    }
+  
+    span {
+      margin-left: 5px;
+    }
   }
 
   .empty-cart {

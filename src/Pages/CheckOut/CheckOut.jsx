@@ -1,7 +1,7 @@
 // Cart.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Header, Footer, Title, CartSummary } from '../../Components';
+import { Header, Footer, Title, CartSummary, InfoForm } from '../../Components';
 import { useCart } from '../../Context/CartContext';
 import axios from 'axios'; // Import axios for making HTTP requests
 import '../Cart/Cart.css';
@@ -164,11 +164,49 @@ const Cart = () => {
             item(s) in your cart.</p>
           <div className="cart-items-wrapper">
           <div className="shipping-info-check">
-          <h2 
-              style={{ margin: 0 }} 
-            >
-              Billing Details
-            </h2>
+            <InfoForm />
+            <div className='promotion-select'>
+              <h2>Apply Promotion</h2>
+              <textarea>
+
+              </textarea>
+            </div>
+            <div className="payment-method">
+              <h2>Choose Payment Method</h2>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Credit Card"
+                    checked={selectedPaymentMethod === 'Credit Card'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Credit Card
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Debit Card"
+                    checked={selectedPaymentMethod === 'Debit Card'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Debit Card
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Cash"
+                    checked={selectedPaymentMethod === 'Cash'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  Cash on delivery
+                </label>
+              </div>
+            </div>
           </div>
           <div className="cart-items">
             <h2 
@@ -203,52 +241,13 @@ const Cart = () => {
                 </div>
               </div>
             ))}
-            <div className='promotion-select'>
-              <h3>Apply Promotion:</h3>
-
-            </div>
-            <div className="payment-method">
-              <h3>Choose Payment Method</h3>
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="Credit Card"
-                    checked={selectedPaymentMethod === 'Credit Card'}
-                    onChange={handlePaymentMethodChange}
-                  />
-                  Credit Card
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="Debit Card"
-                    checked={selectedPaymentMethod === 'Debit Card'}
-                    onChange={handlePaymentMethodChange}
-                  />
-                  Debit Card
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="Cash"
-                    checked={selectedPaymentMethod === 'Cash'}
-                    onChange={handlePaymentMethodChange}
-                  />
-                  Cash
-                </label>
-              </div>
-            </div>
+            {/* old payment position */}
             <div className="cart-summary">
               {/* You can display the total or other summary information here */}
               <CartSummary subtotal={subtotal} shipping={shipping} estimate={estimate} total={total} checkout={true} />
             </div>
             <button className="buy-button" onClick={handleBuyButtonClick}>
-              Buy
+              Place an Order <span>➔</span>
             </button>
           </div>
           </div>
