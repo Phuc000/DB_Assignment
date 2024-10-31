@@ -288,7 +288,7 @@ const Profile = () => {
     else if (getCookie("managerID")) {
       submitmanagerLoginForm();
       setShowmanager(true);
-      setActiveComponent("Restock");
+      setActiveComponent("Dashboard");
     }
   }, []);
 

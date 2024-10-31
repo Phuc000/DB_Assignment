@@ -13,7 +13,7 @@ const StoreCard = ({ store }) => {
       <div className="store-card">
         <div className="store-card-header">
           <div className="store-logo">
-            <img src="/Images/no-image.jpg" alt={`${store.Name} logo`} />
+            <img src="/Images/prop_image/store-icon.svg" alt={`${store.Name} logo`} />
           </div>
           <div className="store-details">
             <p className='open_year_style'>
