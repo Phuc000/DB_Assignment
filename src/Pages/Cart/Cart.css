@@ -48,6 +48,17 @@
     gap: 30px;
   }
   
+  /* Media query for small screen sizes */
+  @media (max-width: 768px) {
+    .cart-items-wrapper {
+      flex-direction: column; /* Stack items and summary vertically */
+    }
+  
+    .cart-summary {
+      margin-top: 20px; /* Add spacing between cart-items and cart-summary */
+    }
+  }
+  
   .cart-items {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

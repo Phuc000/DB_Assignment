@@ -42,11 +42,14 @@
   
   .product-thumbnails {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 18px;
+    justify-content: center; /* Optional: centers the thumbnails */
   }
   
   .thumbnail-image {
+    flex: 1 1 calc(25% - 10px);
     max-width: 90px;
     max-height: 90px;
     object-fit: cover;
@@ -62,6 +65,22 @@
   .product-info-section {
     width: 60%;
     padding-left: 3vw;
+  }
+
+  @media (max-width: 768px) {
+    .buy-product-content {
+      flex-direction: column;
+      align-items: center; /* Center-align the sections for better layout */
+    }
+  
+    .product-image-section, .product-info-section {
+      width: 100%; /* Make both sections take full width */
+      padding: 0; /* Remove padding for a cleaner look */
+    }
+  
+    .product-info-section {
+      margin-top: 20px; /* Add margin to separate the sections */
+    }
   }
 
   .info {
