@@ -15,9 +15,6 @@
     const [transaction, settransaction] = useState([]);
     const [promotion, setpromotion] = useState([]);
     //Varables for product restock
-    const [productID, setproductID] = useState("");
-    const [storeID, setstoreID] = useState("");
-    const [amount, setamount] = useState("");
 
     // Variable to swap between sign up and sign in
     const [showSignup, setShowSignup] = useState(false);
@@ -270,36 +267,6 @@
       };
     
 
-    const restock = async () => {
-      axios.put(`${import.meta.env.VITE_REACT_APP_API_URL}/products/addtostore/${productID}/${storeID}/${amount}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log('Restock success', response)
-        /*setproductID('');
-        setstoreID('');
-        setamount('');*/
-      })
-    }
-
-    const getRankIcon = () => {
-      switch (rank) {
-        case 'iron':
-          return < img src= "Images/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
-        case 'bronze':
-          return < img src= "Images/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
-        case 'silver':
-          return < img src= "Images/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
-        case 'gold':
-          return < img src= "Images/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
-          case 'platinum':
-            return < img src= "Images/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
-        default:
-          return null; // You can customize this based on your actual rank values
-      }
-    };
 
     const toggleSignup = () => {
       setShowSignup(!showSignup);

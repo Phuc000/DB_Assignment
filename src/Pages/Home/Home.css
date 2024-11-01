@@ -237,8 +237,12 @@ html {
   /* NAVBAR */
   .btn--primary {
       background: #ffd381;
-      color: white;
+      color: rgb(33, 33, 33);
       width: fit-content;
+  }
+
+  .current-page p {
+    text-decoration: underline;
   }
 
   .nav__navigation {
@@ -278,6 +282,7 @@ html {
 
   .nav__navigation_visible {
       left: 0;
+      z-index: 9999;
   }
 
   .body__fixed {
