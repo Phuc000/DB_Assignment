@@ -2,10 +2,11 @@
 
 $aeon_pink: #fe3bd4;
 
+/*#####################################*/
 /*Categories product*/
 .product-link {
     text-decoration: none;
-    color: black;
+    color: rgb(27, 27, 27);
 }
 
 .products__container {
@@ -28,19 +29,23 @@ $aeon_pink: #fe3bd4;
 }
 
 .product-card {
-    width: 17vw; 
+    width: 100%; 
+    max-width: 300px;
     min-width: 200px; 
     background: rgb(252, 252, 252);
     border: 1px solid rgb(223, 223, 223);
     border-radius: 16px;
     overflow: hidden;
-
     transition: all 0.3s ease;
+
+    @media (max-width: 768px) {
+        max-width: 400px;
+    }
 }
 
 .product-card:hover {
     border: 1px solid $aeon_pink ;
-    box-shadow: 4px 16px 36px rgb(204, 204, 204);
+    box-shadow: 4px 12px 24px rgba(230, 170, 230, 0.9);
     transform: translate(1%, -1%);
 }
 
@@ -117,6 +122,8 @@ $aeon_pink: #fe3bd4;
     justify-content: space-between;
 
 }
+
+// end identical to category css (deleted)
 
 /* when has discount */
 .promo-product-price {

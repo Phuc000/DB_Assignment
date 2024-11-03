@@ -510,36 +510,19 @@ html {
 }
 
 .promo-products-container {
-  display: flex;
-  overflow-x: auto; /* Enable horizontal scrolling if products overflow */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px; /* Adjust the gap between products as needed */
-  padding-top: 5px;
-  margin-right: 3px;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  padding-bottom: 5vh;
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: transparent transparent; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  padding: 10px 20px;
+  margin: 0 10px;
 }
 
-.promo-products-container::-webkit-scrollbar {
-  width: 5px; /* Set the width of the scrollbar */
-}
-
-.promo-products-container::-webkit-scrollbar-thumb {
-  background-color: transparent; /* Set the color of the thumb */
-}
 
 .promo-product {
-  flex: 0 0 auto;
-  width: 18vw; 
-  min-width: 220px; 
   background: rgb(241, 241, 241);
   border: 1px solid rgb(223, 223, 223);
   border-radius: 16px;
   overflow: hidden;
-
   transition: all 0.3s ease;
   text-align: center;
   position: relative;
@@ -575,22 +558,42 @@ html {
 /* end of promo product list */
 
 /* store list */
-    .store--cat {
-      /* padding-top: 5vh; */
-      font-size: var(--fz_lg);
-      text-transform: uppercase;
-      margin-left: 5vw;
-    }
+.store--cat {
+  /* padding-top: 5vh; */
+  font-size: var(--fz_lg);
+  text-transform: uppercase;
+  margin-left: 5vw;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: fit-content;
+  padding: 5px;
 
-    .stores-container {
-      display: grid;
-      grid-template-columns: auto auto auto;
-      gap: 15px;
-      margin: 10px;
-      margin-left: 5vw;
-      margin-right: 5vw;
-      padding: 5px 0;
-      scrollbar-width: thin; /* Firefox */
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--main_yellow);
+  }
+}
+
+.store--cat .arrow {
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.store--cat .arrow.up {
+  transform: rotate(90deg);
+}
+
+.stores-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 15px;
+  margin: 10px;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  padding: 5px 0;
+  scrollbar-width: thin; /* Firefox */
   scrollbar-color: transparent transparent; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
@@ -601,6 +604,18 @@ html {
 
 .stores-container::-webkit-scrollbar-thumb {
   background-color: transparent; /* Set the color of the thumb */
+}
+
+@media (max-width: 1024px) {
+  .stores-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stores-container {
+    grid-template-columns: 1fr;
+  }
 }
     
 /* end of store list */

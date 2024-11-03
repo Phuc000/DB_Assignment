@@ -12,6 +12,12 @@ const Home = () => {
   const [topProducts, setTopProducts] = useState([]);
   const [currentTopProductIndex, setCurrentTopProductIndex] = useState(0);
 
+  const [storesIsVisible, setStoresIsVisible] = useState(false);
+
+  const toggleStoresVisibility = () => {
+    setStoresIsVisible(!storesIsVisible);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
         // Change the ad every 0.5 seconds
@@ -160,23 +166,27 @@ const Home = () => {
 
         <div className="promo-products">
         <h2 className="promo-products-title">Featured Promotion Products</h2>
-        <div className="promo-products-container">
-          {promoProducts.map((product) => (
-            <>
-            <ShowProduct product={product} storeId={null} />
-            </>
-          ))}
-        </div>
+          <div className="promo-products-container">
+            {promoProducts.map((product) => (
+              <>
+              <ShowProduct product={product} storeId={null} />
+              </>
+            ))}
+          </div>
       </div>
         
         {/* Display stores horizontally */}
         <div className='stores'>
-          <h2 className="store--cat">OUR STORES</h2>
-          <div className="stores-container">
-            {stores.map((store) => (
-              <StoreCard store={store} key={store.StoreID} />
-            ))}
-          </div>
+          <h2 className={`store--cat ${storesIsVisible ? 'active' : ''}`} onClick={toggleStoresVisibility}>
+            OUR STORES <span className={`arrow ${storesIsVisible ? 'up' : 'down'}`}>➔</span>
+          </h2>
+          {storesIsVisible && (
+            <div className="stores-container">
+              {stores.map((store) => (
+                <StoreCard store={store} key={store.StoreID} />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="catContainer container" id="catContainer">
