@@ -138,6 +138,10 @@ const Cart = () => {
     }
   };
 
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
+  };
+
   // Helper function to calculate the total for a specific store
   const calculateTotalForStore = (items) => {
     return items.reduce((total, item) => {
@@ -163,11 +167,23 @@ const Cart = () => {
           </div>
         ) : (
           <div>
-            <p className="cart-item-count">You have 
+            {/* <p className="cart-item-count">You have 
               <span className="item-count-number"> {state.cart.length} </span>
-            item(s) in your cart.</p>
+            item(s) in your cart.</p> */}
           <div className="cart-items-wrapper">
             <div className="cart-items">
+              <div className='cart-row'>
+                <p className="cart-item-count">You have 
+                  <span className="item-count-number"> {state.cart.length} </span>
+                item(s) in your cart.</p>
+                <button
+                  className="clear-cart-button"
+                  onClick={clearCart}
+                  class="button-89" role="button"
+                >
+                  Clear Cart
+                </button>
+              </div>
             {/* <p className="cart-item-count">You have 
               <span className="item-count-number"> {state.cart.length} </span>
             item(s) in your cart.</p> */}
