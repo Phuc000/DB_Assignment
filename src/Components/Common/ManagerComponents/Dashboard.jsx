@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ShowProduct, StoreCard } from "../../../Components";
 import Pagination from "../../../Components/Helper/Pagination";
+import ProductList from "../ProductList/ProductList";
 import axios from "axios";
 import "./Dashboard.scss";
 
@@ -59,11 +60,12 @@ const Dashboard = () => {
                 </div>
             }
             <h2>Products</h2>
-            <div className="products__container_2">
+            {/* <div className="products__container_2">
                 {currentProducts.map((product) => (
                     <ShowProduct key={product.ProductID} product={product} storeId={storeId} />
                 ))}
-            </div>
+            </div> */}
+            <ProductList products={currentProducts} storeId={storeId} size="small" />
             <Pagination
                 productsPerPage={productsPerPage}
                 totalProducts={products.length}

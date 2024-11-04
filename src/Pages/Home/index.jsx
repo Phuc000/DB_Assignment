@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {Header, Footer, ShowProduct, StoreCard } from "../../Components";
 import FeatureAd from '../../Components/Common/Feature_Ad/FeatureAd';
+import ProductList from '../../Components/Common/ProductList/ProductList';
 import axios from "axios";
 import "./Home.css";
 
@@ -165,15 +166,17 @@ const Home = () => {
         </section>
 
         <div className="promo-products">
-        <h2 className="promo-products-title">Featured Promotion Products</h2>
-          <div className="promo-products-container">
+          <h2 className="promo-products-title">Featured Promotion Products</h2>
+          {/* <div className="promo-products-container">
             {promoProducts.map((product) => (
               <>
               <ShowProduct product={product} storeId={null} />
               </>
             ))}
-          </div>
-      </div>
+          </div> */}
+
+          <ProductList products={promoProducts} />
+        </div>
         
         {/* Display stores horizontally */}
         <div className='stores'>

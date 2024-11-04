@@ -7,31 +7,12 @@ $aeon_pink: #fe3bd4;
 .product-link {
     text-decoration: none;
     color: rgb(27, 27, 27);
+    width: 17vw; 
+    min-width: 240px; 
 }
 
-.products__container {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-
-    margin-top: -12vh; }
-
-.subtitle--products {
-    padding-top: 5vh;
-}
-
-
-.products__header {
-    background-color: var(--main_yellow);
-    height: 25vh;
-    border-radius: 16px;
-}
 
 .product-card {
-    width: 100%; 
-    max-width: 300px;
-    min-width: 200px; 
     background: rgb(252, 252, 252);
     border: 1px solid rgb(223, 223, 223);
     border-radius: 16px;
@@ -120,6 +101,10 @@ $aeon_pink: #fe3bd4;
 .product-card__buttons {
     display: flex;
     justify-content: space-between;
+
+    .btn {
+        padding: 0.7em 1.3em;
+    }
 
 }
 
