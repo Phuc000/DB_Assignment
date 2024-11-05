@@ -233,9 +233,9 @@
     text-align: center;
     width: 130px;
     border-radius: 10px;
-    background: #fff;
+    background: #fe3bd4;
     border: 3px solid #fe3bd4;
-    color: #fe3bd4;
+    color: #fff;
     letter-spacing: 1px;
     text-shadow: 0;
     font-size: 16px;
@@ -245,8 +245,8 @@
     margin-top: 20px;
  }
  .add-to-cart:hover {
-    color: white;
-    background: #fe3bd4;
+    color: #fe3bd4;
+    background: #fff;
  }
  .add-to-cart:active {
     letter-spacing: 2px;
@@ -256,6 +256,7 @@
  }
   .onclic {
     width: 40px;
+    background: #fff;
     border-color: #bbb;
     border-width: 3px;
     font-size: 0;

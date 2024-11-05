@@ -206,40 +206,40 @@ const Profile = () => {
     };
   
 
-  const restock = async (event) => {
-    event.preventDefault();
-    console.log('Restock:', productID, storeID, amount);
-    axios.put(`${import.meta.env.VITE_REACT_APP_API_URL}/products/addtostore/${productID}/${storeID}/${amount}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      console.log('Restock success', response);
-      return response.data;
-      /*setproductID('');
-      setstoreID('');
-      setamount('');*/
-    })
-    .catch((error) => console.error(`Error restocking ${productID} data:`, error));
-  }
+  // const restock = async (event) => {
+  //   event.preventDefault();
+  //   console.log('Restock:', productID, storeID, amount);
+  //   axios.put(`${import.meta.env.VITE_REACT_APP_API_URL}/products/addtostore/${productID}/${storeID}/${amount}`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //   .then((response) => {
+  //     console.log('Restock success', response);
+  //     return response.data;
+  //     /*setproductID('');
+  //     setstoreID('');
+  //     setamount('');*/
+  //   })
+  //   .catch((error) => console.error(`Error restocking ${productID} data:`, error));
+  // }
 
-  const getRankIcon = () => {
-    switch (rank) {
-      case 'iron':
-        return < img src= "Images/user-ranks/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
-      case 'bronze':
-        return < img src= "Images/user-ranks/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
-      case 'silver':
-        return < img src= "Images/user-ranks/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
-      case 'gold':
-        return < img src= "Images/user-ranks/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
-        case 'platinum':
-          return < img src= "Images/user-ranks/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
-      default:
-        return null; // You can customize this based on your actual rank values
-    }
-  };
+  // const getRankIcon = () => {
+  //   switch (rank) {
+  //     case 'iron':
+  //       return < img src= "Images/user-ranks/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
+  //     case 'bronze':
+  //       return < img src= "Images/user-ranks/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
+  //     case 'silver':
+  //       return < img src= "Images/user-ranks/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
+  //     case 'gold':
+  //       return < img src= "Images/user-ranks/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
+  //       case 'platinum':
+  //         return < img src= "Images/user-ranks/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
+  //     default:
+  //       return null; // You can customize this based on your actual rank values
+  //   }
+  // };
 
   const toggleSignup = () => {
     setShowSignup(!showSignup);
