@@ -93,7 +93,11 @@ const Admin = () => {
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
     { text: 'Manage Products', icon: <ShoppingCartIcon />, path: '/admin/manage-products' },
     { text: 'Manage Inventory', icon: <InventoryIcon />, path: '/admin/manage-inventory' },
-    { text: 'Create Promotion', icon: <LocalOfferIcon />, path: '/admin/create-promotion' },
+    {
+      text: 'Manage Promotions',
+      icon: <LocalOfferIcon />,
+      path: '/admin/manage-promotions',
+    },
     { text: 'View Orders', icon: <ShoppingCartIcon />, path: '/admin/view-orders' },
     { text: 'Manage Users', icon: <PeopleIcon />, path: '/admin/manage-users' },
     // Add more menu items as needed

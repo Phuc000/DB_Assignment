@@ -4,6 +4,7 @@ import { Home, Login, Cart, Category, BuyProduct, Store, Profile, AboutUs, Check
 import Dashboard from "./admin/Dashboard";
 import ManageUsers from './admin/ManageUsers';
 import ManageProducts from './admin/ManageProducts';
+import ManagePromotions from './admin/ManagePromotions';
 import { CartProvider } from './Context/CartContext';
 import "./App.css";
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="manage-users" element={<ManageUsers />} />
                 <Route path="manage-products" element={<ManageProducts />} />
+                <Route path="manage-promotions" element={<ManagePromotions />} />
               </Route>
             </Routes>
           </div>
