@@ -241,24 +241,24 @@ const Profile = () => {
   //   }
   // };
 
-  const toggleSignup = () => {
-    setShowSignup(!showSignup);
-    setShowuserLogin(!showuserLogin);
-    setCFName("");
-    setCLName("");
-    setCPhone("");
-    setCAddress("")
-    setformData({
-      ...formData,
-      CustomerID: 0,
-    });
-  };
-  const toggleUserlogin =() =>{
-    setShowuserLogin(!showuserLogin);
-    setShowprivilgde(!showprivilgde)
-    setCFName("");
-    setCPhone("");
-  }
+  // const toggleSignup = () => {
+  //   setShowSignup(!showSignup);
+  //   setShowuserLogin(!showuserLogin);
+  //   setCFName("");
+  //   setCLName("");
+  //   setCPhone("");
+  //   setCAddress("")
+  //   setformData({
+  //     ...formData,
+  //     CustomerID: 0,
+  //   });
+  // };
+  // const toggleUserlogin =() =>{
+  //   setShowuserLogin(!showuserLogin);
+  //   setShowprivilgde(!showprivilgde)
+  //   setCFName("");
+  //   setCPhone("");
+  // }
   /*const togglemanager =() =>{
     setShowmanagerLogin(!showmanagerLogin)
     setShowmanager(!showmanager)
@@ -301,7 +301,6 @@ const Profile = () => {
   return (
     <div className="login">
       <Header />
-          
 
       <div className="profile-content" >
         {showuser &&(

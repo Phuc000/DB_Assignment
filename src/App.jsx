@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home, Login, Cart, Category, BuyProduct, Store, Profile, AboutUs, CheckOut, Admin } from "./Pages";
+import Dashboard from "./admin/Dashboard";
+import ManageUsers from './admin/ManageUsers';
+import ManageProducts from './admin/ManageProducts';
 import { CartProvider } from './Context/CartContext';
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <CartProvider>
       <Router>
@@ -22,7 +23,11 @@ function App() {
               <Route path="/buy-product/:productId/:storeId" element={<BuyProduct />} />
               <Route path="/store/:storeId" element={<Store />} />
               <Route path="/AboutUs" element={<AboutUs />} />
-              <Route path="/Administrator" element={<Admin />} />
+              <Route path="/Admin/*" element={<Admin />}>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="manage-users" element={<ManageUsers />} />
+                <Route path="manage-products" element={<ManageProducts />} />
+              </Route>
             </Routes>
           </div>
         </div>

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useCart } from "../../Context/CartContext";
+import Badge from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
 import "./Header.css";
 
 const Header = () => {
+    const { state } = useCart();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const getCookie = (cookieName) => {
@@ -17,6 +21,15 @@ const Header = () => {
         }
         return null;
     };
+
+    const StyledBadge = styled(Badge)(({ theme }) => ({
+        '& .MuiBadge-badge': {
+          right: 10,
+          top: 25,
+          border: `2px solid ${theme.palette.background.paper}`,
+          padding: '0 4px',
+        },
+      }));
 
     const location = useLocation();
     const showProfile = getCookie("userID") || getCookie("managerID");
@@ -58,7 +71,13 @@ const Header = () => {
                         <p className="a__navbar btn btn--primary">OFFERS</p>
                     </Link>
                     <Link to="/Cart" className={getNavItemClass("/Cart")}>
-                        <p className="a__navbar btn btn--primary">MY CART</p>
+                        {state.cart.length > 0 ? ( 
+                            <StyledBadge badgeContent={state.cart.length} color="secondary">
+                                <p className="a__navbar btn btn--primary">MY CART</p>
+                            </StyledBadge>
+                        ) : (
+                            <p className="a__navbar btn btn--primary">MY CART</p>
+                        )}
                     </Link>
                     {!showProfile && (
                         <Link to="/Login" className={getNavItemClass("/Login")}>
