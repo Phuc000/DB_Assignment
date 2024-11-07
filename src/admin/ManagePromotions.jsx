@@ -34,7 +34,7 @@ const ManagePromotions = () => {
       .then((data) => setPromotions(data))
       .catch((error) => console.error('Error fetching promotions:', error));
     
-    fetch('/api/products')
+    fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/products/store/1`)
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error('Error fetching products:', error));

@@ -28,7 +28,7 @@ import {
   ShoppingBag as ShoppingBagIcon,
 } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 const closedDrawerWidth = 64;
 
 // Custom theme with primary color #fe3bd4
@@ -43,7 +43,8 @@ const theme = createTheme({
 // Styled components for Drawer
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  backgroundColor: '#fff',
+  backgroundColor: '#303030', // Dark background for Drawer
+  color: '#ffffff', // White text
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -52,7 +53,8 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
-  backgroundColor: '#fff',
+  backgroundColor: '#303030', // Dark background for Drawer
+  color: '#ffffff', // White text
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -64,8 +66,8 @@ const closedMixin = (theme) => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
+  minHeight: '64px', // Match AppBar height
   padding: theme.spacing(0, 1),
-  // Adjusted to align items in the center
   justifyContent: 'space-between',
 }));
 
@@ -87,35 +89,35 @@ const AppBarStyled = styled(AppBar, {
   }),
 }));
 
-const DrawerStyled = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: open ? drawerWidth : closedDrawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  })
-);
+const DrawerStyled = styled(Drawer, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  width: open ? drawerWidth : closedDrawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+}));
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create(['margin', 'width', 'margin-left'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    margin: '0 10px',
-    width: `calc(100% - ${open ? drawerWidth : closedDrawerWidth}px)`,
-  })
-);
+const Main = styled('main', {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  transition: theme.transitions.create(['margin', 'width', 'margin-left'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  margin: '0 10px',
+  width: `calc(100% - ${open ? drawerWidth : closedDrawerWidth}px)`,
+}));
 
 const Admin = () => {
   const muiTheme = useTheme();
@@ -168,15 +170,15 @@ const Admin = () => {
         <DrawerStyled variant="permanent" open={open}>
           <DrawerHeader>
             {open && (
-              <Typography variant="subtitle1" sx={{ paddingLeft: '16px' }}>
+              <Typography variant="subtitle1" sx={{ paddingLeft: '16px', color: '#fff' }}>
                 {adminName}
               </Typography>
             )}
-            <IconButton onClick={handleDrawerToggle}>
+            <IconButton onClick={handleDrawerToggle} sx={{ color: '#fff' }}>
               {open ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
           </DrawerHeader>
-          <Divider />
+          <Divider sx={{ backgroundColor: '#484848' }} />
           <List>
             {menuItems.map((item) => (
               <Tooltip title={open ? '' : item.text} placement="right" key={item.text}>
@@ -188,10 +190,14 @@ const Admin = () => {
                     minHeight: 48,
                     justifyContent: open ? 'initial' : 'center',
                     px: 2.5,
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#484848',
+                    },
                     '&.Mui-selected': {
-                      backgroundColor: muiTheme.palette.action.selected,
+                      backgroundColor: '#616161',
                       '&:hover': {
-                        backgroundColor: muiTheme.palette.action.hover,
+                        backgroundColor: '#757575',
                       },
                     },
                   }}
@@ -201,6 +207,7 @@ const Admin = () => {
                       minWidth: 0,
                       mr: open ? 2 : 'auto',
                       justifyContent: 'center',
+                      color: '#fff',
                     }}
                   >
                     {item.icon}

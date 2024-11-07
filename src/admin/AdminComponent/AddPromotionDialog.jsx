@@ -131,20 +131,20 @@ const AddPromotionDialog = ({ open, handleClose, handleSave, products }) => {
                 selected
                   .map(
                     (productId) =>
-                      products.find((product) => product.id === productId)?.pName || ''
+                      products.find((product) => product.ProductID === productId)?.PName || ''
                   )
                   .join(', ')
               }
             >
               {products.map((product) => (
-                <MenuItem key={product.id} value={product.id}>
+                <MenuItem key={product.ProductID} value={product.ProductID}>
                   <Checkbox
                     checked={
-                      promotion.specificFields.productIds?.indexOf(product.id) > -1 ||
+                      promotion.specificFields.productIds?.indexOf(product.ProductID) > -1 ||
                       false
                     }
                   />
-                  <ListItemText primary={product.pName} />
+                  <ListItemText primary={product.PName} />
                 </MenuItem>
               ))}
             </Select>
