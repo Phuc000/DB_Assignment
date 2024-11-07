@@ -26,6 +26,7 @@ import {
   LocalOffer as LocalOfferIcon,
   ShoppingCart as ShoppingCartIcon,
   People as PeopleIcon,
+  ShoppingBag as ShoppingBagIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 280;
@@ -92,13 +93,21 @@ const Admin = () => {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
     { text: 'Manage Products', icon: <ShoppingCartIcon />, path: '/admin/manage-products' },
-    { text: 'Manage Inventory', icon: <InventoryIcon />, path: '/admin/manage-inventory' },
+    {
+      text: 'Manage Inventory',
+      icon: <InventoryIcon />,
+      path: '/admin/manage-inventory',
+    },
     {
       text: 'Manage Promotions',
       icon: <LocalOfferIcon />,
       path: '/admin/manage-promotions',
     },
-    { text: 'View Orders', icon: <ShoppingCartIcon />, path: '/admin/view-orders' },
+    {
+      text: 'View Orders',
+      icon: <ShoppingBagIcon />,
+      path: '/admin/view-orders',
+    },
     { text: 'Manage Users', icon: <PeopleIcon />, path: '/admin/manage-users' },
     // Add more menu items as needed
   ];
