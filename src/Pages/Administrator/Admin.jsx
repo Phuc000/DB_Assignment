@@ -1,6 +1,6 @@
 // src/Admin.jsx
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -15,6 +15,9 @@ import {
   Divider,
   IconButton,
   Tooltip,
+  Avatar,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import { styled, useTheme, createTheme, ThemeProvider } from '@mui/material/styles';
 import {
@@ -26,6 +29,7 @@ import {
   ShoppingCart as ShoppingCartIcon,
   People as PeopleIcon,
   ShoppingBag as ShoppingBagIcon,
+  AccountCircle as AccountCircleIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 250;
@@ -122,10 +126,37 @@ const Main = styled('main', {
 const Admin = () => {
   const muiTheme = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
+
+  // State for profile menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
+  };
+
+  // Handle profile menu open
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Handle profile menu close
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Handle menu item click
+  const handleMenuItemClick = (option) => {
+    handleMenuClose();
+    if (option === 'logout') {
+      // Implement logout functionality here
+      navigate('/login'); // Redirect to login page after logout
+    } else if (option === 'profile') {
+      // Navigate to profile info page
+      navigate('/admin/profile');
+    }
   };
 
   // Menu items for the admin sidebar
@@ -139,6 +170,7 @@ const Admin = () => {
   ];
 
   const adminName = 'Admin Name'; // Replace with dynamic name if available
+  const adminEmail = 'admin@example.com'; // Replace with dynamic name if available
 
   return (
     <ThemeProvider theme={theme}>
@@ -160,11 +192,48 @@ const Admin = () => {
             >
               {open ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
               Admin Panel
             </Typography>
+            {/* Profile Box */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subtitle1" sx={{ marginRight: '8px' }}>
+                {adminName}
+              </Typography>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="account of current user"
+                aria-controls={menuOpen ? 'profile-menu' : undefined}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+              >
+                <AccountCircleIcon />
+              </IconButton>
+            </Box>
           </Toolbar>
         </AppBarStyled>
+
+        {/* Profile Menu */}
+        <Menu
+          id="profile-menu"
+          anchorEl={anchorEl}
+          open={menuOpen}
+          onClose={handleMenuClose}
+          keepMounted
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem disabled>
+            <Typography variant="subtitle1">{adminName}</Typography>
+          </MenuItem>
+          <MenuItem disabled>
+            <Typography variant="body2">{adminEmail}</Typography>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={() => handleMenuItemClick('profile')}>Profile Info</MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('logout')}>Logout</MenuItem>
+        </Menu>
 
         {/* Drawer (Sidebar) */}
         <DrawerStyled variant="permanent" open={open}>
