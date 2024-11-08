@@ -10,5 +10,6 @@ export { default as Profile } from "./Profile/Profile";
 export { default as AboutUs } from "./AboutUs/AboutUs";
 export { default as CheckOut } from "./CheckOut/CheckOut";
 export { default as Admin } from "./Administrator/Admin";
+export { default as Shipper } from "./Shipper/Shipper";
 
 

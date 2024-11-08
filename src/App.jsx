@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Home, Login, Cart, Category, BuyProduct, Store, Profile, AboutUs, CheckOut, Admin } from "./Pages";
-import Dashboard from "./admin/Dashboard";
+import { Home, Login, Cart, Category, BuyProduct, Store, Profile, AboutUs, CheckOut, Admin, Shipper } from "./Pages";
+import AdminDashboard from "./admin/Dashboard";
 import ManageUsers from './admin/ManageUsers';
 import ManageProducts from './admin/ManageProducts';
 import ManagePromotions from './admin/ManagePromotions';
@@ -27,12 +27,15 @@ function App() {
               <Route path="/store/:storeId" element={<Store />} />
               <Route path="/AboutUs" element={<AboutUs />} />
               <Route path="/Admin/*" element={<Admin />}>
-                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="manage-users" element={<ManageUsers />} />
                 <Route path="manage-products" element={<ManageProducts />} />
                 <Route path="manage-promotions" element={<ManagePromotions />} />
                 <Route path="manage-inventory" element={<ManageInventory />} />
                 <Route path="view-orders" element={<ViewOrders />} />
+              </Route>
+              <Route path="/Shipper/*" element={<Shipper />}>
+
               </Route>
             </Routes>
           </div>

@@ -1,8 +1,8 @@
-// src/admin/Dashboard.jsx
+// src/admin/AdminDashboard.jsx
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   return (
     <Box>
       <Typography className='test' variant="h4" gutterBottom>
@@ -14,4 +14,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
