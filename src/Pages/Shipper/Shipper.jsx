@@ -1,11 +1,14 @@
 // src/Shipper.jsx
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import UserLayout from '../../Components/UserLayout/UserLayout';
+import ShipperDashboard from '../../shipper/Dashboard';
+import DeliveryHistory from '../../shipper/DeliveryHistory';
+import PendingDeliveries from '../../shipper/PendingDeliveries';
 import {
   LocalShipping as LocalShippingIcon,
   Assignment as AssignmentIcon,
-  // ... other icons relevant to shippers
+  ListAlt as ListAltIcon,
 } from '@mui/icons-material';
 
 const Shipper = () => {
@@ -13,13 +16,13 @@ const Shipper = () => {
 
   // Menu items for the shipper sidebar
   const shipperMenuItems = [
-    { text: 'Current Deliveries', icon: <LocalShippingIcon />, path: '/shipper/current-deliveries' },
+    { text: 'Dashboard', icon: <LocalShippingIcon />, path: '/shipper/dashboard' },
+    { text: 'Pending Deliveries', icon: <ListAltIcon />, path: '/shipper/pending-deliveries' },
     { text: 'Delivery History', icon: <AssignmentIcon />, path: '/shipper/delivery-history' },
-    // ... other shipper menu items
   ];
 
-  const shipperName = 'Shipper Name'; // Replace with dynamic name
-  const shipperEmail = 'shipper@example.com'; // Replace with dynamic email
+  const shipperName = 'Shipper Name'; // Replace with dynamic data
+  const shipperEmail = 'shipper@example.com'; // Replace with dynamic data
 
   return (
     <UserLayout
@@ -30,7 +33,11 @@ const Shipper = () => {
       open={open}
       setOpen={setOpen}
     >
-      <Outlet />
+      <Routes>
+        <Route path="/dashboard" element={<ShipperDashboard />} />
+        <Route path="/pending-deliveries" element={<PendingDeliveries />} />
+        <Route path="/delivery-history" element={<DeliveryHistory />} />
+      </Routes>
     </UserLayout>
   );
 };
