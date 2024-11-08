@@ -30,6 +30,7 @@ import {
   People as PeopleIcon,
   ShoppingBag as ShoppingBagIcon,
   AccountCircle as AccountCircleIcon,
+  ArrowDropDown as ArrowDropDownIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 250;
@@ -196,20 +197,17 @@ const Admin = () => {
               Admin Panel
             </Typography>
             {/* Profile Box */}
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="subtitle1" sx={{ marginRight: '8px' }}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              onClick={handleProfileMenuOpen}
+            >
+              <Avatar sx={{ marginRight: '8px', backgroundColor: '#b352af' }}>
+                {adminName.charAt(0)}
+              </Avatar>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginRight: '4px' }}>
                 {adminName}
               </Typography>
-              <IconButton
-                edge="end"
-                color="inherit"
-                aria-label="account of current user"
-                aria-controls={menuOpen ? 'profile-menu' : undefined}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-              >
-                <AccountCircleIcon />
-              </IconButton>
+              <ArrowDropDownIcon />
             </Box>
           </Toolbar>
         </AppBarStyled>
@@ -231,8 +229,12 @@ const Admin = () => {
             <Typography variant="body2">{adminEmail}</Typography>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={() => handleMenuItemClick('profile')}>Profile Info</MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick('logout')}>Logout</MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('profile')}>
+            Profile Info
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick('logout')} sx={{ color: 'red' }}>
+            Logout
+          </MenuItem>
         </Menu>
 
         {/* Drawer (Sidebar) */}
