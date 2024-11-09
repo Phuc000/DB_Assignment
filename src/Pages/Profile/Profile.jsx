@@ -15,8 +15,26 @@ import axios, { AxiosError } from "axios";
 
 import { Modal, IconButton, Box, Typography, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { keyframes } from '@mui/system';
 import CasinoIcon from '@mui/icons-material/Casino'; // Icon for the floating button
 import { Wheel } from 'react-custom-roulette';
+
+// Define the pulse animation
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(254, 59, 212, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 20px rgba(254, 59, 212, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(254, 59, 212, 0);
+  }
+`;
+
 
 const Profile = () => {
   // Variables for customer information
@@ -322,6 +340,7 @@ const Profile = () => {
               color: 'white',
               width: 64,
               height: 64,
+              animation: `${pulse} 4s infinite`,
               '&:hover': {
                 backgroundColor: '#d81b60',
               },
