@@ -1,7 +1,7 @@
 // src/PendingDeliveries.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
+import { Typography, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
 
 const PendingDeliveries = () => {
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -43,7 +43,9 @@ const PendingDeliveries = () => {
 
   return (
     <div>
-      <h1>Pending Deliveries</h1>
+      <Typography variant="h4" gutterBottom>
+        Pending Deliveries
+      </Typography>
       <Table>
         <TableHead>
           <TableRow>

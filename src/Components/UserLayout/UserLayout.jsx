@@ -36,6 +36,15 @@ const theme = createTheme({
       main: '#fe3bd4',
     },
   },
+  typography: {
+    h4: {
+        fontFamily: "'Quicksand', sans-serif",
+        fontWeight: 900,
+        color: '#1B3B2F', // Dark greenish-black color
+        fontSize: '2.2rem',
+    },
+    // You can customize other typography variants if needed
+  },
 });
 
 // Styled components for Drawer
@@ -185,7 +194,7 @@ const UserLayout = ({
               sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
               onClick={handleProfileMenuOpen}
             >
-              <Avatar sx={{ marginRight: '8px' }}>
+              <Avatar sx={{ marginRight: '8px', backgroundColor: '#b054ae' }}>
                 {userInitial}
               </Avatar>
               <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginRight: '4px' }}>

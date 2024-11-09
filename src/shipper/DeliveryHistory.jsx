@@ -1,7 +1,7 @@
 // src/DeliveryHistory.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Typography, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 const DeliveryHistory = () => {
   const [deliveries, setDeliveries] = useState([]);
@@ -15,7 +15,9 @@ const DeliveryHistory = () => {
 
   return (
     <div>
-      <h1>Delivery History</h1>
+      <Typography variant="h4" gutterBottom>
+        Delivery History
+      </Typography>
       <Table>
         <TableHead>
           <TableRow>
