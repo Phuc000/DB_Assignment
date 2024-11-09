@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header, Footer, UserMenu } from "../../Components";
 import "./Profile.scss";
@@ -12,6 +12,12 @@ import Dashboard from "../../Components/Common/ManagerComponents/Dashboard";
 import StoreOrders from "../../Components/Common/ManagerComponents/StoreOrders";
 import AccountDetails from "../../Components/Common/UserComponents/AccountDetail";
 import axios, { AxiosError } from "axios";
+
+import { Modal, IconButton, Box, Typography, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import CasinoIcon from '@mui/icons-material/Casino'; // Icon for the floating button
+import { Wheel } from 'react-custom-roulette';
+
 const Profile = () => {
   // Variables for customer information
 
@@ -24,24 +30,13 @@ const Profile = () => {
   const [rank, setrank] = useState("");
   const [transaction, settransaction] = useState([]);
   const [promotion, setpromotion] = useState([]);
-  //Varables for product restock
-  const [productID, setproductID] = useState("");
-  const [storeID, setstoreID] = useState("");
-  const [amount, setamount] = useState("");
 
-  // Variable to swap between sign up and sign in
-  const [showSignup, setShowSignup] = useState(false);
-  const [showuserLogin, setShowuserLogin] = useState(false);
-  const [showmanagerLogin, setShowmanagerLogin] = useState(false);
-  const [showprivilgde, setShowprivilgde] = useState(true);
   const [showmanager, setShowmanager] = useState(false);
   const [showuser, setShowuser] = useState(false);
 
   //Cookie
   const [cookie, setcookie] = useState(false);
 
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
 
   const [formData, setformData]= useState({
     CFName:'',
@@ -206,78 +201,6 @@ const Profile = () => {
     };
   
 
-  // const restock = async (event) => {
-  //   event.preventDefault();
-  //   console.log('Restock:', productID, storeID, amount);
-  //   axios.put(`${import.meta.env.VITE_REACT_APP_API_URL}/products/addtostore/${productID}/${storeID}/${amount}`, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //   .then((response) => {
-  //     console.log('Restock success', response);
-  //     return response.data;
-  //     /*setproductID('');
-  //     setstoreID('');
-  //     setamount('');*/
-  //   })
-  //   .catch((error) => console.error(`Error restocking ${productID} data:`, error));
-  // }
-
-  // const getRankIcon = () => {
-  //   switch (rank) {
-  //     case 'iron':
-  //       return < img src= "Images/user-ranks/bronze.png" alt="Iron Icon" style={{ width: "75px", height: "auto" }}/>;
-  //     case 'bronze':
-  //       return < img src= "Images/user-ranks/iron.png" alt="Bronze Icon" style={{ width: "75px", height: "auto" }}/>;
-  //     case 'silver':
-  //       return < img src= "Images/user-ranks/silver.png" alt="Silver Icon" style={{ width: "75px", height: "auto" }}/>;
-  //     case 'gold':
-  //       return < img src= "Images/user-ranks/gold.png" alt="Gold Icon" style={{ width: "75px", height: "auto" }}/>;
-  //       case 'platinum':
-  //         return < img src= "Images/user-ranks/plat.png" alt="Platinum Icon" style={{ width: "75px", height: "auto" }}/>;
-  //     default:
-  //       return null; // You can customize this based on your actual rank values
-  //   }
-  // };
-
-  // const toggleSignup = () => {
-  //   setShowSignup(!showSignup);
-  //   setShowuserLogin(!showuserLogin);
-  //   setCFName("");
-  //   setCLName("");
-  //   setCPhone("");
-  //   setCAddress("")
-  //   setformData({
-  //     ...formData,
-  //     CustomerID: 0,
-  //   });
-  // };
-  // const toggleUserlogin =() =>{
-  //   setShowuserLogin(!showuserLogin);
-  //   setShowprivilgde(!showprivilgde)
-  //   setCFName("");
-  //   setCPhone("");
-  // }
-  /*const togglemanager =() =>{
-    setShowmanagerLogin(!showmanagerLogin)
-    setShowmanager(!showmanager)
-  }
-  const toggleuser =() =>{
-    setShowuser(!showuser)
-    setShowuserLogin(!showuserLogin)
-  }*/
-  const toggleManagerlogin =() =>{
-    setShowmanagerLogin(!showmanagerLogin);
-    setShowprivilgde(!showprivilgde)
-  }
-
-    function logout(user) {
-        deleteCookie(user);
-        // go to home page
-        navigate("/");
-    }
-
     const [activeComponent, setActiveComponent] = useState("MyAccount");  // Default active component
 
   useState(() => {
@@ -291,6 +214,60 @@ const Profile = () => {
       setActiveComponent("Dashboard");
     }
   }, []);
+
+  // State for managing the modal and wheel
+  const [openWheel, setOpenWheel] = useState(false);
+  const [mustSpin, setMustSpin] = useState(false);
+  const [prizeNumber, setPrizeNumber] = useState(0);
+  const [wheelData, setWheelData] = useState([
+    { option: '10% OFF' },
+    { option: 'Try Again' },
+    { option: 'Free Shipping' },
+    { option: '5% OFF' },
+    { option: '20% OFF' },
+    { option: '15% OFF' },
+  ]);
+
+  // Function to handle opening the modal
+  const handleOpenWheel = () => {
+    setOpenWheel(true);
+  };
+
+  // Function to handle closing the modal
+  const handleCloseWheel = () => {
+    setOpenWheel(false);
+  };
+
+  // Function to handle spinning the wheel
+  const handleSpinClick = () => {
+    const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
+    setPrizeNumber(newPrizeNumber);
+    setMustSpin(true);
+  };
+
+  // Function to handle the result when the wheel stops spinning
+  const handleWheelStop = () => {
+    const winner = wheelData[prizeNumber].option;
+    alert(`Congratulations! You won ${winner}!`);
+    // Handle granting the promotion to the user
+    // For example, send a request to the backend
+  //   // Send the promotion to the backend
+  // axios
+  //   .post(`${import.meta.env.VITE_REACT_APP_API_URL}/promotions/apply`, {
+  //     userId: getCookie('userID'),
+  //     promotion: winner,
+  //   })
+  //   .then((response) => {
+  //     // Handle success
+  //     console.log('Promotion applied:', response.data);
+  //   })
+  //   .catch((error) => {
+  //     // Handle error
+  //     console.error('Error applying promotion:', error);
+  //   });
+    setMustSpin(false);
+    setOpenWheel(false);
+  };
 
 
   // Function to handle which menu item is clicked
@@ -333,6 +310,87 @@ const Profile = () => {
               <h2> Please login to view your profile</h2>
             </div>
         )}
+        {/* Floating Icon */}
+        {showuser && (
+          <IconButton
+            onClick={handleOpenWheel}
+            sx={{
+              position: 'fixed',
+              bottom: 24,
+              right: 24,
+              backgroundColor: '#fe3bd4',
+              color: 'white',
+              width: 64,
+              height: 64,
+              '&:hover': {
+                backgroundColor: '#d81b60',
+              },
+            }}
+          >
+            <CasinoIcon sx={{ fontSize: 40 }} />
+          </IconButton>
+        )}
+
+        {/* Modal for the Fortune Wheel */}
+        <Modal open={openWheel} onClose={handleCloseWheel}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              borderRadius: 2,
+              p: 4,
+              width: '90%',
+              maxWidth: '500px', // Set a maximum width for larger screens
+              textAlign: 'center', // Center-align text
+            }}
+          >
+            <Typography
+              variant="h5"
+              align="center"
+              gutterBottom
+              sx={{ fontWeight: 'bold', fontFamily: "'Quicksand', sans-serif", fontSize: '1.8rem' }}
+            >
+              Spin the Wheel!
+            </Typography>
+            <Wheel
+              mustStartSpinning={mustSpin}
+              prizeNumber={prizeNumber}
+              data={wheelData}
+              backgroundColors={['#3e3e3e', '#df3428']}
+              textColors={['#ffffff']}
+              outerBorderColor={"#000000"}
+              outerBorderWidth={5}
+              innerRadius={30}
+              radiusLineColor={"#ffffff"}
+              radiusLineWidth={8}
+              spinDuration={0.5}
+              onStopSpinning={handleWheelStop}
+            />
+            {!mustSpin && (
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={handleSpinClick}
+                sx={{
+                  mt: 2,
+                  backgroundColor: '#fe3bd4',
+                  color: '#ffffff',
+                  fontWeight: 'bold',
+                  fontFamily: "'Quicksand', sans-serif",
+                  '&:hover': {
+                    backgroundColor: '#d81b60',
+                  },
+                }}
+              >
+                Spin
+              </Button>
+            )}
+          </Box>
+        </Modal>
 
 
       </div>
