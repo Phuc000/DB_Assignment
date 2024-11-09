@@ -13,9 +13,9 @@ import StoreOrders from "../../Components/Common/ManagerComponents/StoreOrders";
 import AccountDetails from "../../Components/Common/UserComponents/AccountDetail";
 import axios, { AxiosError } from "axios";
 
-import { Modal, IconButton, Box, Typography, Button } from '@mui/material';
+import { Modal, IconButton, Box, Typography, Button, Badge } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { keyframes } from '@mui/system';
+import { keyframes, padding } from '@mui/system';
 import CasinoIcon from '@mui/icons-material/Casino'; // Icon for the floating button
 import { Wheel } from 'react-custom-roulette';
 
@@ -245,6 +245,7 @@ const Profile = () => {
     { option: '20% OFF' },
     { option: '15% OFF' },
   ]);
+  const [fortuneChances, setFortuneChances] = useState(1);
 
   // Function to handle opening the modal
   const handleOpenWheel = () => {
@@ -258,9 +259,11 @@ const Profile = () => {
 
   // Function to handle spinning the wheel
   const handleSpinClick = () => {
-    const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
-    setPrizeNumber(newPrizeNumber);
-    setMustSpin(true);
+    if (fortuneChances > 0) {
+      const newPrizeNumber = Math.floor(Math.random() * wheelData.length);
+      setPrizeNumber(newPrizeNumber);
+      setMustSpin(true);
+    }
   };
 
   // Function to handle the result when the wheel stops spinning
@@ -284,9 +287,16 @@ const Profile = () => {
   //     console.error('Error applying promotion:', error);
   //   });
     setMustSpin(false);
-    setOpenWheel(false);
+    setFortuneChances(fortuneChances - 1); // Decrease chances by 1
   };
 
+  // Adjust the badge position
+  const badgeStyle = {
+    '& .MuiBadge-badge': {
+      left: 8,
+      top: 8,
+    },
+  };
 
   // Function to handle which menu item is clicked
   const handleMenuClick = (componentName) => {
@@ -330,24 +340,39 @@ const Profile = () => {
         )}
         {/* Floating Icon */}
         {showuser && (
-          <IconButton
-            onClick={handleOpenWheel}
+          <Box
             sx={{
               position: 'fixed',
               bottom: 24,
               right: 24,
-              backgroundColor: '#fe3bd4',
-              color: 'white',
-              width: 64,
-              height: 64,
-              animation: `${pulse} 4s infinite`,
-              '&:hover': {
-                backgroundColor: '#d81b60',
-              },
             }}
           >
-            <CasinoIcon sx={{ fontSize: 40 }} />
-          </IconButton>
+            <Badge
+              badgeContent={fortuneChances > 0 ? fortuneChances : null}
+              color="secondary"
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              sx={badgeStyle}
+            >
+              <IconButton
+                onClick={handleOpenWheel}
+                sx={{
+                  backgroundColor: '#fe3bd4',
+                  color: 'white',
+                  width: 64,
+                  height: 64,
+                  animation: `${pulse} 4s infinite`,
+                  '&:hover': {
+                    backgroundColor: '#d81b60',
+                  },
+                }}
+              >
+                <CasinoIcon sx={{ fontSize: 40 }} />
+              </IconButton>
+            </Badge>
+          </Box>
         )}
 
         {/* Modal for the Fortune Wheel */}
@@ -371,43 +396,76 @@ const Profile = () => {
               variant="h5"
               align="center"
               gutterBottom
-              sx={{ fontWeight: 'bold', fontFamily: "'Quicksand', sans-serif", fontSize: '1.8rem' }}
+              sx={{
+                fontWeight: "bold",
+                fontFamily: "'Quicksand', sans-serif",
+                fontSize: "1.8rem",
+              }}
             >
               Spin the Wheel!
             </Typography>
-            <Wheel
-              mustStartSpinning={mustSpin}
-              prizeNumber={prizeNumber}
-              data={wheelData}
-              backgroundColors={['#3e3e3e', '#df3428']}
-              textColors={['#ffffff']}
-              outerBorderColor={"#000000"}
-              outerBorderWidth={5}
-              innerRadius={30}
-              radiusLineColor={"#ffffff"}
-              radiusLineWidth={8}
-              spinDuration={0.5}
-              onStopSpinning={handleWheelStop}
-            />
-            {!mustSpin && (
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={handleSpinClick}
-                sx={{
-                  mt: 2,
-                  backgroundColor: '#fe3bd4',
-                  color: '#ffffff',
-                  fontWeight: 'bold',
-                  fontFamily: "'Quicksand', sans-serif",
-                  '&:hover': {
-                    backgroundColor: '#d81b60',
-                  },
-                }}
-              >
-                Spin
-              </Button>
-            )}
+            <Box sx={{ position: "relative", display: "inline-block" }}>
+              <Wheel
+                mustStartSpinning={mustSpin}
+                prizeNumber={prizeNumber}
+                data={wheelData}
+                backgroundColors={["#3e3e3e", "#df3428"]}
+                textColors={["#ffffff"]}
+                outerBorderColor={"#000000"}
+                outerBorderWidth={5}
+                innerRadius={30}
+                radiusLineColor={"#ffffff"}
+                radiusLineWidth={8}
+                spinDuration={0.5}
+                onStopSpinning={handleWheelStop}
+              />
+              {fortuneChances === 0 && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    width: "80%",
+                    color: "white",
+                    padding: 2,
+                    borderRadius: 1,
+                    zIndex: 99,
+                  }}
+                >
+                  <Typography>
+                    Purchase more than $100 to gain a spin.
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+            <Typography
+              sx={{
+                mt: 2,
+                fontWeight: "bold",
+                fontFamily: "'Quicksand', sans-serif",
+              }}
+            >
+              Attempt(s): {fortuneChances}
+            </Typography>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleSpinClick}
+              sx={{
+                mt: 2,
+                backgroundColor: "#fe3bd4",
+                color: "#ffffff",
+                fontWeight: "bold",
+                fontFamily: "'Quicksand', sans-serif",
+                "&:hover": {
+                  backgroundColor: "#d81b60",
+                },
+              }}
+            >
+              Spin
+            </Button>
           </Box>
         </Modal>
 
